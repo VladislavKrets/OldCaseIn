@@ -30,6 +30,11 @@ class QuestionAnswer(models.Model):
     is_right = models.BooleanField(default=False)
 
 
+class DropdownAnswer(models.Model):
+    answer = models.OneToOneField(to=QuestionAnswer, on_delete=models.deletion.CASCADE)
+    text = models.TextField()
+
+
 class SavedQuestionAnswer(models.Model):
     answer = models.ForeignKey(to=QuestionAnswer, on_delete=models.deletion.CASCADE)
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
