@@ -55,7 +55,7 @@ ROOT_URLCONF = 'CaseIn.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates')] # for angular
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -120,3 +120,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/dist/frontend/static'), # for angular
+                    os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'media')
+)
+try:
+    from .local_settings import *
+except ImportError:
+    pass
