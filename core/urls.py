@@ -8,6 +8,10 @@ urlpatterns = [
     path('lesson/<int:lesson>/questions/', views.QuestionMixin.as_view()),
     path('question/<int:answer__question>/drugndrop/',
          views.DrugNDropAnswerMixin.as_view()),
+    path('answer/<int:answer>/save/',
+         views.SavedQuestionAnswerMixin.as_view()),
+    path('answer/<int:answer>/save/<int:pk>/',
+         views.SavedQuestionAnswerMixin.as_view()),
     path('bot_themes/', views.BotThemeMixin.as_view()),
     path('bot_themes/<int:parent_theme>/', views.BotThemeMixin.as_view()),
     path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view())

@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from rest_framework import views, permissions, response
 from rest_framework.authtoken.models import Token
-from rest_framework.mixins import RetrieveModelMixin, ListModelMixin
+from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, CreateModelMixin, UpdateModelMixin
 from rest_framework.generics import GenericAPIView
 from core import serializers
 from core import models
@@ -96,7 +96,33 @@ class BotAnswerMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.BotAnswerSerializer
-    queryset = models.BotAnswer.objects.all()
+
+    def get_queryset(self):
+        theme = self.kwargs['theme']
+        return models.BotAnswer.objects.filter(theme=theme)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
+
+
+class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.SavedQuestionAnswerSerializer
+
+    def get_queryset(self):
+        return models.SavedQuestionAnswer.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, args, kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, args, kwargs)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        context['answer'] = models.QuestionAnswer.objects.get(pk=self.kwargs['answer'])
+        return context
+
+

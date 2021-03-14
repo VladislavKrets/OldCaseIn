@@ -41,9 +41,48 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.QuestionAnswer
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super(QuestionAnswerSerializer, self).to_representation(instance)
+        data.pop('is_right')
+        try:
+            saved_answer = instance.saved_answer.get()
+        except models.SavedQuestionAnswer.DoesNotExist:
+            saved_answer = None
+        if saved_answer:
+            serializer = SavedQuestionAnswerSerializer(instance=instance.saved_answer)
+            data['saved_answer'] = serializer.data
+        else:
+            data['saved_answer'] = None
+        return data
+
+
+class SavedQuestionAnswerSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        user = self.context['user']
+        answer = self.context['answer']
+        validated_data['user'] = user
+        validated_data['answer'] = answer
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        user = self.context['user']
+        answer = self.context['answer']
+        if instance.user != user:
+            raise ValidationError()
+        validated_data['user'] = user
+        validated_data['answer'] = answer
+        return super().update(instance, validated_data)
+
+    class Meta:
+        model = models.SavedQuestionAnswer
+        fields = '__all__'
+        read_only_fields = ('user', 'answer',)
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -54,13 +93,8 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_answers(self, instance):
-        answers = instance.answers.all().order_by('number')
+        answers = models.QuestionAnswer.objects.filter(question=instance).order_by('number')
         return QuestionAnswerSerializer(answers, many=True).data
-
-    def to_representation(self, instance):
-        data = super(QuestionSerializer, self).to_representation(instance)
-        data.pop('is_right')
-        return data
 
 
 class DrugNDropAnswerSerializer(serializers.ModelSerializer):
@@ -88,20 +122,3 @@ class BotAnswerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class SavedQuestionAnswerSerializer(serializers.ModelSerializer):
-
-    def create(self, validated_data):
-        user = self.context['user']
-        validated_data['user'] = user
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        user = self.context['user']
-        if instance.user != user:
-            raise ValidationError()
-        validated_data['user'] = user
-        return super().update(instance, validated_data)
-
-    class Meta:
-        model = models.SavedQuestionAnswer
-        fields = '__all__'

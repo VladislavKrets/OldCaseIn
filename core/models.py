@@ -45,7 +45,8 @@ class DrugNDropAnswer(models.Model):
 
 
 class SavedQuestionAnswer(models.Model):
-    answer = models.ForeignKey(to=QuestionAnswer, on_delete=models.deletion.CASCADE)
+    answer = models.ForeignKey(to=QuestionAnswer, on_delete=models.deletion.CASCADE,
+                               related_name='saved_answer')
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
     user_text = models.TextField(default='')
     drugNDropAnswer = models.OneToOneField(to=DrugNDropAnswer,
