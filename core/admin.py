@@ -2,19 +2,36 @@ from django.contrib import admin
 from core.models import Module, Lesson,\
     Question, QuestionAnswer, SavedQuestionAnswer,\
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer
+import nested_admin
 
 
-class QuestionAnswerAdminInline(admin.TabularInline):
+class DrugNDropAnswerAdminInLine(nested_admin.NestedTabularInline):
+    model = DrugNDropAnswer
+
+
+class QuestionAnswerAdminInline(nested_admin.NestedTabularInline):
     model = QuestionAnswer
+    inlines = (DrugNDropAnswerAdminInLine, )
 
 
-class QuestionAdmin(admin.ModelAdmin):
+class QuestionAdmin(nested_admin.NestedModelAdmin):
     inlines = (QuestionAnswerAdminInline, )
+
+
+class BotAnswerAdminInLine(admin.TabularInline):
+    model = BotAnswer
+
+
+class BotThemeAdminInline(admin.TabularInline):
+    model = BotTheme
+
+
+class BotThemeAdmin(admin.ModelAdmin):
+    inlines = (BotThemeAdminInline, BotAnswerAdminInLine)
 
 
 admin.site.register(Module)
 admin.site.register(Lesson)
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(BotTheme)
-admin.site.register(BotAnswer)
+admin.site.register(BotTheme, BotThemeAdmin)
 admin.site.register(DrugNDropAnswer)

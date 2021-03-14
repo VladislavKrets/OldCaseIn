@@ -5,11 +5,17 @@ from django.db import models
 class Module(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Lesson(models.Model):
     module = models.ForeignKey(to=Module, on_delete=models.deletion.CASCADE)
     themes = models.TextField()
     video = models.FileField()
+
+    def __str__(self):
+        return self.themes
 
 
 class Question(models.Model):
@@ -26,6 +32,9 @@ class Question(models.Model):
     score = models.IntegerField(default=1)
     number = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.question
+
 
 class QuestionAnswer(models.Model):
     question = models.ForeignKey(to=Question,
@@ -35,6 +44,9 @@ class QuestionAnswer(models.Model):
     is_right = models.BooleanField(default=False)
     number = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.answer
+
 
 class DrugNDropAnswer(models.Model):
     answer = models.OneToOneField(to=QuestionAnswer,
@@ -42,6 +54,9 @@ class DrugNDropAnswer(models.Model):
                                   related_name='dropdown_answer')
     text = models.TextField()
     number = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.text
 
 
 class SavedQuestionAnswer(models.Model):
@@ -53,11 +68,17 @@ class SavedQuestionAnswer(models.Model):
                                            on_delete=models.deletion.CASCADE,
                                            default=None, null=True)
 
+    def __str__(self):
+        return self.answer.answer
+
 
 class LessonResult(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
     lesson = models.ForeignKey(to=Lesson, on_delete=models.deletion.CASCADE)
     result_score = models.IntegerField()
+
+    def __str__(self):
+        return self.lesson.themes
 
 
 class BotTheme(models.Model):
@@ -70,7 +91,13 @@ class BotTheme(models.Model):
             self.parent_theme = None
         super(BotTheme, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.question
+
 
 class BotAnswer(models.Model):
     theme = models.ForeignKey(to=BotTheme, on_delete=models.deletion.CASCADE)
     answer = models.TextField()
+
+    def __str__(self):
+        return self.answer
