@@ -20,26 +20,37 @@ class Question(models.Model):
         DRUG_N_DROP = 'drug&drop', 'drug&drop'
         TEXT = 'text', 'text'
 
+    lesson = models.ForeignKey(to=Lesson, on_delete=models.deletion.CASCADE)
     question_type = models.CharField(max_length=20, choices=QuestionTypes.choices)
     question = models.TextField()
     score = models.IntegerField(default=1)
+    number = models.PositiveIntegerField()
 
 
 class QuestionAnswer(models.Model):
-    question = models.ForeignKey(to=Question, on_delete=models.deletion.CASCADE)
+    question = models.ForeignKey(to=Question,
+                                 on_delete=models.deletion.CASCADE,
+                                 related_name="answers")
     answer = models.TextField()
     is_right = models.BooleanField(default=False)
+    number = models.PositiveIntegerField()
 
 
-class DropdownAnswer(models.Model):
-    answer = models.OneToOneField(to=QuestionAnswer, on_delete=models.deletion.CASCADE)
+class DrugNDropAnswer(models.Model):
+    answer = models.OneToOneField(to=QuestionAnswer,
+                                  on_delete=models.deletion.CASCADE,
+                                  related_name='dropdown_answer')
     text = models.TextField()
+    number = models.PositiveIntegerField()
 
 
 class SavedQuestionAnswer(models.Model):
     answer = models.ForeignKey(to=QuestionAnswer, on_delete=models.deletion.CASCADE)
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
     user_text = models.TextField(default='')
+    drugNDropAnswer = models.OneToOneField(to=DrugNDropAnswer,
+                                           on_delete=models.deletion.CASCADE,
+                                           default=None, null=True)
 
 
 class LessonResult(models.Model):
@@ -51,7 +62,12 @@ class LessonResult(models.Model):
 class BotTheme(models.Model):
     question = models.CharField(max_length=255)
     parent_theme = models.ForeignKey("self", on_delete=models.deletion.CASCADE,
-                                     null=True, default=None)
+                                     null=True, blank=True, default=None)
+
+    def save(self, *args, **kwargs):
+        if not self.parent_theme:
+            self.parent_theme = None
+        super(BotTheme, self).save(*args, **kwargs)
 
 
 class BotAnswer(models.Model):
