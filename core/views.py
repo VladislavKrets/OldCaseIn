@@ -1,15 +1,12 @@
-from django.contrib.auth import login
-from django.contrib.auth.models import User
 from rest_framework import views, permissions, response
 from rest_framework.authtoken.models import Token
-from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, CreateModelMixin, UpdateModelMixin
+from rest_framework.mixins import RetrieveModelMixin,\
+    ListModelMixin, CreateModelMixin, UpdateModelMixin
 from rest_framework.generics import GenericAPIView
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 class LoginView(views.APIView):
