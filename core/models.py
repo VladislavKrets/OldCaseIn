@@ -7,6 +7,7 @@ class Module(models.Model):
 
 
 class Lesson(models.Model):
+    module = models.ForeignKey(to=Module, on_delete=models.deletion.CASCADE)
     themes = models.TextField()
     video = models.FileField()
 
