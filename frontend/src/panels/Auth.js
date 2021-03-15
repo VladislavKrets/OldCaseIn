@@ -22,7 +22,7 @@ class Auth extends React.Component {
 
     setRegistrationCode = (registrationCode) => {
         this.setState({
-            registrationCode
+            registrationCode: registrationCode
         })
     }
 
