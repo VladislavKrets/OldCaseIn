@@ -1,21 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react'
-import {Route, Switch} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import Auth from "./panels/Auth";
 import axios from './api'
 import cookie from "react-cookies";
-
+import PrivateRoute from "./components/PrivateRoute";
+import Main from "./panels/Main";
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         const token = cookie.load('token')
         if (token) {
-            this.setState({token: token})
             cookie.save('token', token, {maxAge: 30 * 24 * 60 * 60, path: '/'})
         }
         this.state = {
-            token: null,
+            token: token,
             loading: true
         }
     }
@@ -124,10 +124,7 @@ class App extends React.Component {
         cookie.remove('token', {path: '/'})
         this.setState({
             token: null,
-            loading: true,
         })
-        window.history.pushState({}, 'back', '/auth')
-        // window.open(`/auth`, "_self");
     }
 
     componentDidMount() {
@@ -139,13 +136,19 @@ class App extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path='/auth'>
-                    <Auth login={this.login}
-                          setToken={this.setToken}
-                          checkRegistrationCode={this.checkRegistrationCode}
-                          register={this.register}
-                    />
+                <Route exact path='/auth/'>
+                    {this.state.token ? <Redirect to="/main/"/> : !this.state.loading ?
+                        <Auth login={this.login}
+                              token={this.state.token}
+                              setToken={this.setToken}
+                              checkRegistrationCode={this.checkRegistrationCode}
+                              register={this.register}
+                        /> : null
+                    }
                 </Route>
+                <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/main/'}>
+                    <Main logOut={this.logOut}/>
+                </PrivateRoute>
             </Switch>
         );
     }

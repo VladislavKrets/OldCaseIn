@@ -1,5 +1,5 @@
 import React from 'react'
-import {withRouter} from "react-router";
+import {Redirect, withRouter} from "react-router";
 import LoginButtons from "../components/LoginButtons";
 import CodeRegistration from "../components/CodeRegistration";
 import Login from "../components/Login";

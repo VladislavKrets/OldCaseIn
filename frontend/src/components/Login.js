@@ -1,6 +1,5 @@
 import React from 'react'
 import {Form, Button, Alert} from "react-bootstrap";
-
 class Login extends React.Component {
 
     constructor(props) {
@@ -25,7 +24,7 @@ class Login extends React.Component {
     onSubmit = (event) => {
         event.preventDefault()
         this.props.login(this.state.loginData).then(data => {
-            this.props.setToken(data.token)
+            this.props.setToken(data.data.token)
         }).catch(e => {
             this.setState({
                 isAuthError: true
