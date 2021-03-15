@@ -1,7 +1,7 @@
 from django.contrib import admin
 from core.models import Module, Lesson,\
     Question, QuestionAnswer, SavedQuestionAnswer,\
-    LessonResult, BotTheme, BotAnswer, DrugNDropAnswer
+    LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode
 import nested_admin
 
 
@@ -30,6 +30,7 @@ class BotThemeAdmin(admin.ModelAdmin):
     inlines = (BotThemeAdminInline, BotAnswerAdminInLine)
 
 
+admin.site.register(RegistrationCode)
 admin.site.register(Module)
 admin.site.register(Lesson)
 admin.site.register(Question, QuestionAdmin)

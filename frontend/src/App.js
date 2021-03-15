@@ -28,6 +28,24 @@ class App extends React.Component {
         })
     }
 
+    checkRegistrationCode = (code) => {
+        return axios.patch('/login/', {
+            registration_code: code
+        }, {
+            headers: {
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    register = (registerData) => {
+        return axios.put('/login/', registerData, {
+            headers: {
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getModules = () => {
         return axios.get('/modules/', {
             headers: {
@@ -64,6 +82,7 @@ class App extends React.Component {
         return axios.post(`/answer/${answerId}/save/`, answerData, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
             }
         })
     }
@@ -72,6 +91,7 @@ class App extends React.Component {
         return axios.patch(`/answer/${answerId}/save/${patchId}/`, answerData, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
             }
         })
     }

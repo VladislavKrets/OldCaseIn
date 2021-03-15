@@ -12,13 +12,26 @@ from rest_framework.permissions import IsAuthenticated
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request):
+    def post(self, request): #auth
         serializer = serializers.LoginSerializer(data=request.data)
         if not serializer.is_valid():
             return response.Response({'error': serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
         user = serializer.validated_data['user']
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
+
+    def put(self, request): #registration
+        serializer = serializers.RegistrationSerializer(data=request.data)
+        if not serializer.is_valid():
+            return response.Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        token = Token.objects.get_or_create(user=user)
+        return response.Response({'token': token[0].key})
+
+    def patch(self, request): #check code
+        is_registration_code_exists = models.RegistrationCode \
+            .objects.filter(code=request.data['registration_code']).exists()
+        return response.Response({'exists': is_registration_code_exists})
 
 
 class ModuleMixin(ListModelMixin, GenericAPIView):

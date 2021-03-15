@@ -25,7 +25,6 @@ class Login extends React.Component {
     onSubmit = (event) => {
         event.preventDefault()
         this.props.login(this.state.loginData).then(data => {
-            console.log(data)
             this.props.setToken(data.token)
         }).catch(e => {
             this.setState({

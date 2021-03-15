@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from core import models
@@ -11,14 +12,38 @@ class LoginSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         user = authenticate(username=attrs['email'], password=attrs['password'])
-
         if not user:
             raise serializers.ValidationError('Incorrect email or password.')
-
         if not user.is_active:
             raise serializers.ValidationError('User is disabled.')
-
         return {'user': user}
+
+
+class RegistrationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+    repeated_password = serializers.CharField()
+    registration_code = serializers.CharField()
+
+    @transaction.atomic
+    def create(self, validated_data):
+        user = User.objects.create(username=validated_data['email'],
+                                   password=validated_data['password'])
+        models.RegistrationCode.objects \
+            .filter(code=validated_data['registration_code']).delete()
+        return user
+
+    def validate(self, attrs):
+        is_registration_code_exists = models.RegistrationCode \
+            .objects.filter(code=attrs['registration_code']).exists()
+        if not is_registration_code_exists:
+            raise serializers.ValidationError('Registration code not exists.')
+        if attrs['password'] != attrs['repeated_password']:
+            raise serializers.ValidationError('Passwords are not equal.')
+        is_user_exists = User.objects.filter(username=attrs["email"]).exists()
+        if is_user_exists:
+            raise serializers.ValidationError('User already exists.')
+        return attrs
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,7 +56,7 @@ class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Module
         fields = '__all__'
-        read_only_fields = ('id', )
+        read_only_fields = ('id',)
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -41,7 +66,6 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.QuestionAnswer
         fields = '__all__'
@@ -120,5 +144,3 @@ class BotAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BotAnswer
         fields = '__all__'
-
-
