@@ -22,13 +22,17 @@ class LoginSerializer(serializers.Serializer):
 class RegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+    name = serializers.CharField()
+    surname = serializers.CharField()
     repeated_password = serializers.CharField()
     registration_code = serializers.CharField()
 
     @transaction.atomic
     def create(self, validated_data):
         user = User.objects.create(username=validated_data['email'],
-                                   password=validated_data['password'])
+                                   password=validated_data['password'],
+                                   first_name=validated_data['name'],
+                                   last_name=validated_data['surname'])
         models.RegistrationCode.objects \
             .filter(code=validated_data['registration_code']).delete()
         return user
