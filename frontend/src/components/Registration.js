@@ -8,14 +8,24 @@ class Registration extends React.Component {
         super(props);
         this.state = {
         regData: {
-            userName: '',
-            userLastName:'',
-            loginData: {
-                email: '',
-                password: ''
-            }
+            name: '',
+            surname:'',
+            email: '',
+            password: ''
+            repeated_password: '',
+            registration_code: props.registrationCode
+            password_has_error: false
         }
        }
+    }
+
+    checkPassword() {
+         if(!this.state.password || this.state.password != this.state.repeated_password) {
+            this.setState({password_has_error:true});
+        }
+        else {
+            this.setState({password_has_error:false});
+        }
     }
 
     handleChange = (event) => {
@@ -24,9 +34,10 @@ class Registration extends React.Component {
         this.setState({
             regData
         })
+
+        if (event.target.name == 'password' || event.target.name == 'repeated_password')
+            this.checkPassword();
     }
-
-
 
     render() {
         return <div style={{
@@ -38,10 +49,10 @@ class Registration extends React.Component {
         }}>
             <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
                 <Form onSubmit={this.onSubmit}>
-                    <Form.Group controlId="formBasicUserName">
+                    <Form.Group controlId="formBasicName">
                         <Form.Label>Имя</Form.Label>
-                        <Form.Control placeholder="Введите имя" name={'userName'}
-                                      value={this.state.regData.userName} onChange={this.handleChange}/>
+                        <Form.Control placeholder="Введите имя" name={'name'}
+                                      value={this.state.regData.name} onChange={this.handleChange}/>
                     </Form.Group>
 
 
@@ -49,15 +60,15 @@ class Registration extends React.Component {
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserLastName">
                         <Form.Label>Фамилия</Form.Label>
-                        <Form.Control placeholder="Введите фамилию" name={'userLastName'}
-                                      value={this.state.regData.userLastName} onChange={this.handleChange}/>
+                        <Form.Control placeholder="Введите фамилию" name={'surname'}
+                                      value={this.state.regData.surname} onChange={this.handleChange}/>
                     </Form.Group>
 
 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email адрес</Form.Label>
                         <Form.Control type="email" placeholder="Введите email" name={'email'}
-                                      value={this.state.regData.loginData.email} onChange={this.handleChange}/>
+                                      value={this.state.regData.email} onChange={this.handleChange}/>
                         <Form.Text className="text-muted">
                             Мы не будем распространять ваш email
                         </Form.Text>
@@ -67,11 +78,26 @@ class Registration extends React.Component {
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'password'}
                                       required="required"
-                                      value={this.state.regData.loginData.password} onChange={this.handleChange}/>
+                                      value={this.state.regData.password} onChange={this.handleChange}/>
                     </Form.Group>
+
+                    <Form.Group controlId="formBasicRepeatedPassword">
+                        <Form.Label>Введите пароль еще раз</Form.Label>
+                        <Form.Control type="password" placeholder="Пароль" name={'repeated_password'}
+                                      required="required"
+                                      value={this.state.regData.repeated_password} onChange={this.handleChange}/>
+                    </Form.Group>
+
                     <Button variant="primary" type="submit">
                         Зарегестрироваться
                     </Button>
+                    {
+                        this.state.regData.password_has_error && <div style={{paddingTop: '12px'}}>
+                            <Alert variant={"danger"}>
+                                Пароли не совпадают
+                            </Alert>
+                        </div>
+                    }
 
                 </Form>
             </div>
