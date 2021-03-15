@@ -42,7 +42,7 @@ class Login extends React.Component {
             boxSizing: 'border-box'
         }}>
             <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
-                <Form onSubmit={this.onSubmit} method={'post'}>
+                <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email адрес</Form.Label>
                         <Form.Control type="email" placeholder="Введите email" name={'email'}

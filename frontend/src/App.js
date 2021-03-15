@@ -140,7 +140,11 @@ class App extends React.Component {
         return (
             <Switch>
                 <Route exact path='/auth'>
-                    <Auth login={this.login} setToken={this.setToken}/>
+                    <Auth login={this.login}
+                          setToken={this.setToken}
+                          checkRegistrationCode={this.checkRegistrationCode}
+                          register={this.register}
+                    />
                 </Route>
             </Switch>
         );
