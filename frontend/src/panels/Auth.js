@@ -5,11 +5,11 @@ import CodeRegistration from "../components/CodeRegistration";
 import Login from "../components/Login";
 import Registration from "../components/Registration";
 
-class Auth extends React.Component{
+class Auth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            panel: 'login'
+            panel: 'login_buttons'
         }
     }
 
@@ -23,11 +23,14 @@ class Auth extends React.Component{
         return <div>
             {
                 this.state.panel === 'login_buttons' ?
-                    <LoginButtons/> : this.state.panel === 'code_registration' ?
+                    <LoginButtons changePanel={this.changePanel}/>
+                    : this.state.panel === 'code_registration' ?
                     <CodeRegistration/> : this.state.panel === 'login' ?
-                        <Login/> : <Registration/>
+                        <Login login={this.props.login} setToken={this.props.setToken}/>
+                        : <Registration/>
             }
         </div>
     }
 }
+
 export default withRouter(Auth)

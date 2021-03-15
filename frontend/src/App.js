@@ -106,7 +106,7 @@ class App extends React.Component {
             token: null,
             loading: true,
         })
-        history.pushState({}, 'back', '/auth')
+        window.history.pushState({}, 'back', '/auth')
         // window.open(`/auth`, "_self");
     }
 
@@ -120,7 +120,7 @@ class App extends React.Component {
         return (
             <Switch>
                 <Route exact path='/auth'>
-                    <Auth/>
+                    <Auth login={this.login} setToken={this.setToken}/>
                 </Route>
             </Switch>
         );

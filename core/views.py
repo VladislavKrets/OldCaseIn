@@ -1,4 +1,4 @@
-from rest_framework import views, permissions, response
+from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin,\
     ListModelMixin, CreateModelMixin, UpdateModelMixin
@@ -15,7 +15,7 @@ class LoginView(views.APIView):
     def post(self, request):
         serializer = serializers.LoginSerializer(data=request.data)
         if not serializer.is_valid():
-            return response.Response({'error': serializer.errors})
+            return response.Response({'error': serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
         user = serializer.validated_data['user']
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})

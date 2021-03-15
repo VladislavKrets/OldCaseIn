@@ -6,11 +6,11 @@ from core import models
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.EmailField()
+    email = serializers.EmailField()
     password = serializers.CharField()
 
     def validate(self, attrs):
-        user = authenticate(username=attrs['username'], password=attrs['password'])
+        user = authenticate(username=attrs['email'], password=attrs['password'])
 
         if not user:
             raise serializers.ValidationError('Incorrect email or password.')
