@@ -50,7 +50,7 @@ class CodeRegistration extends React.Component {
                                           value={this.state.registrationCode}/>
                         </Col>
                         <Col>
-                            <div style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                            <div style={{display: 'flex', flexDirection: 'row-reverse', width: '100%'}}>
                                 <Button variant="primary" type="submit">
                                     Регистрация
                                 </Button>
