@@ -64,8 +64,7 @@ ROOT_URLCONF = 'CaseIn.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')] # for angular
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,7 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/dist/frontend/static'), # for angular
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static'), # for react
                     os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'

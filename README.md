@@ -19,6 +19,7 @@
 `npm run build`
 
 Проводим миграции
+`./manage.py collectstatic`
 
 `./manage.py makemigrations`
 
