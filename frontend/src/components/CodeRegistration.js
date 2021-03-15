@@ -25,7 +25,7 @@ class CodeRegistration extends React.Component {
                     isRegistrationCodeRight: data.data.exists
                 })
                 if (data.data.exists) {
-                    this.props.registrationCode(this.state.registrationCode)
+                    this.props.setRegistrationCode(this.state.registrationCode)
                     this.props.changePanel("registration")
                 }
             }).catch(e => {
