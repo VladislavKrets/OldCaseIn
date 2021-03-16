@@ -42,7 +42,7 @@ class Login extends React.Component {
             boxSizing: 'border-box'
         }}>
             <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
+                <div style={{width: '500px', padding: '22px', borderRadius: '10px', backgroundColor: 'white'}}>
                     <Form onSubmit={this.onSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email адрес</Form.Label>

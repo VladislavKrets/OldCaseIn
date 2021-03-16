@@ -57,7 +57,7 @@ class Main extends React.Component {
                                currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '25%'}}>
-                <UserProfile/>
+                <UserProfile logOut={this.props.logOut}/>
             </div>
         </div>
     }
