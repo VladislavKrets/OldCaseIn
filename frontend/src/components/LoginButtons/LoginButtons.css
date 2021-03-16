@@ -1,0 +1,11 @@
+.login-buttons-container{
+    position: fixed;
+    right: 18%;
+    top: 42%;
+}
+
+@media (max-width: 710px) {
+    .login-buttons-container {
+        right: 16%;
+    }
+}
