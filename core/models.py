@@ -22,6 +22,7 @@ class Lesson(models.Model):
                                on_delete=models.deletion.CASCADE, related_name='lessons')
     themes = models.TextField()
     video = models.FileField()
+    number = models.PositiveIntegerField()
 
     def __str__(self):
         return self.themes

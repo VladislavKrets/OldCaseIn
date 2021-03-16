@@ -56,19 +56,23 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username',)
 
 
+class LessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Lesson
+        fields = '__all__'
+
+
 class ModuleSerializer(serializers.ModelSerializer):
-    lessons = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    lessons = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Module
         fields = '__all__'
         read_only_fields = ('id',)
 
-
-class LessonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Lesson
-        fields = '__all__'
+    def get_lessons(self, instance):
+        lessons = models.Lesson.objects.filter(module=instance).order_by('number')
+        return LessonSerializer(lessons, many=True).data
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):

@@ -12,18 +12,16 @@ class Main extends React.Component {
         this.state = {
             currentModuleId: null,
             currentLessonId: null,
-            lessonIndex: null,
             lessonData: null,
             modules: []
         }
 
     }
 
-    setCurrentLesson = (currentModuleId, currentLessonId, lessonIndex) => {
+    setCurrentLesson = (currentModuleId, currentLessonId) => {
         this.setState({
             currentLessonId: currentLessonId,
-            currentModuleId: currentModuleId,
-            lessonIndex: lessonIndex
+            currentModuleId: currentModuleId
         })
     }
 

@@ -48,7 +48,7 @@ class LessonMixin(RetrieveModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.LessonSerializer
-    queryset = models.Lesson.objects.all()
+    queryset = models.Lesson.objects.all().order_by('number')
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, args, kwargs)

@@ -1,5 +1,6 @@
 import React from "react";
 import './ModuleContent.css'
+import {Jumbotron} from "react-bootstrap";
 
 class ModuleContent extends React.Component {
     render() {
@@ -20,7 +21,13 @@ class ModuleContent extends React.Component {
                 borderRadius: '12px',
                 backgroundColor: 'white'
             }} className={'moduleContent'}>
+                {
+                    this.props.lessonData && <>
+                        <Jumbotron>
 
+                        </Jumbotron>
+                    </>
+                }
             </div>
         </div>
     }
