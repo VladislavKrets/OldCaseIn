@@ -15,21 +15,11 @@ class Registration extends React.Component {
             registration_code: props.registrationCode
             },
             password_has_error: false,
-            repeated_password: ''
+            repeated_password: '',
+            isRegError: false
         }
        }
 
-
-//    checkPassword() {
-//         if(this.state.regData.password !== this.state.regData.repeated_password) {
-//            this.setState({
-//            password_has_error:true
-//            });
-//        }
-//        else {
-//            this.setState({password_has_error:false});
-//        }
-//    }
 
     handleChange = (event) => {
         const {regData} = this.state
@@ -39,18 +29,23 @@ class Registration extends React.Component {
         });
         }
 
-//        this.setState({
-//        [event.target.name] : event.target.value
-//        }, () => {
-//        if (event.target.name == 'password' || event.target.value == 'password_re')
-//        this.checkPassword();
-//        }
-//        );
-
     handleRepeatedPassword = (event) => {
-    console.log(event.target.value)
+    if (event.target.value === this.state.regData.password)
+        this.setState({password_has_error: true})
+    else
+        this.setState({password_has_error: false})
     }
 
+    onSubmit = (event) => {
+        event.preventDefault()
+        this.props.register(this.state.regData).then(data => {
+            this.props.setToken(data.data.token)
+        }).catch(e => {
+            this.setState({
+                isRegError: true
+            })
+        })
+    }
 
 
     render() {
@@ -62,7 +57,8 @@ class Registration extends React.Component {
             boxSizing: 'border-box'
         }}>
 
-         <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
+            <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+               <div style={{width: '500px', padding: '22px', borderRadius: '10px', backgroundColor: 'white'}}>
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserName">
                         <Form.Label>Имя</Form.Label>
@@ -72,12 +68,10 @@ class Registration extends React.Component {
 
 
                     <Form.Group controlId="formBasicUserLastName">
-                        <Form.Label>ия</Form.Label>
+                        <Form.Label>Фамилия</Form.Label>
                         <Form.Control placeholder="Введите фамилию" name={'surname'}
                                       value={this.state.regData.surname} onChange={this.handleChange}/>
                     </Form.Group>
-
-
 
 
                     <Form.Group controlId="formBasicEmail">
@@ -93,23 +87,39 @@ class Registration extends React.Component {
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'password'}
                                       required="required"
-                                      onKeyPress={this.handleChange}/>
+                                      value={this.state.regData.password} onChange={this.handleChange}/>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicRepeatedPassword">
                         <Form.Label>Введите пароль еще раз</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'repeated_password'}
-                                      required="required"
-                                      onKeyPress={this.handleRepeatedPassword}/>
+                                      required="required" onChange={this.handleRepeatedPassword}/>
+                            {
+                             !this.state.regData.password_has_error && <div style={{width: "200px",backgroundColor: "white", padding: "5px", paddingRight: "20px",
+                             border: "solid 1px black", float: "left"}}>
+                             <Form.Text className="text-muted">
+                             <span>
+                             Пароли не совпадают
+                             </span>
+                             </Form.Text>
+                             </div>
+                            }
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
                         Зарегестрироваться
                     </Button>
-
-
-           </Form> </div>
+                    {
+                    !this.state.isRegError && <div style={{paddingTop: '12px'}}>
+                        <Alert variant={"danger"}>
+                            Ошибка при регистрации
+                        </Alert>
+                    </div>
+                    }
+                </Form>
+            </div>
         </div>
+    </div>
         }
         }
 
