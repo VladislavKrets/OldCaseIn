@@ -11,6 +11,7 @@ class RegistrationCode(models.Model):
 
 class Module(models.Model):
     name = models.CharField(max_length=255)
+    number = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name

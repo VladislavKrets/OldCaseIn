@@ -1,5 +1,6 @@
 import React from "react";
 import {Accordion, Card, Button} from "react-bootstrap";
+import './ModulesList.css'
 
 class ModulesList extends React.Component {
 
@@ -17,11 +18,15 @@ class ModulesList extends React.Component {
 
     chooseLesson = (moduleId, lessonId, lessonNumber) => {
         this.props.setCurrentLesson(moduleId, lessonId, lessonNumber)
+        this.props.getLesson(lessonId).then(data => {
+            this.props.setLessonData(data.data)
+        })
     }
 
     render() {
-        return <div style={{
-            height: '100vh'
+        return <div className={'modules-list'} style={{
+            height: '100vh',
+            overflowY: 'scroll'
         }}>
             <Accordion>
                 {
@@ -38,13 +43,13 @@ class ModulesList extends React.Component {
                                     {item.lessons.map((x, index) => {
                                         return index + 1 !== lessonsLen ? <>
                                             <div style={{padding: "10px 0", cursor: "pointer"}}
-                                                 onClick={() => this.chooseLesson(item.id, x.id, index)}>
+                                                 onClick={() => this.chooseLesson(item.id, x, index)}>
                                                 Урок {index + 1}
                                             </div>
                                             <hr/>
                                         </> : <>
                                             <div style={{paddingTop: "10px", cursor: "pointer"}}
-                                                 onClick={() => this.chooseLesson(item.id, x.id, index)}>
+                                                 onClick={() => this.chooseLesson(item.id, x, index)}>
                                                 Урок {index + 1}
                                             </div>
                                         </>

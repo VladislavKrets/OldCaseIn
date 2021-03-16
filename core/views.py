@@ -38,24 +38,20 @@ class ModuleMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ModuleSerializer
-    queryset = models.Module.objects.all()
+    queryset = models.Module.objects.all().order_by('number')
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
 
-class LessonMixin(ListModelMixin, GenericAPIView):
+class LessonMixin(RetrieveModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.LessonSerializer
     queryset = models.Lesson.objects.all()
 
-    def get_queryset(self):
-        module = self.kwargs['module']
-        return models.Lesson.objects.filter(module=module)
-
     def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
+        return self.retrieve(request, args, kwargs)
 
 
 class QuestionMixin(ListModelMixin, GenericAPIView):

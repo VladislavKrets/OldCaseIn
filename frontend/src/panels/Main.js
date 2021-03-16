@@ -47,6 +47,7 @@ class Main extends React.Component {
                              setLessonData={this.setLessonData}
                              setCurrentLesson={this.setCurrentLesson}
                              modules={this.state.modules}
+                             getLesson={this.props.getLesson}
                              setModulesData={this.setModulesData}
                              currentLessonId={this.state.currentLessonId}/>
             </div>
