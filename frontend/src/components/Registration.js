@@ -11,9 +11,9 @@ class Registration extends React.Component {
             name: '',
             surname:'',
             email: '',
-            password: ''
+            password: '',
             repeated_password: '',
-            registration_code: props.registrationCode
+            registration_code: props.registrationCode,
             password_has_error: false
         }
        }
@@ -47,15 +47,6 @@ class Registration extends React.Component {
             height: '100vh',
             boxSizing: 'border-box'
         }}>
-            <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
-                <Form onSubmit={this.onSubmit}>
-                    <Form.Group controlId="formBasicName">
-                        <Form.Label>Имя</Form.Label>
-                        <Form.Control placeholder="Введите имя" name={'name'}
-                                      value={this.state.regData.name} onChange={this.handleChange}/>
-                    </Form.Group>
-
-
             <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserLastName">
