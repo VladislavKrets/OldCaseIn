@@ -38,44 +38,46 @@ class CodeRegistration extends React.Component {
     render() {
         return <div style={{
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'row-reverse',
             alignItems: 'center',
             height: '100vh',
             boxSizing: 'border-box'
         }}>
-            <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
-                <Form onSubmit={this.onSubmit}>
-                    <Form.Row>
-                        <Col>
-                            <Form.Control placeholder="Код регистрации" name={'registrationCode'}
-                                          onChange={this.handleChange}
-                                          required="required"
-                                          value={this.state.registrationCode}/>
-                        </Col>
-                        <Col>
-                            <div style={{display: 'flex', flexDirection: 'row-reverse', width: '100%'}}>
-                                <Button variant="primary" type="submit">
-                                    Регистрация
-                                </Button>
-                            </div>
-                        </Col>
-                    </Form.Row>
-                    {
-                        !this.state.isRegistrationCodeRight && <Form.Row>
-
-                            <div style={{
-                                paddingTop: '20px',
-                                width: '100%',
-                                display: 'flex',
-                                justifyContent: "center"
-                            }}>
-                                <Alert variant={"danger"}>
-                                    Неверный код регистрации
-                                </Alert>
-                            </div>
+            <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
+                    <Form onSubmit={this.onSubmit}>
+                        <Form.Row>
+                            <Col>
+                                <Form.Control placeholder="Код регистрации" name={'registrationCode'}
+                                              onChange={this.handleChange}
+                                              required="required"
+                                              value={this.state.registrationCode}/>
+                            </Col>
+                            <Col>
+                                <div style={{display: 'flex', flexDirection: 'row-reverse', width: '100%'}}>
+                                    <Button variant="primary" type="submit">
+                                        Регистрация
+                                    </Button>
+                                </div>
+                            </Col>
                         </Form.Row>
-                    }
-                </Form>
+                        {
+                            !this.state.isRegistrationCodeRight && <Form.Row>
+
+                                <div style={{
+                                    paddingTop: '20px',
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: "center"
+                                }}>
+                                    <Alert variant={"danger"}>
+                                        Неверный код регистрации
+                                    </Alert>
+                                </div>
+                            </Form.Row>
+                        }
+                    </Form>
+                </div>
             </div>
         </div>
     }
