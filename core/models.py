@@ -73,7 +73,7 @@ class SavedQuestionAnswer(models.Model):
     answer = models.ForeignKey(to=QuestionAnswer, on_delete=models.deletion.CASCADE,
                                related_name='saved_answer')
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
-    user_text = models.TextField(default='')
+    user_text = models.TextField(default='', blank=True)
     drugNDropAnswer = models.OneToOneField(to=DrugNDropAnswer,
                                            on_delete=models.deletion.CASCADE,
                                            default=None, null=True)

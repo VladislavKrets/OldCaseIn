@@ -10,24 +10,32 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentModuleId: null,
+            currentModule: null,
             currentLessonId: null,
             lessonData: null,
+            questionsData: null,
             modules: []
         }
 
     }
 
-    setCurrentLesson = (currentModuleId, currentLessonId) => {
+    setCurrentLesson = (currentModule, currentLessonId) => {
         this.setState({
             currentLessonId: currentLessonId,
-            currentModuleId: currentModuleId
+            currentModule: currentModule
         })
     }
 
     setLessonData = (lessonData) => {
         this.setState({
-            lessonData: lessonData
+            lessonData: lessonData,
+            questionsData: null,
+        })
+    }
+
+    setQuestionsData = (questionsData) => {
+        this.setState({
+            questionsData: questionsData
         })
     }
 
@@ -47,13 +55,18 @@ class Main extends React.Component {
                              modules={this.state.modules}
                              getLesson={this.props.getLesson}
                              setModulesData={this.setModulesData}
+                             setQuestionsData={this.setQuestionsData}
+                             getQuestions={this.props.getQuestions}
                              currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '65%'}}>
                 <ModuleContent setCurrentLesson={this.setCurrentLesson}
                                lessonData={this.state.lessonData}
                                modules={this.state.modules}
-                               currentModuleId={this.state.currentModuleId}
+                               questionData={this.state.questionsData}
+                               currentModule={this.state.currentModule}
+                               saveAnswer={this.props.saveAnswer}
+                                removeAnswer={this.props.removeAnswer}
                                currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '25%'}}>

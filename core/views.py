@@ -1,7 +1,7 @@
 from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin,\
-    ListModelMixin, CreateModelMixin, UpdateModelMixin
+    ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import GenericAPIView
 from core import serializers
 from core import models
@@ -111,19 +111,37 @@ class BotAnswerMixin(ListModelMixin, GenericAPIView):
         return self.list(request, args, kwargs)
 
 
-class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIView):
+class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIView, DestroyModelMixin):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.SavedQuestionAnswerSerializer
 
     def get_queryset(self):
-        return models.SavedQuestionAnswer.objects.filter(user=self.request.user)
+        return models.SavedQuestionAnswer.objects.filter(user=self.request.user,
+                                                         answer=self.kwargs['answer'])
 
     def post(self, request, *args, **kwargs):
+        answer = self.kwargs['answer']
+        answer = models.QuestionAnswer.objects.get(pk=answer)
+        question = answer.question
+        if question.question_type == 'radio':
+            models.SavedQuestionAnswer.objects.filter(answer__question=question, user=self.request.user).delete()
+            return self.create(request, args, kwargs)
+        if self.get_queryset().exists():
+            elem = self.get_queryset().first()
+            kwargs['pk'] = elem.id
+            self.kwargs['pk'] = kwargs['pk']
+            return self.partial_update(request, args, kwargs)
         return self.create(request, args, kwargs)
 
     def patch(self, request, *args, **kwargs):
         return self.partial_update(request, args, kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        if self.get_queryset().exists():
+            kwargs['pk'] = self.get_queryset().first().id
+            self.kwargs['pk'] = kwargs['pk']
+        return self.destroy(request, args, kwargs)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

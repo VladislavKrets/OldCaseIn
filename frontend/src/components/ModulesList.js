@@ -16,10 +16,13 @@ class ModulesList extends React.Component {
         })
     }
 
-    chooseLesson = (moduleId, lessonId) => {
-        this.props.setCurrentLesson(moduleId, lessonId)
+    chooseLesson = (module, lessonId) => {
+        this.props.setCurrentLesson(module, lessonId)
         this.props.getLesson(lessonId).then(data => {
             this.props.setLessonData(data.data)
+        })
+        this.props.getQuestions(lessonId).then(data => {
+            this.props.setQuestionsData(data.data)
         })
     }
 
@@ -47,13 +50,13 @@ class ModulesList extends React.Component {
                                     {item.lessons.map((x, index) => {
                                         return index + 1 !== lessonsLen ? <>
                                             <div style={{padding: "10px 0", cursor: "pointer"}}
-                                                 onClick={() => this.chooseLesson(item.id, x.id)}>
+                                                 onClick={() => this.chooseLesson(item, x.id)}>
                                                 Урок {x.number}
                                             </div>
                                             <hr/>
                                         </> : <>
                                             <div style={{paddingTop: "10px", cursor: "pointer"}}
-                                                 onClick={() => this.chooseLesson(item.id, x.id)}>
+                                                 onClick={() => this.chooseLesson(item, x.id)}>
                                                 Урок {x.number}
                                             </div>
                                         </>

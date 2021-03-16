@@ -6,6 +6,7 @@ import axios from './api'
 import cookie from "react-cookies";
 import PrivateRoute from "./components/PrivateRoute";
 import Main from "./panels/Main";
+
 class App extends React.Component {
 
     constructor(props) {
@@ -87,6 +88,15 @@ class App extends React.Component {
         })
     }
 
+    removeAnswer = (answerId) => {
+        return axios.delete(`/answer/${answerId}/save/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     updateAnswer = (answerId, patchId, answerData) => {
         return axios.patch(`/answer/${answerId}/save/${patchId}/`, answerData, {
             headers: {
@@ -147,7 +157,13 @@ class App extends React.Component {
                     }
                 </Route>
                 <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/main/'}>
-                    <Main logOut={this.logOut} getModules={this.getModules} getLesson={this.getLesson}/>
+                    <Main logOut={this.logOut}
+                          getModules={this.getModules}
+                          getLesson={this.getLesson}
+                          getQuestions={this.getQuestions}
+                          saveAnswer={this.saveAnswer}
+                          removeAnswer={this.removeAnswer}
+                    />
                 </PrivateRoute>
             </Switch>
         );
