@@ -84,14 +84,12 @@ class QuestionAnswerSerializer(serializers.ModelSerializer):
         data = super(QuestionAnswerSerializer, self).to_representation(instance)
         data.pop('is_right')
         try:
-            saved_answer = instance.saved_answer.get()
-        except models.SavedQuestionAnswer.DoesNotExist:
-            saved_answer = None
-        if saved_answer:
-            serializer = SavedQuestionAnswerSerializer(instance=instance.saved_answer)
+            saved_question = models.SavedQuestionAnswer.objects.get(user=self.context['user'], answer=instance)
+            serializer = SavedQuestionAnswerSerializer(instance=saved_question)
             data['saved_answer'] = serializer.data
-        else:
+        except models.SavedQuestionAnswer.DoesNotExist:
             data['saved_answer'] = None
+
         return data
 
 
@@ -128,7 +126,9 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     def get_answers(self, instance):
         answers = models.QuestionAnswer.objects.filter(question=instance).order_by('number')
-        return QuestionAnswerSerializer(answers, many=True).data
+        serializer = QuestionAnswerSerializer(answers, many=True)
+        serializer.context['user'] = self.context['user']
+        return serializer.data
 
 
 class DrugNDropAnswerSerializer(serializers.ModelSerializer):

@@ -88,6 +88,7 @@ class ModuleContent extends React.Component {
                                                                     item.question_type === 'radio'
                                                                       ? <Form.Check
                                                                             type={'radio'}
+                                                                            checked={!!answer.saved_answer}
                                                                             label={answer.answer}
                                                                             value={`${answer.id}`}
                                                                             name={`${item.id}`}
@@ -95,6 +96,7 @@ class ModuleContent extends React.Component {
                                                                         />
                                                                       : item.question_type === 'checkbox'
                                                                         ? <Form.Check
+                                                                            checked={!!answer.saved_answer}
                                                                             label={answer.answer}
                                                                             type={'checkbox'}
                                                                             value={`${answer.id}`}
@@ -106,6 +108,7 @@ class ModuleContent extends React.Component {
                                                                                 onChange={(e) => this.handleChange(e, 'text')}
                                                                                 placeholder="Введите ответ"
                                                                                 name={`${item.id}`}
+                                                                                value={answer.saved_answer ? answer.saved_answer.user_text : null}
                                                                                 required="required"/>
                                                                           : null
                                                                 }
