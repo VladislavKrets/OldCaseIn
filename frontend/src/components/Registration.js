@@ -72,8 +72,8 @@ class Registration extends React.Component {
 
 
                     <Form.Group controlId="formBasicUserLastName">
-                        <Form.Label>Фамилия</Form.Label>
-                        <Form.Control placeholder="Введите хуй" name={'surname'}
+                        <Form.Label>Ф</Form.Label>
+                        <Form.Control placeholder="Введите фамилию" name={'surname'}
                                       value={this.state.regData.surname} onChange={this.handleChange}/>
                     </Form.Group>
 
