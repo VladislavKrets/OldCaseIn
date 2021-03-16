@@ -21,10 +21,13 @@ class Registration extends React.Component {
 
     checkPassword() {
          if(this.state.regData.password !== this.state.regData.repeated_password) {
-            this.setState({password_has_error:true});
+            this.setState({password_has_error:true}, () => {
+            console.log(this.state.regData.password_has_error)
+            });
         }
         else {
-            this.setState({password_has_error:false});
+            this.setState({password_has_error:false}() => {
+            console.log(this.state.regData.password_has_error)} );
         }
     }
 
@@ -62,8 +65,6 @@ class Registration extends React.Component {
                     </Form.Group>
 
 
-            <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
-                <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserLastName">
                         <Form.Label>Фамилия</Form.Label>
                         <Form.Control placeholder="Введите фамилию" name={'surname'}
@@ -105,10 +106,7 @@ class Registration extends React.Component {
                         </div>
                     }
 
-           </Form>
-            </div>
-       </Form>
-        </div>
+           </Form> </div>
         </div>
         }
         }
