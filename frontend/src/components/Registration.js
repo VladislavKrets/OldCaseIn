@@ -12,40 +12,46 @@ class Registration extends React.Component {
             surname:'',
             email: '',
             password: '',
-            repeated_password: '',
-            registration_code: props.registrationCode,
-            password_has_error: false
+            registration_code: props.registrationCode
+            },
+            password_has_error: false,
+            repeated_password: ''
         }
        }
-    }
 
-    checkPassword() {
-         if(this.state.regData.password !== this.state.regData.repeated_password) {
-            this.setState({password_has_error:true}, () => {
-            console.log(this.state.regData.password_has_error)
-            });
-        }
-        else {
-            this.setState({password_has_error:false}() => {
-            console.log(this.state.regData.password_has_error)} );
-        }
-    }
+
+//    checkPassword() {
+//         if(this.state.regData.password !== this.state.regData.repeated_password) {
+//            this.setState({
+//            password_has_error:true
+//            });
+//        }
+//        else {
+//            this.setState({password_has_error:false});
+//        }
+//    }
 
     handleChange = (event) => {
         const {regData} = this.state
         regData[event.target.name] = event.target.value
         this.setState({
             regData
-        })
-
-        this.setState({
-        [event.target.name] : event.target.value
-        }, () => {
-        if (event.target.name == 'password' || event.target.value == 'password_re')
-        this.checkPassword();
+        });
         }
-        );
+
+//        this.setState({
+//        [event.target.name] : event.target.value
+//        }, () => {
+//        if (event.target.name == 'password' || event.target.value == 'password_re')
+//        this.checkPassword();
+//        }
+//        );
+
+    handleRepeatedPassword = (event) => {
+    console.log(event.target.value)
     }
+
+
 
     render() {
         return <div style={{
@@ -67,9 +73,11 @@ class Registration extends React.Component {
 
                     <Form.Group controlId="formBasicUserLastName">
                         <Form.Label>Фамилия</Form.Label>
-                        <Form.Control placeholder="Введите фамилию" name={'surname'}
+                        <Form.Control placeholder="Введите хуй" name={'surname'}
                                       value={this.state.regData.surname} onChange={this.handleChange}/>
                     </Form.Group>
+
+
 
 
                     <Form.Group controlId="formBasicEmail">
@@ -85,31 +93,26 @@ class Registration extends React.Component {
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'password'}
                                       required="required"
-                                      value={this.state.regData.password} onChange={this.handleChange}/>
+                                      onKeyPress={this.handleChange}/>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicRepeatedPassword">
                         <Form.Label>Введите пароль еще раз</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'repeated_password'}
                                       required="required"
-                                      value={this.state.regData.repeated_password} onChange={this.handleChange}/>
+                                      onKeyPress={this.handleRepeatedPassword}/>
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
                         Зарегестрироваться
                     </Button>
-                    {
-                        this.state.regData.password_has_error && <div style={{paddingTop: '12px'}}>
-                            <Alert variant={"danger"}>
-                                Пароли не совпадают
-                            </Alert>
-                        </div>
-                    }
+
 
            </Form> </div>
         </div>
         }
         }
+
 
 
 export default Registration
