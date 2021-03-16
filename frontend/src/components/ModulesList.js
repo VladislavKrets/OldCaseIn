@@ -28,6 +28,10 @@ class ModulesList extends React.Component {
             height: '100vh',
             overflowY: 'scroll'
         }}>
+            <h3 style={{textAlign: "center", paddingTop: '12px'}}>
+                Модули
+            </h3>
+            <hr/>
             <Accordion>
                 {
                     this.props.modules.map((item, idx) => {
