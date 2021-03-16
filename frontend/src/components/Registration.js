@@ -20,7 +20,7 @@ class Registration extends React.Component {
     }
 
     checkPassword() {
-         if(!this.state.password || this.state.password != this.state.repeated_password) {
+         if(this.state.regData.password !== this.state.regData.repeated_password) {
             this.setState({password_has_error:true});
         }
         else {
@@ -35,8 +35,13 @@ class Registration extends React.Component {
             regData
         })
 
-        if (event.target.name == 'password' || event.target.name == 'repeated_password')
-            this.checkPassword();
+        this.setState({
+        [event.target.name] : event.target.value
+        }, () => {
+        if (event.target.name == 'password' || event.target.value == 'password_re')
+        this.checkPassword();
+        }
+        );
     }
 
     render() {
@@ -47,6 +52,16 @@ class Registration extends React.Component {
             height: '100vh',
             boxSizing: 'border-box'
         }}>
+
+         <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
+                <Form onSubmit={this.onSubmit}>
+                    <Form.Group controlId="formBasicUserName">
+                        <Form.Label>Имя</Form.Label>
+                        <Form.Control placeholder="Введите имя" name={'name'}
+                                      value={this.state.regData.name} onChange={this.handleChange}/>
+                    </Form.Group>
+
+
             <div style={{width: '500px', padding: '22px', border: '1px solid #0062cc', borderRadius: '10px'}}>
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserLastName">
@@ -90,9 +105,13 @@ class Registration extends React.Component {
                         </div>
                     }
 
-                </Form>
+           </Form>
             </div>
+       </Form>
         </div>
-    }
-}
+        </div>
+        }
+        }
+
+
 export default Registration
