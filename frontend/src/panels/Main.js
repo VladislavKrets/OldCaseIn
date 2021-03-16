@@ -52,6 +52,7 @@ class Main extends React.Component {
             <div style={{width: '65%'}}>
                 <ModuleContent setCurrentLesson={this.setCurrentLesson}
                                lessonData={this.state.lessonData}
+                               modules={this.state.modules}
                                currentModuleId={this.state.currentModuleId}
                                currentLessonId={this.state.currentLessonId}/>
             </div>
