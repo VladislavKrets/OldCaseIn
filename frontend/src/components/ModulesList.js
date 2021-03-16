@@ -6,16 +6,17 @@ class ModulesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modules: []
         }
     }
 
     componentDidMount() {
         this.props.getModules().then(data => {
-            this.setState({
-                modules: data.data
-            })
+            this.props.setModulesData(data.data)
         })
+    }
+
+    chooseLesson = (moduleId, lessonId, lessonNumber) => {
+        this.props.setCurrentLesson(moduleId, lessonId, lessonNumber)
     }
 
     render() {
@@ -24,7 +25,7 @@ class ModulesList extends React.Component {
         }}>
             <Accordion>
                 {
-                    this.state.modules.map((item, idx) => {
+                    this.props.modules.map((item, idx) => {
                         const lessonsLen = item.lessons.length;
                         return <Card>
                             <Card.Header>
@@ -37,13 +38,13 @@ class ModulesList extends React.Component {
                                     {item.lessons.map((x, index) => {
                                         return index + 1 !== lessonsLen ? <>
                                             <div style={{padding: "10px 0", cursor: "pointer"}}
-                                                 onClick={() => this.props.setCurrentLesson(x.id)}>
+                                                 onClick={() => this.chooseLesson(item.id, x.id, index)}>
                                                 Урок {index + 1}
                                             </div>
                                             <hr/>
                                         </> : <>
                                             <div style={{paddingTop: "10px", cursor: "pointer"}}
-                                                 onClick={() => this.props.setCurrentLesson(x.id)}>
+                                                 onClick={() => this.chooseLesson(item.id, x.id, index)}>
                                                 Урок {index + 1}
                                             </div>
                                         </>

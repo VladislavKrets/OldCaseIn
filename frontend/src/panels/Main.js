@@ -11,19 +11,31 @@ class Main extends React.Component {
         super(props);
         this.state = {
             currentModuleId: null,
-            currentLessonId: null
+            currentLessonId: null,
+            lessonIndex: null,
+            lessonData: null,
+            modules: []
         }
+
     }
 
-    setCurrentLesson = (currentLessonId) => {
+    setCurrentLesson = (currentModuleId, currentLessonId, lessonIndex) => {
         this.setState({
-            currentLessonId: currentLessonId
+            currentLessonId: currentLessonId,
+            currentModuleId: currentModuleId,
+            lessonIndex: lessonIndex
         })
     }
 
-    setCurrentModule = (currentModuleId) => {
+    setLessonData = (lessonData) => {
         this.setState({
-            currentModuleId: currentModuleId
+            lessonData: lessonData
+        })
+    }
+
+    setModulesData = (modulesData) => {
+        this.setState({
+            modules: modulesData
         })
     }
 
@@ -31,14 +43,16 @@ class Main extends React.Component {
         return <div style={{display: 'flex',}}>
             <div style={{width: '20%'}}>
                 <ModulesList getModules={this.props.getModules}
-                             setCurrentModule={this.setCurrentModule}
                              currentModuleId={this.state.currentModuleId}
+                             setLessonData={this.setLessonData}
                              setCurrentLesson={this.setCurrentLesson}
+                             modules={this.state.modules}
+                             setModulesData={this.setModulesData}
                              currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '65%'}}>
                 <ModuleContent setCurrentLesson={this.setCurrentLesson}
-                               setCurrentModule={this.setCurrentModule}
+                               lessonData={this.state.lessonData}
                                currentModuleId={this.state.currentModuleId}
                                currentLessonId={this.state.currentLessonId}/>
             </div>
