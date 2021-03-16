@@ -17,7 +17,8 @@ class Module(models.Model):
 
 
 class Lesson(models.Model):
-    module = models.ForeignKey(to=Module, on_delete=models.deletion.CASCADE)
+    module = models.ForeignKey(to=Module,
+                               on_delete=models.deletion.CASCADE, related_name='lessons')
     themes = models.TextField()
     video = models.FileField()
 

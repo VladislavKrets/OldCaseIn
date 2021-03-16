@@ -147,7 +147,7 @@ class App extends React.Component {
                     }
                 </Route>
                 <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/main/'}>
-                    <Main logOut={this.logOut}/>
+                    <Main logOut={this.logOut} getModules={this.getModules} getLessons={this.getLessons}/>
                 </PrivateRoute>
             </Switch>
         );

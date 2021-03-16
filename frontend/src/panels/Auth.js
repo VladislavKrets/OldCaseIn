@@ -1,6 +1,6 @@
 import React from 'react'
 import {Redirect, withRouter} from "react-router";
-import LoginButtons from "../components/LoginButtons/LoginButtons";
+import LoginButtons from "../components/LoginButtons";
 import CodeRegistration from "../components/CodeRegistration";
 import Login from "../components/Login";
 import Registration from "../components/Registration";

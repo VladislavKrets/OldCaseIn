@@ -57,6 +57,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ModuleSerializer(serializers.ModelSerializer):
+    lessons = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = models.Module
         fields = '__all__'
