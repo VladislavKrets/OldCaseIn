@@ -1,7 +1,18 @@
 import React from 'react'
 import {Button} from "react-bootstrap";
+import AuthLoginButton from "../elements/AuthLoginButton";
 
 class LoginButtons extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            right: 16,
+            top: 50,
+        }
+    }
 
     openRegistrationPanel = () => {
         this.props.changePanel("code_registration")
@@ -11,20 +22,39 @@ class LoginButtons extends React.Component {
         this.props.changePanel("login")
     }
 
+    updateSize = () => {
+        this.setState({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        })
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.updateSize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateSize);
+    }
+
     render() {
-        return <div
-            style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100%'}}>
-                <div style={{paddingRight: '12px'}}>
-                    <Button variant="primary" type="submit" onClick={this.openRegistrationPanel}>
+        const right = this.state.height >= 884 ? 16 : 16 - 884 / this.state.height * 1.9;
+        return <div style={{position: "fixed",
+            right: `${right}%`,
+            top: "50%",
+            transform: `translateY(-50%) translateX(-${right}%)`
+        }}>
+                <div style={{paddingBottom: '20px'}}>
+                    <AuthLoginButton onClick={this.openRegistrationPanel}>
                         Регистрация
-                    </Button>
+                    </AuthLoginButton>
                 </div>
                 <div>
-                    <Button variant="primary" type="submit" onClick={this.openLoginPanel}>
+                    <AuthLoginButton onClick={this.openLoginPanel}>
                         Вход
-                    </Button>
+                    </AuthLoginButton>
                 </div>
-        </div>
+            </div>
     }
 }
 

@@ -11,15 +11,18 @@ class RegistrationCode(models.Model):
 
 class Module(models.Model):
     name = models.CharField(max_length=255)
+    number = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
 
 
 class Lesson(models.Model):
-    module = models.ForeignKey(to=Module, on_delete=models.deletion.CASCADE)
+    module = models.ForeignKey(to=Module,
+                               on_delete=models.deletion.CASCADE, related_name='lessons')
     themes = models.TextField()
     video = models.FileField()
+    number = models.PositiveIntegerField()
 
     def __str__(self):
         return self.themes
