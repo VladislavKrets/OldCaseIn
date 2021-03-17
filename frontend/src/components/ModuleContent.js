@@ -1,13 +1,22 @@
 import React from 'react'
 import './ModuleContent.css'
 import {Button, Form, Jumbotron} from 'react-bootstrap'
+import ModalTestCompleted from "./ModalTestCompleted";
 
 class ModuleContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             isDataLoaded: false,
+            modalShow: false,
+            resultData: null
         }
+    }
+
+    setModalShow = (modalShow) => {
+        this.setState({
+            modalShow: modalShow
+        })
     }
 
     handleChange = (event, type) => {
@@ -39,11 +48,15 @@ class ModuleContent extends React.Component {
     saveResults = () => {
         this.props.saveTestResults(this.props.lessonData.id)
             .then(data => {
-                console.log(data)
+                this.setState({
+                    resultData: data.data
+                })
+                this.setModalShow(true)
             })
     }
 
     render() {
+        console.log(this.state)
         const data = {}
         if (this.props.questionData && !this.state.isDataLoaded) {
             for (let question of this.props.questionData) {
@@ -168,6 +181,13 @@ class ModuleContent extends React.Component {
                     }
                 </div>
             </div>
+            {this.props.lessonData && this.state.resultData &&
+            <ModalTestCompleted
+                lessonData={this.props.lessonData}
+                resultData={this.state.resultData}
+                show={this.state.modalShow}
+                onHide={() => this.setModalShow(false)}
+            />}
         </div>
     }
 }

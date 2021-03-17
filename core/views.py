@@ -1,6 +1,6 @@
 from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
-from rest_framework.mixins import RetrieveModelMixin,\
+from rest_framework.mixins import RetrieveModelMixin, \
     ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
@@ -15,7 +15,7 @@ from django.db.models import F
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request): #auth
+    def post(self, request):  # auth
         serializer = serializers.LoginSerializer(data=request.data)
         if not serializer.is_valid():
             return response.Response({'error': serializer.errors}, status=status.HTTP_401_UNAUTHORIZED)
@@ -23,7 +23,7 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
-    def put(self, request): #registration
+    def put(self, request):  # registration
         serializer = serializers.RegistrationSerializer(data=request.data)
         if not serializer.is_valid():
             return response.Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -31,7 +31,7 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
-    def patch(self, request): #check code
+    def patch(self, request):  # check code
         is_registration_code_exists = models.RegistrationCode \
             .objects.filter(code=request.data['registration_code']).exists()
         return response.Response({'exists': is_registration_code_exists})
@@ -169,14 +169,18 @@ class ResultTestApiView(APIView):
     def post(self, request, *args, **kwargs):
         lesson_pk = kwargs['lesson']
         lesson = models.Lesson.objects.get(pk=lesson_pk)
-        saved_answers = models.SavedQuestionAnswer\
+        saved_answers = models.SavedQuestionAnswer \
             .objects.filter(answer__question__lesson=lesson, user=request.user)
         types = ('radio', 'checkbox')
         right_check_answers = saved_answers.filter(answer__question__question_type__in=types,
                                                    answer__is_right=True).count()
         right_text_answers = saved_answers.filter(answer__question__question_type='text',
                                                   answer__answer=F('user_text')).count()
-        all_right_answers = models.QuestionAnswer.objects.filter(question__lesson=lesson, is_right=True).count()
+        all_right_non_text_answers = models.QuestionAnswer \
+            .objects.filter(question__question_type__in=types,
+                            question__lesson=lesson, is_right=True).count()
+        all_text_answers = models.Question.objects.filter(lesson=lesson, question_type='text').count()
+        all_right_answers = all_right_non_text_answers + all_text_answers
         test_results = models.LessonResult.objects.get_or_create(user=request.user, lesson=lesson)[0]
         test_results.result_score = right_check_answers + right_text_answers
         test_results.max_score = all_right_answers
@@ -188,5 +192,3 @@ class ResultTestApiView(APIView):
         test_results = models.LessonResult.objects.filter(user=request.user)
         serializer = serializers.LessonResultSerializer(instance=test_results, many=True)
         return response.Response(data=serializer.data)
-
-
