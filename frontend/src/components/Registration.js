@@ -14,9 +14,9 @@ class Registration extends React.Component {
             password: '',
             registration_code: props.registrationCode
             },
-            password_has_error: false,
+            password_has_error: true,
             repeated_password: '',
-            isRegError: false
+            isRegError: true
         }
        }
 
@@ -51,7 +51,7 @@ class Registration extends React.Component {
     render() {
         return <div style={{
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'row-reverse',
             alignItems: 'center',
             height: '100vh',
             boxSizing: 'border-box'
@@ -94,16 +94,17 @@ class Registration extends React.Component {
                         <Form.Label>Введите пароль еще раз</Form.Label>
                         <Form.Control type="password" placeholder="Пароль" name={'repeated_password'}
                                       required="required" onChange={this.handleRepeatedPassword}/>
-                            {
-                             !this.state.regData.password_has_error && <div style={{width: "200px",backgroundColor: "white", padding: "5px", paddingRight: "20px",
-                             border: "solid 1px black", float: "left"}}>
-                             <Form.Text className="text-muted">
-                             <span>
-                             Пароли не совпадают
-                             </span>
-                             </Form.Text>
+
+                             {
+                             !this.state.password_has_error && <div style={{width: "200px",backgroundColor: "white", padding: "5px", paddingRight: "20px",
+                              float: "center"}}>
+                                <Form.Text className="text-muted">
+                                    <span><font color="red">
+                                        Пароли не совпадают
+                                    </font></span>
+                                </Form.Text>
                              </div>
-                            }
+                             }
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
