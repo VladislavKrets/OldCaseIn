@@ -29,7 +29,6 @@ class Auth extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         return <div style={{
             height: '100vh',
             boxSizing: 'border-box',

@@ -32,8 +32,8 @@ class Question(models.Model):
     class QuestionTypes(models.TextChoices):
         RADIO = 'radio', 'radio'
         CHECKBOX = 'checkbox', 'checkbox'
-        DROPDOWN = 'dropdown', 'dropdown'
-        DRUG_N_DROP = 'drug&drop', 'drug&drop'
+        #DROPDOWN = 'dropdown', 'dropdown'
+        #DRUG_N_DROP = 'drug&drop', 'drug&drop'
         TEXT = 'text', 'text'
 
     lesson = models.ForeignKey(to=Lesson, on_delete=models.deletion.CASCADE)
@@ -85,7 +85,8 @@ class SavedQuestionAnswer(models.Model):
 class LessonResult(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.deletion.CASCADE)
     lesson = models.ForeignKey(to=Lesson, on_delete=models.deletion.CASCADE)
-    result_score = models.IntegerField()
+    result_score = models.PositiveIntegerField(default=0)
+    max_score = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.lesson.themes

@@ -3,10 +3,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin,\
     ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.views import APIView
+
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import F
 
 
 class LoginView(views.APIView):
@@ -153,5 +156,37 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
         context['user'] = self.request.user
         context['answer'] = models.QuestionAnswer.objects.get(pk=self.kwargs['answer'])
         return context
+
+
+class ResultTestApiView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        lesson_pk = kwargs['lesson']
+        test_results = models.LessonResult.objects.get(user=request.user, lesson_pk=lesson_pk)
+        serializer = serializers.LessonResultSerializer(instance=test_results)
+        return response.Response(data=serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        lesson_pk = kwargs['lesson']
+        lesson = models.Lesson.objects.get(pk=lesson_pk)
+        saved_answers = models.SavedQuestionAnswer\
+            .objects.filter(answer__question__lesson=lesson, user=request.user)
+        types = ('radio', 'checkbox')
+        right_check_answers = saved_answers.filter(answer__question__question_type__in=types,
+                                                   answer__is_right=True).count()
+        right_text_answers = saved_answers.filter(answer__question__question_type='text',
+                                                  answer__answer=F('user_text')).count()
+        all_right_answers = models.QuestionAnswer.objects.filter(question__lesson=lesson, is_right=True).count()
+        test_results = models.LessonResult.objects.get_or_create(user=request.user, lesson=lesson)[0]
+        test_results.result_score = right_check_answers + right_text_answers
+        test_results.max_score = all_right_answers
+        test_results.save()
+        serializer = serializers.LessonResultSerializer(instance=test_results)
+        return response.Response(data=serializer.data)
+
+    def put(self, request):
+        test_results = models.LessonResult.objects.filter(user=request.user)
+        serializer = serializers.LessonResultSerializer(instance=test_results, many=True)
+        return response.Response(data=serializer.data)
 
 

@@ -63,10 +63,13 @@ class Main extends React.Component {
                 <ModuleContent setCurrentLesson={this.setCurrentLesson}
                                lessonData={this.state.lessonData}
                                modules={this.state.modules}
+                               saveTestResults={this.props.saveTestResults}
+                               loadTestResults={this.props.loadTestResults}
+                               loadCurrentResult={this.props.loadCurrentResult}
                                questionData={this.state.questionsData}
                                currentModule={this.state.currentModule}
                                saveAnswer={this.props.saveAnswer}
-                                removeAnswer={this.props.removeAnswer}
+                               removeAnswer={this.props.removeAnswer}
                                currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '25%'}}>

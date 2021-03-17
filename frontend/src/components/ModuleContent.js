@@ -1,6 +1,6 @@
 import React from 'react'
 import './ModuleContent.css'
-import {Form, Jumbotron} from 'react-bootstrap'
+import {Button, Form, Jumbotron} from 'react-bootstrap'
 
 class ModuleContent extends React.Component {
     constructor(props) {
@@ -36,6 +36,13 @@ class ModuleContent extends React.Component {
         }
     }
 
+    saveResults = () => {
+        this.props.saveTestResults(this.props.lessonData.id)
+            .then(data => {
+                console.log(data)
+            })
+    }
+
     render() {
         const data = {}
         if (this.props.questionData && !this.state.isDataLoaded) {
@@ -43,7 +50,7 @@ class ModuleContent extends React.Component {
                 question.answers.forEach(answer => {
                     if (answer.saved_answer && question.question_type === "text") {
                         data[`${answer.id}`] = answer.saved_answer.user_text
-                    } else if(question.question_type !== "text") data[`${answer.id}`] = !!answer.saved_answer
+                    } else if (question.question_type !== "text") data[`${answer.id}`] = !!answer.saved_answer
                 })
             }
             this.setState({
@@ -152,6 +159,11 @@ class ModuleContent extends React.Component {
                                     </Jumbotron>
                                 })
                             }
+                            <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                                <Button variant="primary" type={'button'} onClick={this.saveResults}>
+                                    Завершить тест
+                                </Button>
+                            </div>
                         </div>
                     }
                 </div>

@@ -123,6 +123,33 @@ class App extends React.Component {
         })
     }
 
+    saveTestResults = (lessonId) => {
+        return axios.post(`test/${lessonId}/result/`, {}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    loadTestResults = () => {
+        return axios.put(`test/results/`, {}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    loadCurrentResult = () => {
+        return axios.get(`test/${lessonId}/result/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -162,7 +189,10 @@ class App extends React.Component {
                           getLesson={this.getLesson}
                           getQuestions={this.getQuestions}
                           saveAnswer={this.saveAnswer}
+                          saveTestResults={this.saveTestResults}
+                          loadTestResults={this.loadTestResults}
                           removeAnswer={this.removeAnswer}
+                          loadCurrentResult={this.loadCurrentResult}
                     />
                 </PrivateRoute>
             </Switch>

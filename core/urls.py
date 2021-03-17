@@ -12,6 +12,10 @@ urlpatterns = [
          views.SavedQuestionAnswerMixin.as_view()),
     path('answer/<int:answer>/save/<int:pk>/',
          views.SavedQuestionAnswerMixin.as_view()),
+    path('test/<int:lesson>/result/',
+         views.ResultTestApiView.as_view()),
+    path('test/results/',
+         views.ResultTestApiView.as_view()),
     path('bot_themes/', views.BotThemeMixin.as_view()),
     path('bot_themes/<int:parent_theme>/', views.BotThemeMixin.as_view()),
     path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view())
