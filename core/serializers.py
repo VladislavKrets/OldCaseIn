@@ -24,7 +24,6 @@ class RegistrationSerializer(serializers.Serializer):
     password = serializers.CharField()
     name = serializers.CharField()
     surname = serializers.CharField()
-    repeated_password = serializers.CharField()
     registration_code = serializers.CharField()
 
     @transaction.atomic
@@ -42,8 +41,6 @@ class RegistrationSerializer(serializers.Serializer):
             .objects.filter(code=attrs['registration_code']).exists()
         if not is_registration_code_exists:
             raise serializers.ValidationError('Registration code not exists.')
-        if attrs['password'] != attrs['repeated_password']:
-            raise serializers.ValidationError('Passwords are not equal.')
         is_user_exists = User.objects.filter(username=attrs["email"]).exists()
         if is_user_exists:
             raise serializers.ValidationError('User already exists.')

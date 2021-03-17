@@ -62,6 +62,7 @@ class Auth extends React.Component {
                         : this.state.panel === 'login' ?
                             <Login login={this.props.login} setToken={this.props.setToken}/>
                             : <Registration register={this.props.register}
+                                            setToken={this.props.setToken}
                                             registrationCode={this.state.registrationCode}
                             />
                 }
