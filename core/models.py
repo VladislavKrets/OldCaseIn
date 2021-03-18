@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from gdstorage.storage import GoogleDriveStorage
+
+gd_storage = GoogleDriveStorage()
 
 
 class RegistrationCode(models.Model):
@@ -21,7 +24,7 @@ class Lesson(models.Model):
     module = models.ForeignKey(to=Module,
                                on_delete=models.deletion.CASCADE, related_name='lessons')
     themes = models.TextField()
-    video = models.FileField()
+    video = models.FileField(upload_to='videos', storage=gd_storage)
     number = models.PositiveIntegerField()
 
     def __str__(self):

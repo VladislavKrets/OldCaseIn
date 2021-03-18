@@ -1,4 +1,6 @@
 ALLOWED_HOSTS = '*'
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = 'credentials.json'
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = 'case-in'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

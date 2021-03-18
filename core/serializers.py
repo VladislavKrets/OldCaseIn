@@ -32,6 +32,8 @@ class RegistrationSerializer(serializers.Serializer):
                                    password=validated_data['password'],
                                    first_name=validated_data['name'],
                                    last_name=validated_data['surname'])
+        user.set_password(validated_data['password'])
+        user.save()
         models.RegistrationCode.objects \
             .filter(code=validated_data['registration_code']).delete()
         return user
