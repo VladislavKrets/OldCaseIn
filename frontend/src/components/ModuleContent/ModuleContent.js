@@ -1,7 +1,7 @@
 import React from 'react'
 import './ModuleContent.css'
 import {Button, Form, Jumbotron} from 'react-bootstrap'
-import ModalTestCompleted from "./ModalTestCompleted";
+import ModalTestCompleted from "../ModalTestCompleted/ModalTestCompleted";
 
 class ModuleContent extends React.Component {
     constructor(props) {

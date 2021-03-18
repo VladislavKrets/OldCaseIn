@@ -1,9 +1,9 @@
 import React from "react";
 import {withRouter} from "react-router";
 import {Button} from "react-bootstrap";
-import ModuleContent from "../components/ModuleContent";
-import ModulesList from "../components/ModulesList";
-import UserProfile from "../components/UserProfile";
+import ModuleContent from "../../components/ModuleContent/ModuleContent";
+import ModulesList from "../../components/ModulesList/ModulesList";
+import UserProfile from "../../components/UserProfile/UserProfile";
 
 class Main extends React.Component {
 

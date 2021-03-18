@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react'
 import {Redirect, Route, Switch} from "react-router";
-import Auth from "./panels/Auth";
+import Auth from "./panels/Auth/Auth";
 import axios from './api'
 import cookie from "react-cookies";
-import PrivateRoute from "./components/PrivateRoute";
-import Main from "./panels/Main";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Main from "./panels/Main/Main";
 
 class App extends React.Component {
 

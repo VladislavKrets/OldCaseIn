@@ -1,11 +1,11 @@
 import React from 'react'
 import {Redirect, withRouter} from "react-router";
-import LoginButtons from "../components/LoginButtons";
-import CodeRegistration from "../components/CodeRegistration";
-import Login from "../components/Login";
-import Registration from "../components/Registration";
-import basicAuthImage from '../assets/Pervaya.png'
-import otherAuthImage from '../assets/Formy.png'
+import LoginButtons from "../../components/LoginButtons/LoginButtons";
+import CodeRegistration from "../../components/CodeRegistration/CodeRegistration";
+import Login from "../../components/Login/Login";
+import Registration from "../../components/Registration/Registration";
+import basicAuthImage from '../../assets/Pervaya.png'
+import otherAuthImage from '../../assets/Formy.png'
 
 class Auth extends React.Component {
     constructor(props) {

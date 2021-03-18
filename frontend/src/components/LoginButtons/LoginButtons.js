@@ -1,6 +1,6 @@
 import React from 'react'
 import {Button} from "react-bootstrap";
-import AuthLoginButton from "../elements/AuthLoginButton";
+import AuthLoginButton from "../../elements/AuthLoginButton/AuthLoginButton";
 
 class LoginButtons extends React.Component {
 
