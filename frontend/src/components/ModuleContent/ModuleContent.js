@@ -102,54 +102,22 @@ class ModuleContent extends React.Component {
                 isDataLoaded: true
             })
         }
-        return <div style={{
-            height: '100vh',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            boxSizing: 'border-box',
-            background: 'linear-gradient(to bottom, rgb(54, 69, 136) 0%, rgb(111, 118, 181) 40%, ' +
-                'rgb(160, 171, 210) 60%, rgb(218, 216, 234) 80%, rgb(254, 254, 255) 100%)'
-        }}>
-            <div style={{
-                width: '100%',
-                margin: '15px',
-                boxSizing: 'border-box',
-                height: '75%',
-                borderRadius: '12px',
-                backgroundColor: 'white'
-            }}>
-                <div style={{
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    height: '100%',
-                    overflowY: 'scroll',
-                    borderRadius: '12px',
-                    backgroundColor: 'white'
-                }} className={'moduleContent'}>
+        return <div className={'moduleContent-background'}>
+            <div className={'moduleContent-no-overflow-parent'}>
+                <div className={'moduleContent'}>
                     {
-                        !this.props.lessonData && <div style={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
+                        !this.props.lessonData && <div className={'no-lessons'}>
                             Ни одного урока не выбрано. Выберите урок из панели слева.
                         </div>
                     }
                     {
                         this.props.lessonData && <div style={{padding: '12px'}}>
                             <Jumbotron>
-                                <h2 style={{
-                                    textAlign: 'center',
-                                    paddingBottom: '10px'
-                                }}>Модуль {this.props.currentModule.name}
+                                <h2 className={'moduleContent-title'}>
+                                    Модуль {this.props.currentModule.name}
                                 </h2>
-                                <h2 style={{
-                                    textAlign: 'center',
-                                    paddingBottom: '10px'
-                                }}>Урок {this.props.lessonData.number}
+                                <h2 className={'moduleContent-title'}>
+                                    Урок {this.props.lessonData.number}
                                 </h2>
                                 <p>
                        <pre>
@@ -165,12 +133,7 @@ class ModuleContent extends React.Component {
                             </Jumbotron>
                             {
                                 this.props.lessonData.result && <Jumbotron>
-                                    <div style={{
-                                        textAlign: 'center',
-                                        fontWeight: 'bold',
-                                        fontSize: '1.2em',
-                                        color: 'green'
-                                    }}>
+                                    <div className={'moduleContent-test-completed'}>
                                         Тест сдан
                                     </div>
                                     <div style={{textAlign: 'center'}}>

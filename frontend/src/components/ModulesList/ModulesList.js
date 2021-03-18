@@ -27,11 +27,8 @@ class ModulesList extends React.Component {
     }
 
     render() {
-        return <div className={'modules-list'} style={{
-            height: '100vh',
-            overflowY: 'scroll'
-        }}>
-            <h3 style={{textAlign: "center", paddingTop: '12px'}}>
+        return <div className={'modules-list'}>
+            <h3 className={'list-modules-title'}>
                 Модули
             </h3>
             <hr/>
@@ -49,13 +46,13 @@ class ModulesList extends React.Component {
                                 <Card.Body>
                                     {item.lessons.map((x, index) => {
                                         return index + 1 !== lessonsLen ? <>
-                                            <div style={{padding: "10px 0", cursor: "pointer"}}
+                                            <div className={'list-modules-lesson-item '}
                                                  onClick={() => this.chooseLesson(item, x.id)}>
                                                 Урок {x.number}
                                             </div>
                                             <hr/>
                                         </> : <>
-                                            <div style={{paddingTop: "10px", cursor: "pointer"}}
+                                            <div className={'list-modules-lesson-item '}
                                                  onClick={() => this.chooseLesson(item, x.id)}>
                                                 Урок {x.number}
                                             </div>

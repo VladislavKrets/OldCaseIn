@@ -9,24 +9,12 @@ class UserProfile extends React.Component {
     }
 
     render() {
-        return <div className={'user-profile'} style={{
-            height: '100vh',
-            overflowY: 'scroll'
-        }}>
-            <div style={{
-                padding: '12px 10px', paddingBottom: 0,
-                display: "flex", flexDirection: "row-reverse"
-            }}>
+        return <div className={'user-profile'}>
+            <div className={'user-profile-exit-container'}>
                 <Button variant="link" onClick={this.props.logOut}>Выйти</Button>
             </div>
             {this.props.userData && <>
-                <div style={{
-                    padding: '0px 10px',
-                    fontWeight: 'bold',
-                    fontSize: '1.2em',
-                    textAlign: 'center',
-                    color: '#007bff'
-                }}>
+                <div className={'user-profile-name-container'}>
                     {this.capitalizeFirstLetter(
                         this.props.userData.first_name)} {this.capitalizeFirstLetter(this.props.userData.last_name)}
                 </div>
@@ -34,11 +22,7 @@ class UserProfile extends React.Component {
                 {
                     this.props.userData.modules.map(module => {
                         return <>
-                            <div style={{
-                                padding: '0px 10px',
-                                fontWeight: 'bold',
-                                textAlign: 'center'
-                            }}>
+                            <div className={'user-profile-module-title'}>
                                 {module.name}
                             </div>
                             <hr/>
