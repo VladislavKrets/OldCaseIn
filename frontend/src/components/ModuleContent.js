@@ -9,7 +9,9 @@ class ModuleContent extends React.Component {
         this.state = {
             isDataLoaded: false,
             modalShow: false,
-            resultData: null
+            resultData: null,
+            submitEnabled: true,
+            queryCount: 0
         }
     }
 
@@ -28,29 +30,55 @@ class ModuleContent extends React.Component {
             this.setState({
                 [event.target.value]: event.target.checked
             })
-            this.props.saveAnswer(event.target.value, {})
+            this.saveAnswer(event.target.value, {})
         } else if (type === 'checkbox') {
             this.setState({
                 [event.target.value]: event.target.checked
             })
             if (event.target.checked) {
-                this.props.saveAnswer(event.target.value, {})
+                this.saveAnswer(event.target.value, {})
             } else {
-                this.props.removeAnswer(event.target.value)
+                this.removeAnswer(event.target.value)
             }
         } else if (type === 'text') {
             this.setState({
                 [event.target.name]: event.target.value
             })
-            this.props.saveAnswer(event.target.name, {user_text: event.target.value})
+            this.saveAnswer(event.target.name, {user_text: event.target.value})
         }
     }
 
+    saveAnswer(value, data) {
+        this.setState({
+            queryCount: this.state.queryCount + 1
+        })
+        this.props.saveAnswer(value, data).then(data => {
+            this.setState({
+                queryCount: this.state.queryCount - 1
+            })
+        })
+    }
+
+    removeAnswer(value) {
+        this.setState({
+            queryCount: this.state.queryCount + 1
+        })
+        this.props.removeAnswer(value).then(data => {
+            this.setState({
+                queryCount: this.state.queryCount - 1
+            })
+        })
+    }
+
     saveResults = () => {
+        this.setState({
+            queryCount: this.state.queryCount + 1
+        })
         this.props.saveTestResults(this.props.lessonData.id)
             .then(data => {
                 this.setState({
-                    resultData: data.data
+                    resultData: data.data,
+                    queryCount: this.state.queryCount - 1
                 })
                 this.setModalShow(true)
                 const lessonData = this.props.lessonData;
@@ -206,7 +234,10 @@ class ModuleContent extends React.Component {
                                 })
                             }
                             <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-                                <Button variant="primary" type={'button'} disabled={!!this.props.lessonData.result}
+                                <Button variant="primary"
+                                        type={'button'}
+                                        disabled={!!this.props.lessonData.result
+                                || this.state.queryCount !== 0}
                                         onClick={this.saveResults}>
                                     Завершить тест
                                 </Button>

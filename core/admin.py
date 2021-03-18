@@ -5,13 +5,8 @@ from core.models import Module, Lesson,\
 import nested_admin
 
 
-class DrugNDropAnswerAdminInLine(nested_admin.NestedTabularInline):
-    model = DrugNDropAnswer
-
-
 class QuestionAnswerAdminInline(nested_admin.NestedTabularInline):
     model = QuestionAnswer
-    inlines = (DrugNDropAnswerAdminInLine, )
 
 
 class QuestionAdmin(nested_admin.NestedModelAdmin):

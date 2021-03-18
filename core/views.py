@@ -142,9 +142,14 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
     def post(self, request, *args, **kwargs):
         answer = self.kwargs['answer']
         answer = models.QuestionAnswer.objects.get(pk=answer)
+        if models.LessonResult.objects.filter(user=self.request.user,
+                                              lesson=answer.question.lesson).exists():
+            return response.Response(data={'error': 'Test already closed'},
+                                     status=status.HTTP_400_BAD_REQUEST)
         question = answer.question
         if question.question_type == 'radio':
-            models.SavedQuestionAnswer.objects.filter(answer__question=question, user=self.request.user).delete()
+            models.SavedQuestionAnswer.objects.filter(answer__question=question,
+                                                      user=self.request.user).delete()
             return self.create(request, args, kwargs)
         if self.get_queryset().exists():
             elem = self.get_queryset().first()
@@ -153,11 +158,13 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
             return self.partial_update(request, args, kwargs)
         return self.create(request, args, kwargs)
 
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, args, kwargs)
-
     def delete(self, request, *args, **kwargs):
         if self.get_queryset().exists():
+            lesson = self.get_queryset().first().answer.question.lesson
+            if models.LessonResult.objects.filter(user=self.request.user,
+                                                  lesson=lesson).exists():
+                return response.Response(data={'error': 'Test already closed'},
+                                         status=status.HTTP_400_BAD_REQUEST)
             kwargs['pk'] = self.get_queryset().first().id
             self.kwargs['pk'] = kwargs['pk']
         return self.destroy(request, args, kwargs)

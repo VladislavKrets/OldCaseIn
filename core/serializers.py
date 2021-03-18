@@ -117,6 +117,8 @@ class QuestionAnswerSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super(QuestionAnswerSerializer, self).to_representation(instance)
         data.pop('is_right')
+        if instance.question.question_type == "text":
+            data.pop('answer')
         try:
             saved_question = models.SavedQuestionAnswer.objects.get(user=self.context['user'], answer=instance)
             serializer = SavedQuestionAnswerSerializer(instance=saved_question)
