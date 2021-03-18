@@ -60,7 +60,6 @@ class ModuleContent extends React.Component {
     }
 
     render() {
-        console.log(this.state)
         const data = {}
         if (this.props.questionData && !this.state.isDataLoaded) {
             for (let question of this.props.questionData) {
@@ -101,6 +100,17 @@ class ModuleContent extends React.Component {
                     backgroundColor: 'white'
                 }} className={'moduleContent'}>
                     {
+                        !this.props.lessonData && <div style={{
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            Ни одного урока не выбрано. Выберите урок из панели слева.
+                        </div>
+                    }
+                    {
                         this.props.lessonData && <div style={{padding: '12px'}}>
                             <Jumbotron>
                                 <h2 style={{
@@ -127,14 +137,19 @@ class ModuleContent extends React.Component {
                             </Jumbotron>
                             {
                                 this.props.lessonData.result && <Jumbotron>
-                                <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em', color: 'green'}}>
-                                    Тест сдан
-                                </div>
-                                <div style={{textAlign: 'center'}}>
-                                    Ваш результат: {Math.round(this.props.lessonData.result.result_score
-                                    / this.props.lessonData.result.max_score * 100 * 100) / 100}%
-                                </div>
-                            </Jumbotron>
+                                    <div style={{
+                                        textAlign: 'center',
+                                        fontWeight: 'bold',
+                                        fontSize: '1.2em',
+                                        color: 'green'
+                                    }}>
+                                        Тест сдан
+                                    </div>
+                                    <div style={{textAlign: 'center'}}>
+                                        Ваш результат: {Math.round(this.props.lessonData.result.result_score
+                                        / this.props.lessonData.result.max_score * 100 * 100) / 100}%
+                                    </div>
+                                </Jumbotron>
                             }
                             {
                                 this.props.questionData && this.props.questionData.map(item => {

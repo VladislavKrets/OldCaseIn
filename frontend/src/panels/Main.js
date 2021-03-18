@@ -55,6 +55,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
+        document.title = "Уроки"
         this.getUserData()
     }
 

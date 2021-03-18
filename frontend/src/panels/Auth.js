@@ -28,6 +28,10 @@ class Auth extends React.Component {
         })
     }
 
+    componentDidMount() {
+        document.title = "Авторизация"
+    }
+
     render() {
         return <div style={{
             height: '100vh',

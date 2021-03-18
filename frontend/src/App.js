@@ -174,6 +174,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Case in'
         this.setState({
             loading: false
         })
