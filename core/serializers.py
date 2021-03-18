@@ -50,13 +50,50 @@ class RegistrationSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username',)
+        fields = ('id', 'username', 'first_name', 'last_name')
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        modules = models.Module.objects.all()
+        serializer = ModuleResultSerializer(instance=modules, many=True)
+        serializer.context['user'] = instance
+        data['modules'] = serializer.data
+        return data
 
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Lesson
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if 'user' in self.context:
+            try:
+                result = models.LessonResult.objects \
+                    .get(user=self.context['user'], lesson=instance)
+                serializer = LessonResultSerializer(instance=result)
+                result = serializer.data
+            except models.LessonResult.DoesNotExist:
+                result = None
+            data['result'] = result
+        return data
+
+
+class ModuleResultSerializer(serializers.ModelSerializer):
+    lessons = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Module
+        fields = '__all__'
+
+    def get_lessons(self, instance):
+        lessons = models.LessonResult.objects.filter(lesson__module=instance, user=self.context['user'])\
+            .values_list('lesson')
+        lessons = models.Lesson.objects.filter(pk__in=lessons).order_by('number')
+        serializer = LessonSerializer(instance=lessons, many=True)
+        serializer.context['user'] = self.context['user']
+        return serializer.data
 
 
 class ModuleSerializer(serializers.ModelSerializer):

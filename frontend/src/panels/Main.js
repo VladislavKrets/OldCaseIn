@@ -14,7 +14,8 @@ class Main extends React.Component {
             currentLessonId: null,
             lessonData: null,
             questionsData: null,
-            modules: []
+            modules: [],
+            userData: null
         }
 
     }
@@ -31,6 +32,14 @@ class Main extends React.Component {
             lessonData: lessonData,
             questionsData: null,
         })
+        this.getUserData()
+    }
+
+    setPlainLessonData = (lessonData) => {
+        this.setState({
+            lessonData: lessonData,
+        })
+        this.getUserData()
     }
 
     setQuestionsData = (questionsData) => {
@@ -42,6 +51,18 @@ class Main extends React.Component {
     setModulesData = (modulesData) => {
         this.setState({
             modules: modulesData
+        })
+    }
+
+    componentDidMount() {
+        this.getUserData()
+    }
+
+    getUserData = () => {
+        this.props.getUser().then(data => {
+            this.setState({
+                userData: data.data
+            })
         })
     }
 
@@ -63,6 +84,7 @@ class Main extends React.Component {
                 <ModuleContent setCurrentLesson={this.setCurrentLesson}
                                lessonData={this.state.lessonData}
                                modules={this.state.modules}
+                               setLessonData={this.setPlainLessonData}
                                saveTestResults={this.props.saveTestResults}
                                loadTestResults={this.props.loadTestResults}
                                loadCurrentResult={this.props.loadCurrentResult}
@@ -73,7 +95,7 @@ class Main extends React.Component {
                                currentLessonId={this.state.currentLessonId}/>
             </div>
             <div style={{width: '25%'}}>
-                <UserProfile logOut={this.props.logOut}/>
+                <UserProfile logOut={this.props.logOut} getUser={this.props.getUser} userData={this.state.userData}/>
             </div>
         </div>
     }

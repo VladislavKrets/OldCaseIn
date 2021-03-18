@@ -37,6 +37,12 @@ class LoginView(views.APIView):
         return response.Response({'exists': is_registration_code_exists})
 
 
+class UserDataApiView(APIView):
+    def get(self, request):
+        serializer = serializers.UserSerializer(instance=request.user)
+        return response.Response(serializer.data)
+
+
 class ModuleMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -55,6 +61,11 @@ class LessonMixin(RetrieveModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, args, kwargs)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
 
 
 class QuestionMixin(ListModelMixin, GenericAPIView):

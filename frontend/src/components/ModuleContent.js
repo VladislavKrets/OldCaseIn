@@ -19,6 +19,7 @@ class ModuleContent extends React.Component {
         })
     }
 
+
     handleChange = (event, type) => {
         if (type === 'radio') {
             for (let i = 0; i < event.target.form.length; i++) {
@@ -52,6 +53,9 @@ class ModuleContent extends React.Component {
                     resultData: data.data
                 })
                 this.setModalShow(true)
+                const lessonData = this.props.lessonData;
+                lessonData.result = data.data
+                this.props.setLessonData(lessonData)
             })
     }
 
@@ -122,6 +126,17 @@ class ModuleContent extends React.Component {
                                 </div>
                             </Jumbotron>
                             {
+                                this.props.lessonData.result && <Jumbotron>
+                                <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em', color: 'green'}}>
+                                    Тест сдан
+                                </div>
+                                <div style={{textAlign: 'center'}}>
+                                    Ваш результат: {Math.round(this.props.lessonData.result.result_score
+                                    / this.props.lessonData.result.max_score * 100 * 100) / 100}%
+                                </div>
+                            </Jumbotron>
+                            }
+                            {
                                 this.props.questionData && this.props.questionData.map(item => {
 
                                     return <Jumbotron>
@@ -139,6 +154,7 @@ class ModuleContent extends React.Component {
                                                                     item.question_type === 'radio'
                                                                         ? <Form.Check
                                                                             type={'radio'}
+                                                                            disabled={!!this.props.lessonData.result}
                                                                             checked={this.state[`${answer.id}`]}
                                                                             label={answer.answer}
                                                                             value={`${answer.id}`}
@@ -147,6 +163,7 @@ class ModuleContent extends React.Component {
                                                                         />
                                                                         : item.question_type === 'checkbox'
                                                                         ? <Form.Check
+                                                                            disabled={!!this.props.lessonData.result}
                                                                             checked={this.state[`${answer.id}`]}
                                                                             label={answer.answer}
                                                                             type={'checkbox'}
@@ -156,6 +173,7 @@ class ModuleContent extends React.Component {
                                                                         />
                                                                         : item.question_type === 'text'
                                                                             ? <Form.Control
+                                                                                disabled={!!this.props.lessonData.result}
                                                                                 onChange={(e) => this.handleChange(e, 'text')}
                                                                                 placeholder="Введите ответ"
                                                                                 name={`${answer.id}`}
@@ -173,7 +191,8 @@ class ModuleContent extends React.Component {
                                 })
                             }
                             <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
-                                <Button variant="primary" type={'button'} onClick={this.saveResults}>
+                                <Button variant="primary" type={'button'} disabled={!!this.props.lessonData.result}
+                                        onClick={this.saveResults}>
                                     Завершить тест
                                 </Button>
                             </div>
