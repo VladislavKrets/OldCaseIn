@@ -1,0 +1,21 @@
+.auth-login-registration-container {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.auth-login-registration-right-part {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.auth-login-registration-form {
+    width: 500px;
+    padding: 22px;
+    border-radius: 10px;
+    background-color: white;
+}

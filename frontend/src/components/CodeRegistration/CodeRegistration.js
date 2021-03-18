@@ -1,5 +1,6 @@
 import React from 'react'
 import {Form, Col, Button, Alert} from "react-bootstrap";
+import './CodeRegistration.css'
 
 class CodeRegistration extends React.Component {
 
@@ -36,15 +37,9 @@ class CodeRegistration extends React.Component {
     }
 
     render() {
-        return <div style={{
-            display: 'flex',
-            flexDirection: 'row-reverse',
-            alignItems: 'center',
-            height: '100vh',
-            boxSizing: 'border-box'
-        }}>
-            <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: '500px', padding: '22px', borderRadius: '10px', backgroundColor: 'white'}}>
+        return <div className={'auth-login-registration-container'}>
+            <div className={'auth-login-registration-right-part'}>
+                <div className={'auth-login-registration-form'}>
                     <Form onSubmit={this.onSubmit}>
                         <Form.Row>
                             <Col>
@@ -64,12 +59,7 @@ class CodeRegistration extends React.Component {
                         {
                             !this.state.isRegistrationCodeRight && <Form.Row>
 
-                                <div style={{
-                                    paddingTop: '20px',
-                                    width: '100%',
-                                    display: 'flex',
-                                    justifyContent: "center"
-                                }}>
+                                <div className={'code-registration-wrong-alert-container'}>
                                     <Alert variant={"danger"}>
                                         Неверный код регистрации
                                     </Alert>

@@ -49,16 +49,10 @@ class Registration extends React.Component {
 
 
     render() {
-        return <div style={{
-            display: 'flex',
-            flexDirection: 'row-reverse',
-            alignItems: 'center',
-            height: '100vh',
-            boxSizing: 'border-box'
-        }}>
+        return <div className={'auth-login-registration-container'}>
 
-            <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-               <div style={{width: '500px', padding: '22px', borderRadius: '10px', backgroundColor: 'white'}}>
+            <div className={'auth-login-registration-right-part'}>
+               <div className={'auth-login-registration-form'}>
                 <Form onSubmit={this.onSubmit}>
                     <Form.Group controlId="formBasicUserName">
                         <Form.Label>Имя</Form.Label>
@@ -99,9 +93,9 @@ class Registration extends React.Component {
                              !this.state.password_has_error && <div style={{width: "200px",backgroundColor: "white", padding: "5px", paddingRight: "20px",
                               float: "center"}}>
                                 <Form.Text className="text-muted">
-                                    <span><font color="red">
+                                    <span style={{color: 'red'}}>
                                         Пароли не совпадают
-                                    </font></span>
+                                    </span>
                                 </Form.Text>
                              </div>
                              }

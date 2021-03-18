@@ -6,6 +6,7 @@ import Login from "../../components/Login/Login";
 import Registration from "../../components/Registration/Registration";
 import basicAuthImage from '../../assets/Pervaya.png'
 import otherAuthImage from '../../assets/Formy.png'
+import './Auth.css'
 
 class Auth extends React.Component {
     constructor(props) {

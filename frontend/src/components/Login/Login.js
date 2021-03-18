@@ -1,5 +1,6 @@
 import React from 'react'
 import {Form, Button, Alert} from "react-bootstrap";
+import './Login.css'
 
 class Login extends React.Component {
 
@@ -34,15 +35,9 @@ class Login extends React.Component {
     }
 
     render() {
-        return <div style={{
-            display: 'flex',
-            flexDirection: 'row-reverse',
-            alignItems: 'center',
-            height: '100vh',
-            boxSizing: 'border-box'
-        }}>
-            <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <div style={{width: '500px', padding: '22px', borderRadius: '10px', backgroundColor: 'white'}}>
+        return <div className={'auth-login-registration-container'}>
+            <div className={'auth-login-registration-right-part'}>
+                <div className={'auth-login-registration-form'}>
                     <Form onSubmit={this.onSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email адрес</Form.Label>
@@ -63,7 +58,7 @@ class Login extends React.Component {
                             Войти
                         </Button>
                         {
-                            this.state.isAuthError && <div style={{paddingTop: '12px'}}>
+                            this.state.isAuthError && <div className={'login-wrong-alert-container'}>
                                 <Alert variant={"danger"}>
                                     Неверный email или пароль
                                 </Alert>
