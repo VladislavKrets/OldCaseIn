@@ -127,7 +127,7 @@ class ModuleContent extends React.Component {
                             </Jumbotron>
                             <Jumbotron>
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <video width={'400px'} controls="controls" src={this.props.lessonData.video}>
+                                    <video className={'lesson-video'} controls="controls" src={this.props.lessonData.video}>
                                     </video>
                                 </div>
                             </Jumbotron>

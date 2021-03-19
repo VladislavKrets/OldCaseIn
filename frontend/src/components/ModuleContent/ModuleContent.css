@@ -51,6 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .moduleContent-title {
@@ -63,4 +64,24 @@
     font-weight: bold;
     font-size: 1.2em;
     color: green
+}
+
+.lesson-video {
+    width: 400px;
+}
+
+@media (max-width: 770px) {
+    .moduleContent-background {
+        padding-top: 20px;
+    }
+
+    .moduleContent-no-overflow-parent {
+        height: 85%;
+    }
+}
+
+@media (max-width: 460px) {
+    .lesson-video {
+        width: 320px;
+    }
 }

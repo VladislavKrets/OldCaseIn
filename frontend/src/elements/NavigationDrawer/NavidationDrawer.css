@@ -1,0 +1,28 @@
+.drawer {
+    height: 100%;
+    top: 0;
+    width: 75%;
+    background-color: white;
+    -webkit-box-shadow: 4px 4px 34px 7px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 34px 7px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 34px 7px rgba(34, 60, 80, 0.2);
+    z-index: 11;
+}
+
+@media (max-width: 770px) {
+    .drawer {
+        width: 40%;
+    }
+}
+
+@media (max-width: 500px) {
+    .drawer {
+        width: 60%;
+    }
+}
+
+@media (max-width: 450px) {
+    .drawer {
+        width: 80%;
+    }
+}
