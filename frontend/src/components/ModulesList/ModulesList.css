@@ -32,3 +32,10 @@
     padding-top: 10px;
     cursor: pointer;
 }
+
+@media (max-width: 770px) {
+    .modules-list::-webkit-scrollbar {
+        width: 2px;
+        height: 10px;
+    }
+}

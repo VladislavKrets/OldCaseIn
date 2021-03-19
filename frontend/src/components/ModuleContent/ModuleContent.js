@@ -111,7 +111,8 @@ class ModuleContent extends React.Component {
                         </div>
                     }
                     {
-                        this.props.lessonData && <div style={{padding: '12px'}}>
+                        this.props.lessonData &&
+                        <div className={'moduleContent-content'}>
                             <Jumbotron>
                                 <h2 className={'moduleContent-title'}>
                                     Модуль {this.props.currentModule.name}
@@ -127,7 +128,8 @@ class ModuleContent extends React.Component {
                             </Jumbotron>
                             <Jumbotron>
                                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <video className={'lesson-video'} controls="controls" src={this.props.lessonData.video}>
+                                    <video className={'lesson-video'} controls="controls"
+                                           src={this.props.lessonData.video}>
                                     </video>
                                 </div>
                             </Jumbotron>
@@ -200,7 +202,7 @@ class ModuleContent extends React.Component {
                                 <Button variant="primary"
                                         type={'button'}
                                         disabled={!!this.props.lessonData.result
-                                || this.state.queryCount !== 0}
+                                        || this.state.queryCount !== 0}
                                         onClick={this.saveResults}>
                                     Завершить тест
                                 </Button>

@@ -132,6 +132,7 @@ class Main extends React.Component {
                             width: '100%',
                             fontWeight: 'bold',
                             display: 'flex',
+                            boxSizing: 'border-box',
                             justifyContent: 'space-between',
                             padding: '5px 10px'
                         }}>

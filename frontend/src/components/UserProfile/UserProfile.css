@@ -42,3 +42,10 @@
     font-weight: bold;
     text-align: center;
 }
+
+@media (max-width: 770px) {
+    .user-profile::-webkit-scrollbar {
+        width: 2px;
+        height: 10px;
+    }
+}
