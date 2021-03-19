@@ -222,3 +222,13 @@ class EventsModelMixin(ListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
+
+
+class DocumentsModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.DocumentationSerializer
+    queryset = models.Documentation.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)

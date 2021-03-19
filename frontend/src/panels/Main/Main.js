@@ -190,7 +190,8 @@ class Main extends React.Component {
                                        saveAnswer={this.props.saveAnswer}
                                        removeAnswer={this.props.removeAnswer}
                                        currentLessonId={this.state.currentLessonId}/>
-                        : this.state.contentPanel === 'documentation' ? <DocumentationContent/>
+                        : this.state.contentPanel === 'documentation' ?
+                            <DocumentationContent getDocuments={this.props.getDocuments}/>
                             : this.state.contentPanel === 'bot' ? <BotContent/>
                                 : <CalendarContent
                                     getEvents={this.props.getEvents}

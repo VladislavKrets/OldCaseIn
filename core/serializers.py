@@ -198,3 +198,10 @@ class EventCalendarSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EventCalendar
         fields = '__all__'
+
+
+class DocumentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Documentation
+        fields = '__all__'
+
