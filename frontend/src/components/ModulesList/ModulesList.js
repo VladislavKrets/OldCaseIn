@@ -24,6 +24,7 @@ class ModulesList extends React.Component {
         this.props.getQuestions(lessonId).then(data => {
             this.props.setQuestionsData(data.data)
         })
+        this.props.closeDrawer(false)
     }
 
     render() {

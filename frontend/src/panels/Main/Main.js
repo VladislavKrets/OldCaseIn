@@ -37,7 +37,6 @@ class Main extends React.Component {
     setLessonData = (lessonData) => {
         this.setState({
             lessonData: lessonData,
-            questionsData: null,
         })
         this.getUserData()
     }
@@ -109,6 +108,7 @@ class Main extends React.Component {
                                  modules={this.state.modules}
                                  getLesson={this.props.getLesson}
                                  setModulesData={this.setModulesData}
+                                 closeDrawer={this.setModulesDrawerShow}
                                  setQuestionsData={this.setQuestionsData}
                                  getQuestions={this.props.getQuestions}
                                  currentLessonId={this.state.currentLessonId}/>
@@ -156,6 +156,7 @@ class Main extends React.Component {
                                      setModulesData={this.setModulesData}
                                      setQuestionsData={this.setQuestionsData}
                                      getQuestions={this.props.getQuestions}
+                                     closeDrawer={this.setModulesDrawerShow}
                                      currentLessonId={this.state.currentLessonId}/>
                     </div>
                 }

@@ -198,7 +198,7 @@ class ModuleContent extends React.Component {
                                     </Jumbotron>
                                 })
                             }
-                            <div style={{display: 'flex', flexDirection: 'row-reverse'}}>
+                            <div style={{display: 'flex', flexDirection: 'row-reverse', padding: '5px 0'}}>
                                 <Button variant="primary"
                                         type={'button'}
                                         disabled={!!this.props.lessonData.result

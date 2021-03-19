@@ -86,6 +86,7 @@
 
     .moduleContent-no-overflow-parent {
         height: 85%;
+        margin: 5px;
     }
 
     .moduleContent::-webkit-scrollbar {
