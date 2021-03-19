@@ -39,11 +39,20 @@ class LoginButtons extends React.Component {
 
     render() {
         const right = this.state.height >= 884 ? 16 : 16 - 884 / this.state.height * 1.9;
-        return <div style={{position: "fixed",
+        const backStyle = this.state.width > 770 ? {
+            position: "fixed",
             right: `${right}%`,
             top: "50%",
             transform: `translateY(-50%) translateX(-${right}%)`
-        }}>
+        } : {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            width: '100%'
+        }
+        return <div style={backStyle}>
+            <div>
                 <div style={{paddingBottom: '20px'}}>
                     <AuthLoginButton onClick={this.openRegistrationPanel}>
                         Регистрация
@@ -55,6 +64,7 @@ class LoginButtons extends React.Component {
                     </AuthLoginButton>
                 </div>
             </div>
+        </div>
     }
 }
 

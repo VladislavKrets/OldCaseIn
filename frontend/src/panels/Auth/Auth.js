@@ -13,7 +13,9 @@ class Auth extends React.Component {
         super(props);
         this.state = {
             panel: 'login_buttons',
-            registrationCode: ''
+            registrationCode: '',
+            width: window.innerWidth,
+            height: window.innerHeight,
         }
     }
 
@@ -28,9 +30,18 @@ class Auth extends React.Component {
             registrationCode: registrationCode
         })
     }
-
+    updateSize = () => {
+        this.setState({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        })
+    }
     componentDidMount() {
         document.title = "Авторизация"
+        window.addEventListener('resize', this.updateSize);
+    }
+     componentWillUnmount() {
+        window.removeEventListener('resize', this.updateSize);
     }
 
     render() {
@@ -45,8 +56,8 @@ class Auth extends React.Component {
             <div style={{
                 height: '100%',
                 boxSizing: 'border-box',
-                backgroundImage: this.state.panel === 'login_buttons'
-                    ? `url(${basicAuthImage})` : `url(${otherAuthImage})`,
+                backgroundImage: this.state.width > 770 ? (this.state.panel === 'login_buttons'
+                    ? `url(${basicAuthImage})` : `url(${otherAuthImage})`) : null,
                 backgroundSize: 'contain',
                 objectFit: "fill",
                 backgroundRepeat: 'no-repeat',
