@@ -159,6 +159,15 @@ class App extends React.Component {
         })
     }
 
+    getEvents = () => {
+        return axios.get(`events/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -203,6 +212,7 @@ class App extends React.Component {
                           loadTestResults={this.loadTestResults}
                           removeAnswer={this.removeAnswer}
                           getUser={this.getUser}
+                          getEvents={this.getEvents}
                           loadCurrentResult={this.loadCurrentResult}
                     />
                 </PrivateRoute>

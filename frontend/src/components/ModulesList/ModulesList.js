@@ -6,8 +6,7 @@ class ModulesList extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {}
     }
 
     componentDidMount() {
@@ -29,42 +28,71 @@ class ModulesList extends React.Component {
 
     render() {
         return <div className={'modules-list'}>
-            <h3 className={'list-modules-title'}>
-                Модули
-            </h3>
-            <hr/>
-            <Accordion>
-                {
-                    this.props.modules.map((item, idx) => {
-                        const lessonsLen = item.lessons.length;
-                        return <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey={`${idx}`}>
-                                    <span>{item.name}</span>
-                                </Accordion.Toggle>
-                            </Card.Header>
-                            <Accordion.Collapse eventKey={`${idx}`}>
-                                <Card.Body>
-                                    {item.lessons.map((x, index) => {
-                                        return index + 1 !== lessonsLen ? <>
-                                            <div className={'list-modules-lesson-item '}
-                                                 onClick={() => this.chooseLesson(item, x.id)}>
-                                                Урок {x.number}
-                                            </div>
-                                            <hr/>
-                                        </> : <>
-                                            <div className={'list-modules-lesson-item '}
-                                                 onClick={() => this.chooseLesson(item, x.id)}>
-                                                Урок {x.number}
-                                            </div>
-                                        </>
-                                    })}
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
-                    })
-                }
+            <Accordion onClick={() => this.props.setContentPanel('lessons')}>
+                <Card>
+                    <Accordion.Toggle as={Card.Header} variant="link" eventKey={`1`}>
+                        <div style={{textAlign: 'center', fontWeight: 'bold'}}>Модули</div>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={`1`}>
+                        <Card.Body>
+                            <Accordion>
+                                {
+                                    this.props.modules.map((item, idx) => {
+                                        const lessonsLen = item.lessons.length;
+                                        return <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey={`${idx}`}>
+                                                    <span>{item.name}</span>
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey={`${idx}`}>
+                                                <Card.Body>
+                                                    {item.lessons.map((x, index) => {
+                                                        return index + 1 !== lessonsLen ? <>
+                                                            <div className={'list-modules-lesson-item '}
+                                                                 onClick={() => this.chooseLesson(item, x.id)}>
+                                                                Урок {x.number}
+                                                            </div>
+                                                            <hr/>
+                                                        </> : <>
+                                                            <div className={'list-modules-lesson-item '}
+                                                                 onClick={() => this.chooseLesson(item, x.id)}>
+                                                                Урок {x.number}
+                                                            </div>
+                                                        </>
+                                                    })}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    })
+                                }
+                            </Accordion>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
             </Accordion>
+            <div className={'card-header'} onClick={() => {
+                this.props.setContentPanel('documentation')
+                this.props.closeDrawer(false)
+            }}>
+                <div style={{textAlign: 'center', fontWeight: 'bold'}}>Документация</div>
+            </div>
+            <div className={'card-header'}>
+                <div style={{textAlign: 'center', fontWeight: 'bold'}}
+                     onClick={() => {
+                         this.props.setContentPanel('calendar')
+                         this.props.closeDrawer(false)
+                     }}>Календарь событий
+                </div>
+            </div>
+            <div className={'card-header'}>
+                <div style={{textAlign: 'center', fontWeight: 'bold'}}
+                     onClick={() => {
+                         this.props.setContentPanel('bot')
+                         this.props.closeDrawer(false)
+                     }}>Бот
+                </div>
+            </div>
         </div>
     }
 }

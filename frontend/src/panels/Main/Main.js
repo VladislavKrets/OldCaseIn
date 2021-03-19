@@ -7,6 +7,9 @@ import UserProfile from "../../components/UserProfile/UserProfile";
 import {List, PersonLinesFill} from 'react-bootstrap-icons';
 import './Main.css'
 import NavigationDrawer from "../../elements/NavigationDrawer/NavigationDrawer";
+import DocumentationContent from "../../components/DocumentationContent/DocumentationContent";
+import BotContent from "../../components/BotContent/BotContent";
+import CalendarContent from "../../components/CalendarContent/CalendarContent";
 
 class Main extends React.Component {
 
@@ -22,7 +25,8 @@ class Main extends React.Component {
             width: window.innerWidth,
             height: window.innerHeight,
             isModulesDrawerShowed: false,
-            isUserDrawerShowed: false
+            isUserDrawerShowed: false,
+            contentPanel: 'lessons'
         }
 
     }
@@ -92,6 +96,12 @@ class Main extends React.Component {
         })
     }
 
+    setContentPanel = (panel) => {
+        this.setState({
+            contentPanel: panel
+        })
+    }
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateSize);
     }
@@ -107,6 +117,8 @@ class Main extends React.Component {
                                  setCurrentLesson={this.setCurrentLesson}
                                  modules={this.state.modules}
                                  getLesson={this.props.getLesson}
+                                 contentPanel={this.state.contentPanel}
+                                 setContentPanel={this.setContentPanel}
                                  setModulesData={this.setModulesData}
                                  closeDrawer={this.setModulesDrawerShow}
                                  setQuestionsData={this.setQuestionsData}
@@ -153,6 +165,8 @@ class Main extends React.Component {
                                      setCurrentLesson={this.setCurrentLesson}
                                      modules={this.state.modules}
                                      getLesson={this.props.getLesson}
+                                     contentPanel={this.state.contentPanel}
+                                     setContentPanel={this.setContentPanel}
                                      setModulesData={this.setModulesData}
                                      setQuestionsData={this.setQuestionsData}
                                      getQuestions={this.props.getQuestions}
@@ -161,18 +175,27 @@ class Main extends React.Component {
                     </div>
                 }
                 <div style={{width: this.state.width > 770 ? '65%' : '100%'}}>
-                    <ModuleContent setCurrentLesson={this.setCurrentLesson}
-                                   lessonData={this.state.lessonData}
-                                   modules={this.state.modules}
-                                   setLessonData={this.setPlainLessonData}
-                                   saveTestResults={this.props.saveTestResults}
-                                   loadTestResults={this.props.loadTestResults}
-                                   loadCurrentResult={this.props.loadCurrentResult}
-                                   questionData={this.state.questionsData}
-                                   currentModule={this.state.currentModule}
-                                   saveAnswer={this.props.saveAnswer}
-                                   removeAnswer={this.props.removeAnswer}
-                                   currentLessonId={this.state.currentLessonId}/>
+                    {this.state.contentPanel === 'lessons' ?
+                        <ModuleContent setCurrentLesson={this.setCurrentLesson}
+                                       lessonData={this.state.lessonData}
+                                       modules={this.state.modules}
+                                       setLessonData={this.setPlainLessonData}
+                                       saveTestResults={this.props.saveTestResults}
+                                       loadTestResults={this.props.loadTestResults}
+                                       loadCurrentResult={this.props.loadCurrentResult}
+                                       questionData={this.state.questionsData}
+                                       currentModule={this.state.currentModule}
+                                       contentPanel={this.state.contentPanel}
+                                       setContentPanel={this.setContentPanel}
+                                       saveAnswer={this.props.saveAnswer}
+                                       removeAnswer={this.props.removeAnswer}
+                                       currentLessonId={this.state.currentLessonId}/>
+                        : this.state.contentPanel === 'documentation' ? <DocumentationContent/>
+                            : this.state.contentPanel === 'bot' ? <BotContent/>
+                                : <CalendarContent
+                                    getEvents={this.props.getEvents}
+                                />
+                    }
 
                 </div>
                 {

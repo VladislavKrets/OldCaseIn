@@ -192,3 +192,9 @@ class BotAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BotAnswer
         fields = '__all__'
+
+
+class EventCalendarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.EventCalendar
+        fields = '__all__'

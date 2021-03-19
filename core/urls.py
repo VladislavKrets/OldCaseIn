@@ -19,5 +19,6 @@ urlpatterns = [
          views.ResultTestApiView.as_view()),
     path('bot_themes/', views.BotThemeMixin.as_view()),
     path('bot_themes/<int:parent_theme>/', views.BotThemeMixin.as_view()),
-    path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view())
+    path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view()),
+    path('events/', views.EventsModelMixin.as_view())
 ]

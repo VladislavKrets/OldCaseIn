@@ -210,3 +210,15 @@ class ResultTestApiView(APIView):
         test_results = models.LessonResult.objects.filter(user=request.user)
         serializer = serializers.LessonResultSerializer(instance=test_results, many=True)
         return response.Response(data=serializer.data)
+
+
+class EventsModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.EventCalendarSerializer
+
+    def get_queryset(self):
+        return models.EventCalendar.objects.filter(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)

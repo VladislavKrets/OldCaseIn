@@ -1,7 +1,9 @@
 from django.contrib import admin
 from core.models import Module, Lesson,\
     Question, QuestionAnswer, SavedQuestionAnswer,\
-    LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode
+    LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
+    EventCalendar
+
 import nested_admin
 
 
@@ -32,3 +34,4 @@ admin.site.register(Question, QuestionAdmin)
 admin.site.register(BotTheme, BotThemeAdmin)
 admin.site.register(DrugNDropAnswer)
 admin.site.register(SavedQuestionAnswer)
+admin.site.register(EventCalendar)
