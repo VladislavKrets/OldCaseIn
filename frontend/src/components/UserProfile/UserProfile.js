@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
                     this.props.userData.modules.map(module => {
                         return <>
                             <div className={'user-profile-module-title'}>
-                                {module.name}
+                                Модуль {module.number}
                             </div>
                             <hr/>
                             {
