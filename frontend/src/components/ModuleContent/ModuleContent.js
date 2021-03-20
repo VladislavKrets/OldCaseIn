@@ -107,7 +107,7 @@ class ModuleContent extends React.Component {
                 <div className={'moduleContent'}>
                     {
                         !this.props.lessonData && <div className={'no-lessons'}>
-                            Ни одного урока не выбрано. Выберите урок из панели слева.
+                            Здесь будет отображаться статистика прохождения курса
                         </div>
                     }
                     {
@@ -199,13 +199,14 @@ class ModuleContent extends React.Component {
                                 })
                             }
                             <div style={{display: 'flex', flexDirection: 'row-reverse', padding: '5px 0'}}>
+                                {this.props.questionData && this.props.questionData.length !== 0 &&
                                 <Button variant="primary"
                                         type={'button'}
                                         disabled={!!this.props.lessonData.result
                                         || this.state.queryCount !== 0}
                                         onClick={this.saveResults}>
                                     Завершить тест
-                                </Button>
+                                </Button>}
                             </div>
                         </div>
                     }

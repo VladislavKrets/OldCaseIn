@@ -42,7 +42,7 @@ class ModulesList extends React.Component {
                                         return <Card>
                                             <Card.Header>
                                                 <Accordion.Toggle as={Button} variant="link" eventKey={`${idx}`}>
-                                                    <span>{item.name}</span>
+                                                    <span>Модуль {item.number}</span>
                                                 </Accordion.Toggle>
                                             </Card.Header>
                                             <Accordion.Collapse eventKey={`${idx}`}>
