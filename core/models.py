@@ -130,3 +130,6 @@ class EventCalendar(models.Model):
 class Documentation(models.Model):
     title = models.CharField(max_length=255)
     document = models.FileField(upload_to='documents', storage=gd_storage)
+
+    def __str__(self):
+        return self.title

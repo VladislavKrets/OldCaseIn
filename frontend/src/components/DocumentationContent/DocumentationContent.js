@@ -9,6 +9,7 @@ export default class DocumentationContent extends React.Component {
             documents: []
         }
     }
+
     componentDidMount() {
         this.props.getDocuments().then(data => {
             this.setState({
@@ -25,7 +26,12 @@ export default class DocumentationContent extends React.Component {
                     {
                         this.state.documents.map(item => {
                             return <div className={'file-container'}>
-                                <Link to={item.file} target="_blank" download>{item.title}</Link>
+                                <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>
+                                    {item.title}
+                                </div>
+                                <div className={'doc-file'}>
+                                    <a href={item.document} target="_blank" download>Скачать</a>
+                                </div>
                             </div>
                         })
                     }
