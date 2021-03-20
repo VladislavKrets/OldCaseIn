@@ -110,7 +110,7 @@ class BotTheme(models.Model):
 
 
 class BotAnswer(models.Model):
-    theme = models.ForeignKey(to=BotTheme, on_delete=models.deletion.CASCADE)
+    theme = models.ForeignKey(to=BotTheme, on_delete=models.deletion.CASCADE, related_name='answers')
     answer = models.TextField()
 
     def __str__(self):

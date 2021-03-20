@@ -192,7 +192,8 @@ class Main extends React.Component {
                                        currentLessonId={this.state.currentLessonId}/>
                         : this.state.contentPanel === 'documentation' ?
                             <DocumentationContent getDocuments={this.props.getDocuments}/>
-                            : this.state.contentPanel === 'bot' ? <BotContent/>
+                            : this.state.contentPanel === 'bot' ?
+                                <BotContent getBotThemes={this.props.getBotThemes}/>
                                 : <CalendarContent
                                     getEvents={this.props.getEvents}
                                 />

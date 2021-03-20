@@ -24,7 +24,7 @@ class BotThemeAdminInline(admin.TabularInline):
 
 
 class BotThemeAdmin(admin.ModelAdmin):
-    inlines = (BotThemeAdminInline, BotAnswerAdminInLine)
+    inlines = (BotAnswerAdminInLine, )
 
 
 admin.site.register(RegistrationCode)
@@ -32,7 +32,7 @@ admin.site.register(Module)
 admin.site.register(Lesson)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(BotTheme, BotThemeAdmin)
-admin.site.register(DrugNDropAnswer)
+#admin.site.register(DrugNDropAnswer)
 admin.site.register(SavedQuestionAnswer)
 admin.site.register(EventCalendar)
 admin.site.register(Documentation)

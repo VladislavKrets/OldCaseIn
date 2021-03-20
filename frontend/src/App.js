@@ -223,6 +223,7 @@ class App extends React.Component {
                           getUser={this.getUser}
                           getEvents={this.getEvents}
                           getDocuments={this.getDocuments}
+                          getBotThemes={this.getBotThemes}
                           loadCurrentResult={this.loadCurrentResult}
                     />
                 </PrivateRoute>

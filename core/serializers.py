@@ -182,15 +182,17 @@ class LessonResultSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BotThemeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.BotTheme
-        fields = '__all__'
-
-
 class BotAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BotAnswer
+        fields = '__all__'
+
+
+class BotThemeSerializer(serializers.ModelSerializer):
+    answers = BotAnswerSerializer(many=True)
+
+    class Meta:
+        model = models.BotTheme
         fields = '__all__'
 
 
