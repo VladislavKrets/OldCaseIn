@@ -51,14 +51,14 @@ class UserProfile extends React.Component {
                                             padding: '0px 10px',
                                             paddingBottom: '5px',
                                         }}>
-                                            Результат:
+                                            Результат: {now === 0 ? now : null}
                                         </div>
-                                        <div style={{padding: '0px 10px'}}>
+                                        {now !== 0 && <div style={{padding: '0px 10px'}}>
                                             <ProgressBar
                                                 now={now}
                                                 label={`${now}%`}
                                             />
-                                        </div>
+                                        </div>}
                                         <hr/>
                                     </>
                                 })

@@ -114,12 +114,15 @@ class ModuleContent extends React.Component {
                         this.props.lessonData &&
                         <div className={'moduleContent-content'}>
                             <Jumbotron>
-                                <h2 className={'moduleContent-title'}>
-                                    Модуль {this.props.currentModule.name}
-                                </h2>
-                                <h2 className={'moduleContent-title'}>
+                                <h3 className={'moduleContent-title'}>
+                                    Модуль {this.props.currentModule.number}
+                                </h3>
+                                <h3 className={'moduleContent-title'}>
+                                    {this.props.currentModule.name}
+                                </h3>
+                                <h3 className={'moduleContent-title'}>
                                     Урок {this.props.lessonData.number}
-                                </h2>
+                                </h3>
                                 <p>
                        <pre>
                          {this.props.lessonData.themes}
