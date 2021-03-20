@@ -120,8 +120,8 @@ export default class BotContent extends React.Component {
                         })
                     }
                 </div>
-                <hr/>
-                <div style={{display: 'flex', justifyContent: 'center', overflowY: 'scroll'}}
+                <hr style={{margin: '10px 0'}}/>
+                <div style={{display: 'flex', justifyContent: 'center', overflowY: 'scroll', height: '20%'}}
                      className={'themes-container'}>
                     <div style={{display: 'flex', flexWrap: 'wrap', paddingBottom: '10px', justifyContent: 'center'}}>
                         {
