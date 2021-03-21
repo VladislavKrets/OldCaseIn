@@ -124,7 +124,7 @@ class ModuleContent extends React.Component {
                                     Урок {this.props.lessonData.number}
                                 </h3>
                                 <p>
-                       <pre>
+                       <pre className={'info'}>
                          {this.props.lessonData.themes}
                        </pre>
                                 </p>
