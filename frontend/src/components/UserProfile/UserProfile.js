@@ -39,7 +39,7 @@ class UserProfile extends React.Component {
                             }
                             {
                                 module.lessons.map(lesson => {
-                                    const now = Math.round(lesson.result.result_score / lesson.result.max_score * 100 * 100) / 100;
+                                    const now = Math.round(lesson.result_score / lesson.max_score * 100 * 100) / 100;
                                     return <>
                                         <div style={{
                                             padding: '0px 10px',

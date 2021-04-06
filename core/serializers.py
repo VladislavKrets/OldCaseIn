@@ -53,9 +53,16 @@ class RegistrationSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    total_score = serializers.IntegerField(source='userextension.total_score')
+    type = serializers.CharField(source='userextension.type')
+    master = serializers.PrimaryKeyRelatedField(read_only=True, source='userextension.master')
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type', 'master')
+
+    def get_related_field(self, model_field):
+        return UserSerializer()
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -71,18 +78,13 @@ class LessonSerializer(serializers.ModelSerializer):
         model = models.Lesson
         fields = '__all__'
 
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        if 'user' in self.context:
-            try:
-                result = models.LessonResult.objects \
-                    .get(user=self.context['user'], lesson=instance)
-                serializer = LessonResultSerializer(instance=result)
-                result = serializer.data
-            except models.LessonResult.DoesNotExist:
-                result = None
-            data['result'] = result
-        return data
+
+class LessonResultSerializer(serializers.ModelSerializer):
+    number = serializers.IntegerField(source='lesson.number')
+
+    class Meta:
+        model = models.LessonResult
+        fields = '__all__'
 
 
 class ModuleResultSerializer(serializers.ModelSerializer):
@@ -90,14 +92,11 @@ class ModuleResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Module
-        fields = '__all__'
+        fields = ('number', 'lessons')
 
     def get_lessons(self, instance):
-        lessons = models.LessonResult.objects.filter(lesson__module=instance, user=self.context['user'])\
-            .values_list('lesson')
-        lessons = models.Lesson.objects.filter(pk__in=lessons).order_by('number')
-        serializer = LessonSerializer(instance=lessons, many=True)
-        serializer.context['user'] = self.context['user']
+        lessons = models.LessonResult.objects.filter(lesson__module=instance, user=self.context['user'])
+        serializer = LessonResultSerializer(instance=lessons, many=True)
         return serializer.data
 
 
@@ -177,12 +176,6 @@ class DrugNDropAnswerSerializer(serializers.ModelSerializer):
         model = models.DrugNDropAnswer
         fields = '__all__'
         write_only_fields = ('answer',)
-
-
-class LessonResultSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.LessonResult
-        fields = '__all__'
 
 
 class BotAnswerSerializer(serializers.ModelSerializer):

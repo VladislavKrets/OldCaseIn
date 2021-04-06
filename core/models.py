@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from gdstorage.storage import GoogleDriveStorage
+from rest_framework.exceptions import ValidationError
 
 gd_storage = GoogleDriveStorage()
 
@@ -40,8 +41,8 @@ class Question(models.Model):
     class QuestionTypes(models.TextChoices):
         RADIO = 'radio', 'radio'
         CHECKBOX = 'checkbox', 'checkbox'
-        #DROPDOWN = 'dropdown', 'dropdown'
-        #DRUG_N_DROP = 'drug&drop', 'drug&drop'
+        # DROPDOWN = 'dropdown', 'dropdown'
+        # DRUG_N_DROP = 'drug&drop', 'drug&drop'
         TEXT = 'text', 'text'
 
     lesson = models.ForeignKey(to=Lesson, on_delete=models.deletion.CASCADE)
@@ -140,8 +141,13 @@ class Documentation(models.Model):
         return self.title
 
 
-class UserExtension(models.Model):
+def restrict_type(value):
+    master = User.objects.get(pk=value)
+    if master.userextension.type != 'master':
+        raise ValidationError('This user is not master')
 
+
+class UserExtension(models.Model):
     class UserTypes(models.TextChoices):
         USER = 'user', 'user'
         MASTER = 'master', 'master'
@@ -149,4 +155,12 @@ class UserExtension(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.deletion.CASCADE)
     total_score = models.IntegerField(default=0)
     type = models.CharField(max_length=100, choices=UserTypes.choices, default='user')
+    master = models.ForeignKey(to=User, null=True,
+                               related_name='students',
+                               validators=(restrict_type,),
+                               on_delete=models.deletion.SET_NULL, blank=True)
 
+    def save(self, *args, **kwargs):
+        if not self.master:
+            self.master = None
+        super(UserExtension, self).save(*args, **kwargs)

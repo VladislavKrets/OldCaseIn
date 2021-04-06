@@ -35,6 +35,10 @@
     cursor: pointer;
 }
 
+.card-header{
+    background-color: white;
+}
+
 @media (max-width: 770px) {
     .modules-list::-webkit-scrollbar {
         width: 2px;
