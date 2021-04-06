@@ -10,6 +10,7 @@ import NavigationDrawer from "../../elements/NavigationDrawer/NavigationDrawer";
 import DocumentationContent from "../../components/DocumentationContent/DocumentationContent";
 import BotContent from "../../components/BotContent/BotContent";
 import CalendarContent from "../../components/CalendarContent/CalendarContent";
+import Students from "../../components/Students/Students";
 
 class Main extends React.Component {
 
@@ -42,14 +43,14 @@ class Main extends React.Component {
         this.setState({
             lessonData: lessonData,
         })
-        this.getUserData()
+        this.props.setUserData()
     }
 
     setPlainLessonData = (lessonData) => {
         this.setState({
             lessonData: lessonData,
         })
-        this.getUserData()
+        this.props.setUserData()
     }
 
     setQuestionsData = (questionsData) => {
@@ -84,7 +85,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         document.title = "Уроки"
-        this.getUserData()
+        this.props.setUserData()
         window.addEventListener('resize', this.updateSize);
     }
 
@@ -129,8 +130,8 @@ class Main extends React.Component {
             {
                 this.state.isUserDrawerShowed &&
                 <NavigationDrawer right={true} onClose={() => this.setUserDrawerShow(false)}>
-                    <UserProfile logOut={this.props.logOut} getUser={this.props.getUser}
-                                 userData={this.state.userData}/>
+                    <UserProfile logOut={this.props.logOut} setUserData={this.props.setUserData}
+                                     userData={this.props.userData}/>
                 </NavigationDrawer>
             }
             <div style={{display: this.state.width > 770 ? 'flex' : null,}}>
@@ -171,6 +172,7 @@ class Main extends React.Component {
                                      setQuestionsData={this.setQuestionsData}
                                      getQuestions={this.props.getQuestions}
                                      closeDrawer={this.setModulesDrawerShow}
+                                     userData={this.props.userData}
                                      currentLessonId={this.state.currentLessonId}/>
                     </div>
                 }
@@ -194,16 +196,16 @@ class Main extends React.Component {
                             <DocumentationContent getDocuments={this.props.getDocuments}/>
                             : this.state.contentPanel === 'bot' ?
                                 <BotContent getBotThemes={this.props.getBotThemes}/>
-                                : <CalendarContent
+                                : this.state.contentPanel === 'calendar' ? <CalendarContent
                                     getEvents={this.props.getEvents}
-                                />
+                                /> : <Students/>
                     }
 
                 </div>
                 {
                     this.state.width > 770 && <div style={{width: '25%'}}>
-                        <UserProfile logOut={this.props.logOut} getUser={this.props.getUser}
-                                     userData={this.state.userData}/>
+                        <UserProfile logOut={this.props.logOut} setUserData={this.props.setUserData}
+                                     userData={this.props.userData}/>
                     </div>
                 }
             </div>

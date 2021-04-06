@@ -17,7 +17,8 @@ class App extends React.Component {
         }
         this.state = {
             token: token,
-            loading: true
+            loading: true,
+            userData: null
         }
     }
 
@@ -191,11 +192,22 @@ class App extends React.Component {
         })
     }
 
+    setUserData = () => {
+        this.getUser().then(data => {
+            this.setState({
+                userData: data.data,
+                loading: false
+            })
+        }).catch(e => {
+            this.setState({
+                loading: false
+            })
+        })
+    }
+
     componentDidMount() {
         document.title = 'Case in'
-        this.setState({
-            loading: false
-        })
+        this.setUserData()
     }
 
     render() {
@@ -225,6 +237,8 @@ class App extends React.Component {
                           getDocuments={this.getDocuments}
                           getBotThemes={this.getBotThemes}
                           loadCurrentResult={this.loadCurrentResult}
+                          userData={this.state.userData}
+                          setUserData={this.setUserData}
                     />
                 </PrivateRoute>
             </Switch>

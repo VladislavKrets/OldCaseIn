@@ -93,6 +93,17 @@ class ModulesList extends React.Component {
                      }}>Бот
                 </div>
             </div>
+            {
+                this.props.userData && this.props.userData.type === 'master' &&
+                <div className={'card-header'}>
+                    <div style={{textAlign: 'center', fontWeight: 'bold'}}
+                         onClick={() => {
+                             this.props.setContentPanel('students')
+                             this.props.closeDrawer(false)
+                         }}>Ученики
+                    </div>
+                </div>
+            }
         </div>
     }
 }
