@@ -10,6 +10,7 @@ from core import models
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import F
+from core.permissions import IsStudentsAccessed
 
 
 class LoginView(views.APIView):
@@ -229,6 +230,18 @@ class DocumentsModelMixin(ListModelMixin, GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.DocumentationSerializer
     queryset = models.Documentation.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class StudentsModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.UserSerializer
+
+    def get_queryset(self):
+        return models.User.objects.filter(userextension__master=self.request.user)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)

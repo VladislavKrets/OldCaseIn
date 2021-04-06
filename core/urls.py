@@ -21,5 +21,6 @@ urlpatterns = [
     path('bot_themes/<int:parent_theme>/', views.BotThemeMixin.as_view()),
     path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view()),
     path('events/', views.EventsModelMixin.as_view()),
-    path('documents/', views.DocumentsModelMixin.as_view())
+    path('documents/', views.DocumentsModelMixin.as_view()),
+    path('students/', views.StudentsModelMixin.as_view())
 ]
