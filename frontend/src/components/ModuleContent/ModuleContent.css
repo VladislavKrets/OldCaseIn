@@ -27,6 +27,15 @@
     background: linear-gradient(to bottom, rgb(54, 69, 136) 0%, rgb(111, 118, 181) 40%, rgb(160, 171, 210) 60%, rgb(218, 216, 234) 80%, rgb(254, 254, 255) 100%);
 }
 
+.info {
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
 .moduleContent-no-overflow-parent {
     width: 100%;
     margin: 15px;
