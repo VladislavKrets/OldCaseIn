@@ -16,6 +16,7 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError('Incorrect email or password.')
         if not user.is_active:
             raise serializers.ValidationError('User is disabled.')
+        user.userextension = models.UserExtension.objects.get_or_create(user=user)[0]
         return {'user': user}
 
 
@@ -28,14 +29,16 @@ class RegistrationSerializer(serializers.Serializer):
 
     @transaction.atomic
     def create(self, validated_data):
+        registration_code = models.RegistrationCode.objects \
+            .get(code=validated_data['registration_code'])
         user = User.objects.create(username=validated_data['email'],
                                    password=validated_data['password'],
                                    first_name=validated_data['name'],
                                    last_name=validated_data['surname'])
         user.set_password(validated_data['password'])
+        user.userextension = models.UserExtension.objects.get_or_create(user=user, type=registration_code.type)[0]
         user.save()
-        models.RegistrationCode.objects \
-            .filter(code=validated_data['registration_code']).delete()
+        registration_code.delete()
         return user
 
     def validate(self, attrs):

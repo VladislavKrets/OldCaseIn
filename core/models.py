@@ -6,6 +6,11 @@ gd_storage = GoogleDriveStorage()
 
 
 class RegistrationCode(models.Model):
+    class UserTypes(models.TextChoices):
+        USER = 'user', 'user'
+        MASTER = 'master', 'master'
+
+    type = models.CharField(max_length=100, choices=UserTypes.choices, default='user')
     code = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
@@ -133,3 +138,15 @@ class Documentation(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserExtension(models.Model):
+
+    class UserTypes(models.TextChoices):
+        USER = 'user', 'user'
+        MASTER = 'master', 'master'
+
+    user = models.OneToOneField(to=User, on_delete=models.deletion.CASCADE)
+    total_score = models.IntegerField(default=0)
+    type = models.CharField(max_length=100, choices=UserTypes.choices, default='user')
+
