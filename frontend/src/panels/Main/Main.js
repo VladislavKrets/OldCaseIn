@@ -139,6 +139,7 @@ class Main extends React.Component {
                     this.state.width <= 770 && <div
                         style={{
                             position: 'fixed',
+                            zIndex: '1',
                             top: '0',
                             left: '0',
                             backgroundColor: 'white',
@@ -197,6 +198,7 @@ class Main extends React.Component {
                             : this.state.contentPanel === 'bot' ?
                                 <BotContent getBotThemes={this.props.getBotThemes}/>
                                 : this.state.contentPanel === 'calendar' ? <CalendarContent
+                                    addEvent={this.props.addEvent}
                                     getEvents={this.props.getEvents}
                                 /> : <Students/>
                     }

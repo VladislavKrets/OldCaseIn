@@ -178,6 +178,15 @@ class App extends React.Component {
         })
     }
 
+    addEvent = (event) => {
+        return axios.post(`events/`, event, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -239,6 +248,7 @@ class App extends React.Component {
                           loadCurrentResult={this.loadCurrentResult}
                           userData={this.state.userData}
                           setUserData={this.setUserData}
+                          addEvent={this.addEvent}
                     />
                 </PrivateRoute>
             </Switch>

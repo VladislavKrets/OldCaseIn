@@ -10,7 +10,8 @@ from core import models
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import F
-from core.permissions import IsStudentsAccessed
+from core.permissions import IsStudentsAccessed, IsOwner
+from rest_framework.viewsets import ModelViewSet
 
 
 class LoginView(views.APIView):
@@ -213,16 +214,18 @@ class ResultTestApiView(APIView):
         return response.Response(data=serializer.data)
 
 
-class EventsModelMixin(ListModelMixin, GenericAPIView):
+class EventsModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = serializers.EventCalendarSerializer
 
     def get_queryset(self):
         return models.EventCalendar.objects.filter(user=self.request.user)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
 
 
 class DocumentsModelMixin(ListModelMixin, GenericAPIView):

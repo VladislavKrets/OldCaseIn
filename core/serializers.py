@@ -193,6 +193,19 @@ class BotThemeSerializer(serializers.ModelSerializer):
 
 
 class EventCalendarSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
+
+    def create(self, validated_data):
+        user = self.context['user']
+        event_calendar = models.EventCalendar.objects.create(user=user, **validated_data)
+        return event_calendar
+
+    def update(self, instance, validated_data):
+        user = self.context['user']
+        if instance.user == user:
+            return super(EventCalendarSerializer, self).update()
+        raise ValidationError('Not permitted')
+
     class Meta:
         model = models.EventCalendar
         fields = '__all__'

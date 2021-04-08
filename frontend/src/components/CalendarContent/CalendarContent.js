@@ -2,6 +2,7 @@ import React from "react";
 import {Calendar, Views, momentLocalizer} from "react-schedule-calendar";
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
 
 
 const ColoredDateCellWrapper = ({children}) =>
@@ -17,8 +18,21 @@ export default class CalendarContent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: []
+            events: [],
+            modalShow: false,
         }
+    }
+
+    setModalShow = (modalShow) => {
+        this.setState({
+            modalShow: modalShow
+        })
+    }
+
+    setEvents = (events) => {
+        this.setState({
+            events: events
+        })
     }
 
     componentDidMount() {
@@ -32,6 +46,9 @@ export default class CalendarContent extends React.Component {
     render() {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
+                <div className={'float-button-add-calendar'} onClick={() => this.setModalShow(true)}>
+                    +
+                </div>
                 <div className={'moduleContent'}>
                     <Calendar
                         events={this.state.events}
@@ -45,6 +62,14 @@ export default class CalendarContent extends React.Component {
                         localizer={localizer}
                     />
                 </div>
+                {
+                    this.state.modalShow && <ModalAddCalendar
+                        getEvents={this.props.getEvents}
+                        setEvents={this.setEvents}
+                        show={this.state.modalShow}
+                        addEvent={this.props.addEvent}
+                        onHide={() => this.setModalShow(false)}/>
+                }
             </div>
         </div>
     }

@@ -1,7 +1,12 @@
 from django.urls import path
 from core import views
+from rest_framework.routers import SimpleRouter
 
-urlpatterns = [
+router = SimpleRouter()
+router.register(r'events', views.EventsModelViewSet, basename='events')
+
+urlpatterns = router.urls
+urlpatterns += [
     path('login/', views.LoginView.as_view()),
     path('user/', views.UserDataApiView.as_view()),
     path('modules/', views.ModuleMixin.as_view()),
@@ -20,7 +25,6 @@ urlpatterns = [
     path('bot_themes/', views.BotThemeMixin.as_view()),
     path('bot_themes/<int:parent_theme>/', views.BotThemeMixin.as_view()),
     path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view()),
-    path('events/', views.EventsModelMixin.as_view()),
     path('documents/', views.DocumentsModelMixin.as_view()),
     path('students/', views.StudentsModelMixin.as_view())
 ]
