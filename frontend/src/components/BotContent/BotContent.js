@@ -81,7 +81,9 @@ export default class BotContent extends React.Component {
                                     border: '1px solid black',
                                     borderRadius: '10px',
                                     padding: '10px',
-                                    margin: '10px'
+                                    margin: '10px',
+                                    width: '85%',
+                                    maxWidth: '85%'
                                 }}>
                                     {item.text}
                                 </div>
