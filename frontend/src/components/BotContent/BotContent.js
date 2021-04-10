@@ -77,13 +77,7 @@ export default class BotContent extends React.Component {
                                 margin: '10px 0',
                                 flexDirection: item.from === 'user' ? 'row-reverse' : null
                             }}>
-                                <div style={{
-                                    border: '1px solid black',
-                                    borderRadius: '10px',
-                                    padding: '10px',
-                                    margin: '10px',
-                                    maxWidth: '85%'
-                                }}>
+                                <div className={'bot-message'}>
                                     {item.text}
                                 </div>
                             </div>
