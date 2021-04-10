@@ -4,8 +4,10 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from core.models import BotTrainer
+from CaseIn import settings
 
-#nltk.download('all')
+if settings.DOWNLOAD_NLTK_LIBRARIES:
+    nltk.download('all')
 
 raw = None
 sent_tokens = None
@@ -24,8 +26,8 @@ def train():
         raw = BotTrainer.objects.create().text
     else:
         raw = BotTrainer.objects.filter().first().text
-    sent_tokens = nltk.sent_tokenize(raw, language='russian')  # converts to list of sentences
-    word_tokens = nltk.word_tokenize(raw, language='russian')  # converts to list of words
+    sent_tokens = nltk.sent_tokenize(raw, language='russian')
+    word_tokens = nltk.word_tokenize(raw, language='russian')
     lemmer = nltk.stem.WordNetLemmatizer()
     remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
 

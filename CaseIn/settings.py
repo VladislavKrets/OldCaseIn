@@ -137,6 +137,7 @@ MEDIA_ROOT = (
 )
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = None
 GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = None
+DOWNLOAD_NLTK_LIBRARIES = True
 
 try:
     from .local_settings import *
