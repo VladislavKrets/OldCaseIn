@@ -32,6 +32,9 @@ class BotTrainerAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return not BotTrainer.objects.exists()
 
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 class QuestionAnswerAdminInline(nested_admin.NestedTabularInline):
     model = QuestionAnswer
