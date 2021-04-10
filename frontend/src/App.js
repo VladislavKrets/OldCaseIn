@@ -107,6 +107,17 @@ class App extends React.Component {
         })
     }
 
+    askBotQuestion = (text) => {
+        return axios.post(`/bot/`, {
+            text: text
+        }, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getBotThemes = (parentThemeId = '') => {
         if (parentThemeId) parentThemeId += '/'
         return axios.get(`/bot_themes/${parentThemeId}`, {
@@ -249,6 +260,7 @@ class App extends React.Component {
                           userData={this.state.userData}
                           setUserData={this.setUserData}
                           addEvent={this.addEvent}
+                          askBotQuestion={this.askBotQuestion}
                     />
                 </PrivateRoute>
             </Switch>

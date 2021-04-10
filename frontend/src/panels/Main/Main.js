@@ -131,7 +131,7 @@ class Main extends React.Component {
                 this.state.isUserDrawerShowed &&
                 <NavigationDrawer right={true} onClose={() => this.setUserDrawerShow(false)}>
                     <UserProfile logOut={this.props.logOut} setUserData={this.props.setUserData}
-                                     userData={this.props.userData}/>
+                                 userData={this.props.userData}/>
                 </NavigationDrawer>
             }
             <div style={{display: this.state.width > 770 ? 'flex' : null,}}>
@@ -196,7 +196,8 @@ class Main extends React.Component {
                         : this.state.contentPanel === 'documentation' ?
                             <DocumentationContent getDocuments={this.props.getDocuments}/>
                             : this.state.contentPanel === 'bot' ?
-                                <BotContent getBotThemes={this.props.getBotThemes}/>
+                                <BotContent getBotThemes={this.props.getBotThemes}
+                                            askBotQuestion={this.props.askBotQuestion}/>
                                 : this.state.contentPanel === 'calendar' ? <CalendarContent
                                     addEvent={this.props.addEvent}
                                     getEvents={this.props.getEvents}

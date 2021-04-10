@@ -252,6 +252,9 @@ class StudentsModelMixin(ListModelMixin, GenericAPIView):
 
 
 class BotApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = serializers.BotTrainerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
