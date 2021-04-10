@@ -164,3 +164,15 @@ class UserExtension(models.Model):
         if not self.master:
             self.master = None
         super(UserExtension, self).save(*args, **kwargs)
+
+
+class BotTrainer(models.Model):
+    text = models.TextField(default='', blank=True)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        from core import bot
+        instance = super().save(force_insert=force_insert, force_update=force_update,
+                                using=using, update_fields=update_fields)
+        bot.train()
+        return instance

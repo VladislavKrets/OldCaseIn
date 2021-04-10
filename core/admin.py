@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from core.models import Module, Lesson, \
     Question, QuestionAnswer, SavedQuestionAnswer, \
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
-    EventCalendar, Documentation, UserExtension
+    EventCalendar, Documentation, UserExtension, BotTrainer
 
 import nested_admin
 
@@ -25,6 +25,12 @@ class UserExtensionInline(admin.TabularInline):
 
 class UserAdmin(admin.ModelAdmin):
     inlines = (UserExtensionInline,)
+
+
+class BotTrainerAdmin(admin.ModelAdmin):
+
+    def has_add_permission(self, request):
+        return not BotTrainer.objects.exists()
 
 
 class QuestionAnswerAdminInline(nested_admin.NestedTabularInline):
@@ -59,3 +65,4 @@ admin.site.register(SavedQuestionAnswer)
 admin.site.register(EventCalendar)
 admin.site.register(LessonResult)
 admin.site.register(Documentation)
+admin.site.register(BotTrainer, BotTrainerAdmin)

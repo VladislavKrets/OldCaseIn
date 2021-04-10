@@ -216,3 +216,9 @@ class DocumentationSerializer(serializers.ModelSerializer):
         model = models.Documentation
         fields = '__all__'
 
+
+class BotTrainerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.BotTrainer
+        fields = '__all__'
+

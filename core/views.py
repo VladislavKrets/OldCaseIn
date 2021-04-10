@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import F
 from core.permissions import IsStudentsAccessed, IsOwner
 from rest_framework.viewsets import ModelViewSet
+from core import bot
 
 
 class LoginView(views.APIView):
@@ -248,3 +249,12 @@ class StudentsModelMixin(ListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
+
+
+class BotApiView(APIView):
+    def post(self, request):
+        serializer = serializers.BotTrainerSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        text = serializer.validated_data['text']
+        bot_response = bot.bot(text)
+        return response.Response(data={'text': bot_response}, status=status.HTTP_200_OK)
