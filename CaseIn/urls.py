@@ -25,7 +25,7 @@ from CaseIn import settings
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Case in api",
+      title="Case in api docs",
       default_version='v1',
       description="Api description",
       terms_of_service="https://www.google.com/policies/terms/",
