@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin, \
@@ -255,6 +257,7 @@ class BotApiView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(request_body=serializers.BotTrainerSerializer)
     def post(self, request):
         serializer = serializers.BotTrainerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
