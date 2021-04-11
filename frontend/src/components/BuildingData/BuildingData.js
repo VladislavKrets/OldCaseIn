@@ -22,6 +22,28 @@ export default class BuildingData extends React.Component {
     render() {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
+                {
+                    this.state.currentBuilding &&
+                    <div style={{
+                        position: 'absolute',
+                        top: '5px',
+                        left: '5px',
+                        cursor: 'pointer',
+                        fontSize: '1.2em',
+                        fontWeight: 'bold'
+                    }}
+                         onClick={() => {
+                             this.props.getBuildings().then(data => {
+                                 this.setState({
+                                     buildings: data.data,
+                                     currentBuilding: null,
+                                     currentBuildingFloors: []
+                                 })
+                             })
+                         }}>
+                        {"< Назад"}
+                    </div>
+                }
                 <div className={'moduleContent'}>
                     <h3 style={{textAlign: 'center', padding: '15px 0'}}>Здания</h3>
                     {
