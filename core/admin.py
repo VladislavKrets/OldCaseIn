@@ -1,13 +1,30 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.template.response import TemplateResponse
+from django.urls import path
 
 from core.models import Module, Lesson, \
     Question, QuestionAnswer, SavedQuestionAnswer, \
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
-    EventCalendar, Documentation, UserExtension, BotTrainer
-
+    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData
 import nested_admin
+
+
+class FloorDataAdmin(admin.ModelAdmin):
+    def get_urls(self):
+        urls = super().get_urls()
+        print(urls)
+        my_urls = [
+            path('add/', self.admin_site.admin_view(self.create_floor)),
+        ]
+        return my_urls + urls
+
+    def create_floor(self, request):
+        context = dict(
+           self.admin_site.each_context(request),
+        )
+        return TemplateResponse(request, "floor_editor.html", context)
 
 
 class UserExtensionForm(ModelForm):
@@ -63,7 +80,7 @@ admin.site.register(Module)
 admin.site.register(Lesson)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(BotTheme, BotThemeAdmin)
-# admin.site.register(DrugNDropAnswer)
+admin.site.register(FloorData, FloorDataAdmin)
 admin.site.register(SavedQuestionAnswer)
 admin.site.register(EventCalendar)
 admin.site.register(LessonResult)

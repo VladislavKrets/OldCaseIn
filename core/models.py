@@ -176,3 +176,8 @@ class BotTrainer(models.Model):
                                 using=using, update_fields=update_fields)
         bot.train()
         return instance
+
+
+class FloorData(models.Model):
+    floor_number = models.PositiveIntegerField()
+    json_floor = models.TextField()
