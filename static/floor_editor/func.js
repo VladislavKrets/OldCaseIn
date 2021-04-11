@@ -97,7 +97,6 @@ function save(boot = false) {
     if (WALLS[k].child != null) WALLS[k].child = WALLS.indexOf(WALLS[k].child);
     if (WALLS[k].parent != null) WALLS[k].parent = WALLS.indexOf(WALLS[k].parent);
   }
-  console.log(JSON.stringify({objData: OBJDATA, wallData: WALLS, roomData: ROOM}))
   if (JSON.stringify({objData: OBJDATA, wallData: WALLS, roomData: ROOM}) == HISTORY[HISTORY.length-1]) {
     for (var k in WALLS) {
       if (WALLS[k].child != null) WALLS[k].child = WALLS[WALLS[k].child];
@@ -121,16 +120,18 @@ function save(boot = false) {
   return true;
 }
 
-function load(index = HISTORY.index, boot = false) {
-  if (HISTORY.length == 0 && !boot) return false;
-  for (var k in OBJDATA){
-    OBJDATA[k].graph.remove();
+function load(index = HISTORY.index, boot = false, historyLoad = true, jsonData = null) {
+  if (historyLoad) {
+    if (HISTORY.length == 0 && !boot) return false;
+    for (var k in OBJDATA) {
+      OBJDATA[k].graph.remove();
+    }
+    OBJDATA = [];
+    var historyTemp = [];
+    historyTemp = JSON.parse(localStorage.getItem('history'));
+    historyTemp = JSON.parse(historyTemp[index]);
   }
-  OBJDATA = [];
-  var historyTemp = [];
-  historyTemp = JSON.parse(localStorage.getItem('history'));
-  historyTemp = JSON.parse(historyTemp[index]);
-
+  else historyTemp = json
   for (var k in historyTemp.objData) {
     var OO = historyTemp.objData[k];
     // if (OO.family == 'energy') OO.family = 'byObject';

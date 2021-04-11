@@ -261,6 +261,7 @@ class App extends React.Component {
                           setUserData={this.setUserData}
                           addEvent={this.addEvent}
                           askBotQuestion={this.askBotQuestion}
+                          token={this.state.token}
                     />
                 </PrivateRoute>
             </Switch>

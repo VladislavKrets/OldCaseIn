@@ -93,6 +93,20 @@ class ModulesList extends React.Component {
                      }}>Бот
                 </div>
             </div>
+            <div className={'card-header'}>
+                <div style={{textAlign: 'center', fontWeight: 'bold'}}>
+                    <a
+                        href={'/floor_view/5/'}
+                        target={'_blank'}
+                        style={{
+                        display: 'block',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        width: '100%',
+                        height: '100%'
+                    }}>Схема здания</a>
+                </div>
+            </div>
             {
                 this.props.userData && this.props.userData.type === 'master' &&
                 <div className={'card-header'}>

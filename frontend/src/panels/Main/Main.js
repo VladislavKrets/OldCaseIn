@@ -174,6 +174,7 @@ class Main extends React.Component {
                                      getQuestions={this.props.getQuestions}
                                      closeDrawer={this.setModulesDrawerShow}
                                      userData={this.props.userData}
+                                     token={this.props.token}
                                      currentLessonId={this.state.currentLessonId}/>
                     </div>
                 }

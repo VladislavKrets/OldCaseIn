@@ -22,6 +22,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from CaseIn import settings
+from CaseIn import views
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -44,5 +45,6 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     url(r'^_nested_admin/', include('nested_admin.urls')),
     path('api/', include('core.urls')),
+    path('floor_view/<int:pk>/', views.my_view),
     re_path('.*', TemplateView.as_view(template_name='index.html'))  # for react
 ]
