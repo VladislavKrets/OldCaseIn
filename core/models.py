@@ -178,6 +178,14 @@ class BotTrainer(models.Model):
         return instance
 
 
+class Building(models.Model):
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.address
+
+
 class FloorData(models.Model):
     floor_number = models.PositiveIntegerField()
     json_floor = models.TextField()
+    building = models.ForeignKey(to=Building, on_delete=models.deletion.CASCADE)

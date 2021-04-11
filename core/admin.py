@@ -3,20 +3,23 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.template.response import TemplateResponse
 from django.urls import path
+from django.urls.resolvers import RoutePattern
+from django.utils.safestring import mark_safe
 
 from core.models import Module, Lesson, \
     Question, QuestionAnswer, SavedQuestionAnswer, \
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
-    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData
+    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData, Building
 import nested_admin
 
 
 class FloorDataAdmin(admin.ModelAdmin):
+    change_form_template = 'custom_floor_add_template.html'
+
     def get_urls(self):
         urls = super().get_urls()
-        print(urls)
         my_urls = [
-            path('add/', self.admin_site.admin_view(self.create_floor)),
+            path('add_floor/', self.admin_site.admin_view(self.create_floor)),
         ]
         return my_urls + urls
 
@@ -24,6 +27,7 @@ class FloorDataAdmin(admin.ModelAdmin):
         context = dict(
            self.admin_site.each_context(request),
         )
+        context['buildings'] = Building.objects.all()
         return TemplateResponse(request, "floor_editor.html", context)
 
 
@@ -73,6 +77,7 @@ class BotThemeAdmin(admin.ModelAdmin):
     inlines = (BotAnswerAdminInLine,)
 
 
+admin.site.register(Building)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(RegistrationCode)

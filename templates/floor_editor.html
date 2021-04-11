@@ -470,6 +470,13 @@
                     <input type="hidden" name="json_floor" id="json_floor">
                     {% csrf_token %}
                 </div>
+                <div class="form-group">
+                    <select class="form-control" name="building">
+                        {% for building in buildings %}
+                            <option value="{{ building.id }}">{{ building.address }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Добавить</button>
                 </div>
