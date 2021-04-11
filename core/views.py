@@ -268,7 +268,7 @@ class BotApiView(APIView):
 
 class BuildingModelMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.BuildingSerializer
     queryset = models.Building.objects.all().order_by('address')
 
@@ -278,7 +278,7 @@ class BuildingModelMixin(ListModelMixin, GenericAPIView):
 
 class FloorModelMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.FloorSerializer
 
     def get_queryset(self):
