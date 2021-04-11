@@ -189,6 +189,24 @@ class App extends React.Component {
         })
     }
 
+    getBuildings = () => {
+        return axios.get(`buildings/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getFloors = (building) => {
+        return axios.get(`buildings/${building}/floors/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     addEvent = (event) => {
         return axios.post(`events/`, event, {
             headers: {
@@ -262,6 +280,8 @@ class App extends React.Component {
                           addEvent={this.addEvent}
                           askBotQuestion={this.askBotQuestion}
                           token={this.state.token}
+                          getBuildings={this.getBuildings}
+                          getFloors={this.getFloors}
                     />
                 </PrivateRoute>
             </Switch>

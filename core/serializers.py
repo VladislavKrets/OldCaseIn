@@ -222,3 +222,14 @@ class BotTrainerSerializer(serializers.ModelSerializer):
         model = models.BotTrainer
         fields = '__all__'
 
+
+class BuildingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Building
+        fields = '__all__'
+
+
+class FloorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.FloorData
+        fields = ('id', 'floor_number', 'building',)

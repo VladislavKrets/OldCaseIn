@@ -264,3 +264,25 @@ class BotApiView(APIView):
         text = serializer.validated_data['text']
         bot_response = bot.bot(text)
         return response.Response(data={'text': bot_response}, status=status.HTTP_200_OK)
+
+
+class BuildingModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.BuildingSerializer
+    queryset = models.Building.objects.all().order_by('address')
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class FloorModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.FloorSerializer
+
+    def get_queryset(self):
+        return models.FloorData.objects.filter(building=self.kwargs['building']).order_by('floor_number')
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)

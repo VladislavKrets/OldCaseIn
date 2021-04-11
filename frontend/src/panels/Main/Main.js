@@ -11,6 +11,7 @@ import DocumentationContent from "../../components/DocumentationContent/Document
 import BotContent from "../../components/BotContent/BotContent";
 import CalendarContent from "../../components/CalendarContent/CalendarContent";
 import Students from "../../components/Students/Students";
+import BuildingData from "../../components/BuildingData/BuildingData";
 
 class Main extends React.Component {
 
@@ -202,7 +203,11 @@ class Main extends React.Component {
                                 : this.state.contentPanel === 'calendar' ? <CalendarContent
                                     addEvent={this.props.addEvent}
                                     getEvents={this.props.getEvents}
-                                /> : <Students/>
+                                /> : this.state.contentPanel === 'students' ? <Students/>
+                                : <BuildingData
+                                    getBuildings={this.props.getBuildings}
+                                    getFloors={this.props.getFloors}
+                                    />
                     }
 
                 </div>

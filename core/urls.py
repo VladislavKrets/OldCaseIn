@@ -13,7 +13,7 @@ urlpatterns += [
     path('lessons/<int:pk>/', views.LessonMixin.as_view()),
     path('lesson/<int:lesson>/questions/', views.QuestionMixin.as_view()),
     # path('question/<int:answer__question>/drugndrop/',
-         # views.DrugNDropAnswerMixin.as_view()),
+    # views.DrugNDropAnswerMixin.as_view()),
     path('answer/<int:answer>/save/',
          views.SavedQuestionAnswerMixin.as_view()),
     path('answer/<int:answer>/save/<int:pk>/',
@@ -27,5 +27,8 @@ urlpatterns += [
     path('bot_theme/<int:theme>/answers/', views.BotThemeMixin.as_view()),
     path('documents/', views.DocumentsModelMixin.as_view()),
     path('students/', views.StudentsModelMixin.as_view()),
+    path('bot/', views.BotApiView.as_view()),
+    path('buildings/<int:building>/floors/', views.FloorModelMixin.as_view()),
+    path('buildings/', views.BuildingModelMixin.as_view()),
     path('bot/', views.BotApiView.as_view())
 ]

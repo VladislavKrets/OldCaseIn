@@ -94,17 +94,11 @@ class ModulesList extends React.Component {
                 </div>
             </div>
             <div className={'card-header'}>
-                <div style={{textAlign: 'center', fontWeight: 'bold'}}>
-                    <a
-                        href={'/floor_view/5/'}
-                        target={'_blank'}
-                        style={{
-                        display: 'block',
-                        textDecoration: 'none',
-                        color: 'inherit',
-                        width: '100%',
-                        height: '100%'
-                    }}>Схема здания</a>
+                <div style={{textAlign: 'center', fontWeight: 'bold'}} onClick={() => {
+                         this.props.setContentPanel('building')
+                         this.props.closeDrawer(false)
+                     }}>
+                    Схема здания
                 </div>
             </div>
             {
