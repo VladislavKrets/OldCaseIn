@@ -31,18 +31,20 @@ class ModulesList extends React.Component {
     render() {
         return <div className={'modules-list'}>
             <div className={'card-header'}
-                 style={{borderBottom: 'none', borderTop: '1px solid rgba(0,0,0,.125)'}}
+                 style={{borderBottom: 'none', borderTop: '1px solid rgba(0,0,0,.125)', padding: '0'}}
                  onClick={() => {
                      this.props.setContentPanel('documentation')
                      this.props.closeDrawer(false)
                  }}>
                 <Link style={{
+                    padding: '12px 20px',
                     fontWeight: 'bold',
                     textDecoration: 'none',
                     color: 'black',
-                    paddingLeft: '40px',
+                    paddingLeft: '60px',
                     display: 'block',
                     width: '100%',
+                    cursor: 'default',
                     height: '100%',
                 }} to={'/me'}>
                     <Person height={'26px'} width={'26px'}/>

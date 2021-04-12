@@ -17,8 +17,13 @@
     color: #ffffff;
     background-color: #30065a;
     border-radius: 50px;
+    text-decoration: none;
 }
-
+.general-enter-button:hover{
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #3916fe;
+}
 .general-content {
     width: 1200px;
     box-sizing: border-box;
@@ -55,6 +60,7 @@
     align-items: center;
     justify-content: center;
 }
+
 
 .general-logo {
     width: 178px;
