@@ -1,6 +1,7 @@
 import React from "react";
 import {Calendar, Views, momentLocalizer} from "react-schedule-calendar";
 import moment from 'moment'
+import {Plus} from "react-bootstrap-icons"
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
 
@@ -47,7 +48,7 @@ export default class CalendarContent extends React.Component {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'float-button-add-calendar'} onClick={() => this.setModalShow(true)}>
-                    +
+                    <Plus width={'32px'} height={'32px'}/>
                 </div>
                 <div className={'moduleContent'}>
                     <Calendar
