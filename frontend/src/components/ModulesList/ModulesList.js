@@ -1,6 +1,8 @@
 import React from "react";
 import {Accordion, Card, Button} from "react-bootstrap";
 import './ModulesList.css'
+import {Link} from "react-router-dom";
+import {Person, Collection, FileEarmarkText, CalendarEvent, Building, InfoCircle, People} from 'react-bootstrap-icons'
 
 class ModulesList extends React.Component {
 
@@ -28,10 +30,32 @@ class ModulesList extends React.Component {
 
     render() {
         return <div className={'modules-list'}>
+            <div className={'card-header'}
+                 style={{borderBottom: 'none', borderTop: '1px solid rgba(0,0,0,.125)'}}
+                 onClick={() => {
+                     this.props.setContentPanel('documentation')
+                     this.props.closeDrawer(false)
+                 }}>
+                <Link style={{
+                    fontWeight: 'bold',
+                    textDecoration: 'none',
+                    color: 'black',
+                    paddingLeft: '40px',
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                }} to={'/me'}>
+                    <Person height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Профиль</span>
+                </Link>
+            </div>
             <Accordion onClick={() => this.props.setContentPanel('lessons')}>
                 <Card>
                     <Accordion.Toggle as={Card.Header} variant="link" eventKey={`1`}>
-                        <div style={{textAlign: 'center', fontWeight: 'bold'}}>Модули</div>
+                        <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                            <Collection height={'26px'} width={'26px'}/>
+                            <span style={{paddingLeft: '20px'}}>Модули</span>
+                        </div>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={`1`}>
                         <Card.Body>
@@ -75,41 +99,48 @@ class ModulesList extends React.Component {
                 this.props.setContentPanel('documentation')
                 this.props.closeDrawer(false)
             }}>
-                <div style={{textAlign: 'center', fontWeight: 'bold'}}>Документация</div>
-            </div>
-            <div className={'card-header'}>
-                <div style={{textAlign: 'center', fontWeight: 'bold'}}
-                     onClick={() => {
-                         this.props.setContentPanel('calendar')
-                         this.props.closeDrawer(false)
-                     }}>Календарь событий
+                <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                    <FileEarmarkText height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Документация</span>
                 </div>
             </div>
-            <div className={'card-header'}>
-                <div style={{textAlign: 'center', fontWeight: 'bold'}}
-                     onClick={() => {
-                         this.props.setContentPanel('bot')
-                         this.props.closeDrawer(false)
-                     }}>Бот
+            <div className={'card-header'} onClick={() => {
+                this.props.setContentPanel('calendar')
+                this.props.closeDrawer(false)
+            }}>
+                <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                    <CalendarEvent height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Календарь событий</span>
                 </div>
             </div>
-            <div className={'card-header'}>
-                <div style={{textAlign: 'center', fontWeight: 'bold'}} onClick={() => {
-                         this.props.setContentPanel('building')
-                         this.props.closeDrawer(false)
-                     }}>
-                    Схема здания
+            <div className={'card-header'} onClick={() => {
+                this.props.setContentPanel('bot')
+                this.props.closeDrawer(false)
+            }}>
+                <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                    <InfoCircle height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Бот</span>
+                </div>
+            </div>
+            <div className={'card-header'} onClick={() => {
+                    this.props.setContentPanel('building')
+                    this.props.closeDrawer(false)
+                }}>
+                <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                    <Building height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Схема здания</span>
                 </div>
             </div>
             {
                 this.props.userData && this.props.userData.type === 'master' &&
-                <div className={'card-header'}>
-                    <div style={{textAlign: 'center', fontWeight: 'bold'}}
-                         onClick={() => {
+                <div className={'card-header'} onClick={() => {
                              this.props.setContentPanel('students')
                              this.props.closeDrawer(false)
-                         }}>Ученики
-                    </div>
+                         }}>
+                    <div style={{paddingLeft: '40px', fontWeight: 'bold'}}>
+                    <People height={'26px'} width={'26px'}/>
+                    <span style={{paddingLeft: '20px'}}>Ученики</span>
+                </div>
                 </div>
             }
         </div>

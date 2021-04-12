@@ -147,6 +147,10 @@ def restrict_type(value):
         raise ValidationError('This user is not master')
 
 
+class UserGroup(models.Model):
+    information = models.TextField(default='', blank=True)
+
+
 class UserExtension(models.Model):
     class UserTypes(models.TextChoices):
         USER = 'user', 'user'
@@ -155,10 +159,16 @@ class UserExtension(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.deletion.CASCADE)
     total_score = models.IntegerField(default=0)
     type = models.CharField(max_length=100, choices=UserTypes.choices, default='user')
+    days_count = models.PositiveIntegerField(default=0)
+    master_mark = models.PositiveIntegerField(default=0)
+    completed_tasks_count = models.PositiveIntegerField(default=0)
+    bot_messages_count = models.PositiveIntegerField(default=0)
+    chat_messages_count = models.PositiveIntegerField(default=0)
     master = models.ForeignKey(to=User, null=True,
                                related_name='students',
                                validators=(restrict_type,),
                                on_delete=models.deletion.SET_NULL, blank=True)
+    group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.master:

@@ -150,6 +150,7 @@ SWAGGER_SETTINGS = {
     }
 }
 
+
 try:
     from .local_settings import *
 except ImportError:

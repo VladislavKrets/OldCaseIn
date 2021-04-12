@@ -385,7 +385,6 @@
   <script src="{% static 'floor_editor/additional_scripts.js' %}"></script>
 <script>
     const data = {{ json }};
-    console.log(data.replace('\\"', '"'));
     const json = JSON.parse(data);
     initHistory()
     load(0, false, false, json);

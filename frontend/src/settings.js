@@ -1,6 +1,6 @@
 export default function settings () {
   return {
-    BASE_HOST: 'https://case-in-prod.herokuapp.com/',
-    BASE_URL: 'https://case-in-prod.herokuapp.com/api'
+    BASE_HOST: 'http://127.0.0.1:8000',
+    BASE_URL: 'http://127.0.0.1:8000/api'
   }
 }

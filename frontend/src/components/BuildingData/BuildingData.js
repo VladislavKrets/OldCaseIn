@@ -1,4 +1,6 @@
 import React from "react";
+import settings from "../../settings";
+import './BuildingData.css'
 
 export default class BuildingData extends React.Component {
 

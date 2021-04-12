@@ -6,6 +6,8 @@ import axios from './api'
 import cookie from "react-cookies";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Main from "./panels/Main/Main";
+import User from "./components/User/User";
+import General from "./panels/General/General";
 
 class App extends React.Component {
 
@@ -284,6 +286,16 @@ class App extends React.Component {
                           getFloors={this.getFloors}
                     />
                 </PrivateRoute>
+                <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/me/'}>
+                    <User logOut={this.logOut}
+                          userData={this.state.userData}
+                          setUserData={this.setUserData}
+                          token={this.state.token}
+                    />
+                </PrivateRoute>
+                <Route exact path=''>
+                    <General/>
+                </Route>
             </Switch>
         );
     }
