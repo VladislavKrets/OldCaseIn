@@ -168,11 +168,13 @@ class UserExtension(models.Model):
                                related_name='students',
                                validators=(restrict_type,),
                                on_delete=models.deletion.SET_NULL, blank=True)
-    group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.CASCADE)
+    group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.master:
             self.master = None
+        if not self.group:
+            self.group = None
         super(UserExtension, self).save(*args, **kwargs)
 
 
