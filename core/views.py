@@ -10,9 +10,8 @@ from rest_framework.views import APIView
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from django.db.models import F
-from core.permissions import IsStudentsAccessed, IsOwner
+from core.permissions import IsStudentsAccessed, IsOwner, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from core import bot
 
@@ -208,6 +207,10 @@ class ResultTestApiView(APIView):
         test_results.result_score = right_check_answers + right_text_answers
         test_results.max_score = all_right_answers
         test_results.save()
+        score = round(test_results.result_score / test_results.max_score * 100, 2)
+        userextension = request.user.userextension
+        userextension.total_score += score
+        userextension.save()
         serializer = serializers.LessonResultSerializer(instance=test_results)
         return response.Response(data=serializer.data)
 
@@ -263,6 +266,9 @@ class BotApiView(APIView):
         serializer.is_valid(raise_exception=True)
         text = serializer.validated_data['text']
         bot_response = bot.bot(text)
+        user = request.user
+        user.userextension.bot_messages_count += 1
+        user.userextension.save()
         return response.Response(data={'text': bot_response}, status=status.HTTP_200_OK)
 
 

@@ -7,4 +7,5 @@ class CoreConfig(AppConfig):
     def ready(self):
         from core import bot
         bot.train()
+        bot.bot('росатом')
 

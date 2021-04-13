@@ -56,10 +56,18 @@ class UserSerializer(serializers.ModelSerializer):
     total_score = serializers.IntegerField(source='userextension.total_score')
     type = serializers.CharField(source='userextension.type')
     master = serializers.PrimaryKeyRelatedField(read_only=True, source='userextension.master')
+    days_count = serializers.IntegerField(source='userextension.days_count')
+    master_mark = serializers.IntegerField(source='userextension.master_mark')
+    completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
+    bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
+    chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
+    group = serializers.PrimaryKeyRelatedField(source='userextension.group', read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type', 'master')
+        fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type', 'master',
+                  'days_count', 'master_mark', 'completed_tasks_count',
+                  'bot_messages_count', 'chat_messages_count', 'group')
 
     def get_related_field(self, model_field):
         return UserSerializer()

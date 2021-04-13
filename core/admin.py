@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from core.models import Module, Lesson, \
     Question, QuestionAnswer, SavedQuestionAnswer, \
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
-    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData, Building
+    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData, Building, UserGroup
 import nested_admin
 
 
@@ -90,4 +90,5 @@ admin.site.register(SavedQuestionAnswer)
 admin.site.register(EventCalendar)
 admin.site.register(LessonResult)
 admin.site.register(Documentation)
+admin.site.register(UserGroup)
 admin.site.register(BotTrainer, BotTrainerAdmin)
