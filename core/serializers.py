@@ -74,6 +74,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+
+        if instance.userextension.group:
+            rank = models.User.objects \
+                .order_by('-userextension__total_score', 'first_name', 'last_name') \
+                .filter(userextension__group=instance.userextension.group,
+                        userextension__total_score__gte=instance.userextension.total_score,
+                        first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                .count()
+            data['rank'] = rank
         modules = models.Module.objects.all()
         serializer = ModuleResultSerializer(instance=modules, many=True)
         serializer.context['user'] = instance
@@ -87,6 +96,18 @@ class PrivateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'total_score')
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.userextension.group:
+            rank = models.User.objects \
+                .order_by('-userextension__total_score', 'first_name', 'last_name') \
+                .filter(userextension__group=instance.userextension.group,
+                        userextension__total_score__gte=instance.userextension.total_score,
+                        first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                .count()
+            data['rank'] = rank
+        return data
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:

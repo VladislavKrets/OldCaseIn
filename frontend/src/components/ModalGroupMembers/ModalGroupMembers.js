@@ -46,9 +46,9 @@ export default class ModalGroupMembers extends React.Component {
                                 <Table>
                                     <thead>
                                     <tr>
-                                        <th>Место</th>
-                                        <th>Имя</th>
                                         <th>Рейтинг</th>
+                                        <th>Имя</th>
+                                        <th>Баллы</th>
                                     </tr>
                                     </thead>
                                     <tbody>

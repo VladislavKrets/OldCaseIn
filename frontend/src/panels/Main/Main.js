@@ -211,6 +211,7 @@ class Main extends React.Component {
                                         getBuildings={this.props.getBuildings}
                                         getFloors={this.props.getFloors}
                                     /> : <User logOut={this.props.logOut}
+                                               getUser={this.props.getUser}
                                                userData={this.props.userData}
                                                setUserData={this.props.setUserData}
                                                getUserGroupData={this.props.getUserGroupData}

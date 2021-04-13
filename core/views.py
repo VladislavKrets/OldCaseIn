@@ -1,3 +1,4 @@
+from django.db.models.functions import RowNumber, Rank
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, permissions, response, status
@@ -10,7 +11,7 @@ from rest_framework.views import APIView
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
-from django.db.models import F
+from django.db.models import F, Window
 from core.permissions import IsStudentsAccessed, IsOwner, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from core import bot
@@ -307,8 +308,9 @@ class GroupUserMixin(ListModelMixin, GenericAPIView):
         group = user.userextension.group
         if not group:
             return models.User.objects.none()
-        return models.User.objects.filter(userextension__group=group)\
-            .order_by('-userextension__total_score')
+        queryset = models.User.objects.filter(userextension__group=group) \
+            .order_by('-userextension__total_score', 'first_name', 'last_name')
+        return queryset
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)

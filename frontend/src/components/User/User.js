@@ -21,6 +21,12 @@ class User extends React.Component {
         })
     }
 
+    componentDidMount() {
+        this.props.getUser().then(data => {
+            this.props.setUserData(data.data)
+        })
+    }
+
     render() {
         return <div className={'user-content'}>
             <div style={{margin: '0 12px', boxSizing: 'border-box'}}>
@@ -41,6 +47,16 @@ class User extends React.Component {
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
                             Ваш рейтинг:
+                        </h3>
+                        <h4 style={{color: 'inherit', textAlign: 'center'}}>
+                            {this.props.userData.rank}
+                        </h4>
+                    </div>
+                </div>
+                <div className={'user-content-card'}>
+                    <div>
+                        <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
+                            Количество баллов:
                         </h3>
                         <h4 style={{color: 'inherit', textAlign: 'center'}}>
                             {this.props.userData.total_score}
