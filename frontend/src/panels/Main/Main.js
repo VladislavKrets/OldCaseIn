@@ -32,7 +32,7 @@ class Main extends React.Component {
             height: window.innerHeight,
             isModulesDrawerShowed: false,
             isUserDrawerShowed: false,
-            contentPanel: 'lessons',
+            contentPanel: 'user',
             modalShow: false
         }
 

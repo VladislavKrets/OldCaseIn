@@ -49,7 +49,7 @@ class User extends React.Component {
                             Ваш рейтинг:
                         </h3>
                         <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                            {this.props.userData.rank}
+                            {this.props.userData.rank === undefined ? 'Недоступно' : this.props.userData.rank}
                         </h4>
                     </div>
                 </div>

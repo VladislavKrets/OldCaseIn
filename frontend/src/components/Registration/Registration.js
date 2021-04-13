@@ -33,14 +33,15 @@ class Registration extends React.Component {
     handleRepeatedPassword = (event) => {
         if (event.target.name === 'password') {
             if (this.state.repeated_password !== '') {
-                this.setState({password_has_error: !(event.target.value === ''
-                    || event.target.value === this.state.repeated_password)})
-            }
-            else this.setState({password_has_error: false})
+                this.setState({
+                    password_has_error: !(event.target.value === ''
+                        || event.target.value === this.state.repeated_password)
+                })
+            } else this.setState({password_has_error: false})
         } else if (event.target.name === 'repeated_password') {
             this.setState({
                 password_has_error: !(event.target.value === ''
-                || event.target.value === this.state.regData.password),
+                    || event.target.value === this.state.regData.password),
                 repeated_password: event.target.value
             })
         }
@@ -59,73 +60,58 @@ class Registration extends React.Component {
 
 
     render() {
-        return <div className={'auth-login-registration-container'}>
-
-            <div className={'auth-login-registration-right-part'}>
-                <div className={'auth-login-registration-form'}>
-                    <Form onSubmit={this.onSubmit}>
-                        <Form.Group controlId="formBasicUserName">
-                            <Form.Label>Имя</Form.Label>
-                            <Form.Control placeholder="Введите имя" name={'name'}
-                                          value={this.state.regData.name} onChange={this.handleChange}/>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="formBasicUserLastName">
-                            <Form.Label>Фамилия</Form.Label>
-                            <Form.Control placeholder="Введите фамилию" name={'surname'}
-                                          value={this.state.regData.surname} onChange={this.handleChange}/>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Email адрес</Form.Label>
-                            <Form.Control type="email" placeholder="Введите email" name={'email'}
-                                          value={this.state.regData.email} onChange={this.handleChange}/>
-                            <Form.Text className="text-muted">
-                                Мы не будем распространять ваш email
-                            </Form.Text>
-                        </Form.Group>
-
-                        <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control type="password" placeholder="Пароль" name={'password'}
-                                          required="required"
-                                          value={this.state.regData.password} onChange={this.handleChange}/>
-                        </Form.Group>
-
-                        <Form.Group controlId="formBasicRepeatedPassword">
-                            <Form.Label>Введите пароль еще раз</Form.Label>
-                            <Form.Control type="password" placeholder="Пароль" name={'repeated_password'}
-                                          required="required" onChange={this.handleRepeatedPassword}/>
-
-                            {
-                                this.state.password_has_error && <div style={{
-                                    width: "200px", backgroundColor: "white", padding: "5px", paddingRight: "20px",
-                                    float: "center"
-                                }}>
-                                    <Form.Text className="text-muted">
-                                    <span style={{color: 'red'}}>
-                                        Пароли не совпадают
-                                    </span>
-                                    </Form.Text>
-                                </div>
-                            }
-                        </Form.Group>
-
-                        <Button variant="primary" type="submit">
-                            Зарегестрироваться
-                        </Button>
-                        {
-                            this.state.isRegError && <div style={{paddingTop: '12px'}}>
-                                <Alert variant={"danger"}>
-                                    Ошибка при регистрации
-                                </Alert>
-                            </div>
-                        }
-                    </Form>
+        return <div>
+            <form onSubmit={this.onSubmit} className={'auth-form'}>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} placeholder="Введите имя" name={'name'}
+                           value={this.state.regData.name} onChange={this.handleChange}/>
                 </div>
-            </div>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} placeholder="Введите фамилию" name={'surname'}
+                           value={this.state.regData.surname} onChange={this.handleChange}/>
+                </div>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} type="email" placeholder="Введите email" name={'email'}
+                           value={this.state.regData.email} onChange={this.handleChange}/>
+                </div>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} type="password" placeholder="Пароль" name={'password'}
+                           required="required"
+                           value={this.state.regData.password} onChange={this.handleChange}/>
+                </div>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} type="password" placeholder="Введите пароль еще раз"
+                           name={'repeated_password'}
+                           required="required" onChange={this.handleRepeatedPassword}/>
+                </div>
+                {
+                    this.state.password_has_error && <div style={{
+                        textAlign: 'center'
+                    }}>
+                       <span style={{color: 'white'}}>
+                          Пароли не совпадают
+                        </span>
+                    </div>
+                }
+                <div className={'auth-form-raw'} style={{textAlign: 'center'}}>
+                    <input type="checkbox" id="agree-5f20" name="agree" required/>
+                    <label htmlFor="agree-5f20" style={{paddingLeft: '4px', display: 'inline'}}>Согласен(а) на обработку персональных
+                        данных</label>
+                </div>
+                <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                    <label className={'general-enter-button'}>
+                        Зарегистрироваться
+                        <input type={'submit'} style={{display: 'none'}}/>
+                    </label>
+                </div>
+                {
+                    this.state.isRegError && <div style={{paddingTop: '12px'}}>
+                        <Alert variant={"danger"}>
+                            Ошибка при регистрации
+                        </Alert>
+                    </div>
+                }
+            </form>
         </div>
     }
 }

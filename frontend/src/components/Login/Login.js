@@ -35,38 +35,43 @@ class Login extends React.Component {
     }
 
     render() {
-        return <div className={'auth-login-registration-container'}>
-            <div className={'auth-login-registration-right-part'}>
-                <div className={'auth-login-registration-form'}>
-                    <Form onSubmit={this.onSubmit}>
-                        <Form.Group controlId="formBasicEmail">
-                            <Form.Label>Email адрес</Form.Label>
-                            <Form.Control type="email" placeholder="Введите email" name={'email'}
-                                          value={this.state.loginData.email} onChange={this.handleChange}/>
-                            <Form.Text className="text-muted">
-                                Мы не будем распространять ваш email
-                            </Form.Text>
-                        </Form.Group>
+        return <div>
+            <h2 style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
+                Авторизация
+            </h2>
+            <form onSubmit={this.onSubmit} className={'auth-form'}>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} type="email" placeholder="Введите email" name={'email'}
+                           value={this.state.loginData.email} onChange={this.handleChange}/>
 
-                        <Form.Group controlId="formBasicPassword">
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control type="password" placeholder="Пароль" name={'password'}
-                                          required="required"
-                                          value={this.state.loginData.password} onChange={this.handleChange}/>
-                        </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Войти
-                        </Button>
-                        {
-                            this.state.isAuthError && <div className={'login-wrong-alert-container'}>
-                                <Alert variant={"danger"}>
-                                    Неверный email или пароль
-                                </Alert>
-                            </div>
-                        }
-                    </Form>
                 </div>
-            </div>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} type="password" placeholder="Пароль" name={'password'}
+                           required="required"
+                           value={this.state.loginData.password} onChange={this.handleChange}/>
+                </div>
+                <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                    <label className={'general-enter-button'}>
+                        Войти
+                        <input type={'submit'} style={{display: 'none'}}/>
+                    </label>
+                </div>
+                {
+                    this.state.isAuthError && <div className={'login-wrong-alert-container'}>
+                        <Alert variant={"danger"}>
+                            Неверный email или пароль
+                        </Alert>
+                    </div>
+                }
+                <div style={{marginTop: '20px', textAlign: 'center'}}>
+                    <a style={{textDecoration: 'none',
+                        color: '#387cbd',
+                        fontSize: '1.25rem',
+                        cursor: 'pointer'}} onClick={() => this.props.changePanel('code_registration')}>
+                        Зарегистрироваться
+                    </a>
+                </div>
+            </form>
         </div>
     }
 }
