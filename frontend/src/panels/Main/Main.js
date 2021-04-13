@@ -1,5 +1,5 @@
 import React from "react";
-import {withRouter} from "react-router";
+import {Switch, withRouter} from "react-router";
 import {Button} from "react-bootstrap";
 import ModuleContent from "../../components/ModuleContent/ModuleContent";
 import ModulesList from "../../components/ModulesList/ModulesList";
@@ -12,6 +12,8 @@ import BotContent from "../../components/BotContent/BotContent";
 import CalendarContent from "../../components/CalendarContent/CalendarContent";
 import Students from "../../components/Students/Students";
 import BuildingData from "../../components/BuildingData/BuildingData";
+import PrivateRoute from "../../components/PrivateRoute/PrivateRoute";
+import User from "../../components/User/User";
 
 class Main extends React.Component {
 
@@ -174,12 +176,13 @@ class Main extends React.Component {
                                      setQuestionsData={this.setQuestionsData}
                                      getQuestions={this.props.getQuestions}
                                      closeDrawer={this.setModulesDrawerShow}
+                                     width={this.state.width}
                                      userData={this.props.userData}
                                      token={this.props.token}
                                      currentLessonId={this.state.currentLessonId}/>
                     </div>
                 }
-                <div style={{width: this.state.width > 770 ? '65%' : '100%'}}>
+                <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
                     {this.state.contentPanel === 'lessons' ?
                         <ModuleContent setCurrentLesson={this.setCurrentLesson}
                                        lessonData={this.state.lessonData}
@@ -204,19 +207,17 @@ class Main extends React.Component {
                                     addEvent={this.props.addEvent}
                                     getEvents={this.props.getEvents}
                                 /> : this.state.contentPanel === 'students' ? <Students/>
-                                : <BuildingData
-                                    getBuildings={this.props.getBuildings}
-                                    getFloors={this.props.getFloors}
+                                    : this.state.contentPanel === 'building' ? <BuildingData
+                                        getBuildings={this.props.getBuildings}
+                                        getFloors={this.props.getFloors}
+                                    /> : <User logOut={this.props.logOut}
+                                               userData={this.props.userData}
+                                               setUserData={this.props.setUserData}
+                                               token={this.props.token}
                                     />
                     }
 
                 </div>
-                {
-                    this.state.width > 770 && <div style={{width: '25%'}}>
-                        <UserProfile logOut={this.props.logOut} setUserData={this.props.setUserData}
-                                     userData={this.props.userData}/>
-                    </div>
-                }
             </div>
         </>
     }

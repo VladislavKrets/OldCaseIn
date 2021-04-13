@@ -38,7 +38,16 @@
 .card-header{
     background-color: white;
 }
-
+.modules-card-content {
+    padding-left: 40px;
+    font-weight: bold;
+}
+@media (max-width: 1270px) {
+    .modules-card-content{
+        padding-left: 0;
+        text-align: center;
+    }
+}
 @media (max-width: 770px) {
     .modules-list::-webkit-scrollbar {
         width: 2px;
