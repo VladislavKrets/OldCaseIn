@@ -60,11 +60,13 @@ class User extends React.Component {
                 <div className={'user-content-card'}>
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
-                            Моя группа
+                            Количество сообщений в чате:
                         </h3>
+                        <h4 style={{color: 'inherit', textAlign: 'center'}}>
+                            {this.props.userData.chat_messages_count}
+                        </h4>
                     </div>
                 </div>
-
                 <div className={'user-content-card'}>
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
@@ -78,11 +80,8 @@ class User extends React.Component {
                 <div className={'user-content-card'}>
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
-                            Количество сообщений в чате:
+                            Моя группа
                         </h3>
-                        <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                            {this.props.userData.chat_messages_count}
-                        </h4>
                     </div>
                 </div>
                 <div className={'user-content-card'}>
