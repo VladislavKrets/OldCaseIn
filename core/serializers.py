@@ -36,7 +36,10 @@ class RegistrationSerializer(serializers.Serializer):
                                    first_name=validated_data['name'],
                                    last_name=validated_data['surname'])
         user.set_password(validated_data['password'])
-        user.userextension = models.UserExtension.objects.get_or_create(user=user, type=registration_code.type)[0]
+        userextension = models.UserExtension.objects.get_or_create(user=user,
+                                                                   type=registration_code.type,
+                                                                   group=registration_code.group)[0]
+        user.userextension = userextension
         user.save()
         registration_code.delete()
         return user
@@ -76,13 +79,24 @@ class UserSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
 
         if instance.userextension.group:
-            rank = models.User.objects \
+            first_rank = models.User.objects \
                 .order_by('-userextension__total_score', 'first_name', 'last_name') \
                 .filter(userextension__group=instance.userextension.group,
-                        userextension__total_score__gte=instance.userextension.total_score,
-                        first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                        userextension__total_score__gt=instance.userextension.total_score) \
                 .count()
-            data['rank'] = rank
+            second_rank = models.User.objects \
+                .order_by('first_name', 'last_name') \
+                .filter(userextension__group=instance.userextension.group,
+                        userextension__total_score=instance.userextension.total_score,
+                        first_name__lt=instance.first_name) \
+                .count()
+            third_rank = models.User.objects \
+                .order_by('last_name') \
+                .filter(userextension__group=instance.userextension.group,
+                        userextension__total_score=instance.userextension.total_score,
+                        first_name=instance.first_name, last_name__lte=instance.last_name) \
+                .count()
+            data['rank'] = first_rank + second_rank + third_rank
         modules = models.Module.objects.all()
         serializer = ModuleResultSerializer(instance=modules, many=True)
         serializer.context['user'] = instance
@@ -108,6 +122,7 @@ class PrivateUserSerializer(serializers.ModelSerializer):
                 .count()
             data['rank'] = rank
         return data
+
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:

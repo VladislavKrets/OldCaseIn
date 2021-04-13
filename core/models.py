@@ -6,6 +6,13 @@ from rest_framework.exceptions import ValidationError
 gd_storage = GoogleDriveStorage()
 
 
+class UserGroup(models.Model):
+    information = models.TextField(default='', blank=True)
+
+    def __str__(self):
+        return self.information
+
+
 class RegistrationCode(models.Model):
     class UserTypes(models.TextChoices):
         USER = 'user', 'user'
@@ -13,6 +20,13 @@ class RegistrationCode(models.Model):
 
     type = models.CharField(max_length=100, choices=UserTypes.choices, default='user')
     code = models.CharField(max_length=255, unique=True)
+    group = models.ForeignKey(to=UserGroup, default=None, blank=True,
+                              null=True, on_delete=models.deletion.SET_NULL)
+
+    def save(self, *args, **kwargs):
+        if not self.group:
+            self.group = None
+        super(RegistrationCode, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.code
@@ -145,10 +159,6 @@ def restrict_type(value):
     master = User.objects.get(pk=value)
     if master.userextension.type != 'master':
         raise ValidationError('This user is not master')
-
-
-class UserGroup(models.Model):
-    information = models.TextField(default='', blank=True)
 
 
 class UserExtension(models.Model):
