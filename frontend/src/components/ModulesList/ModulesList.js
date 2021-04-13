@@ -2,7 +2,7 @@ import React from "react";
 import {Accordion, Card, Button} from "react-bootstrap";
 import './ModulesList.css'
 import {Link} from "react-router-dom";
-import {Person, Collection, FileEarmarkText, CalendarEvent, Building, InfoCircle, People} from 'react-bootstrap-icons'
+import {Person, Collection, FileEarmarkText, CalendarEvent, Building, InfoCircle, People, BoxArrowRight} from 'react-bootstrap-icons'
 
 class ModulesList extends React.Component {
 
@@ -134,6 +134,16 @@ class ModulesList extends React.Component {
                         {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Ученики</span>}
                     </div>
                 </div>
+            }
+            {this.props.setModalShow && <div className={'card-header'} onClick={() => {
+                this.props.setModalShow(true)
+                this.props.closeDrawer(false)
+            }}>
+                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                    <BoxArrowRight height={'26px'} width={'26px'}/>
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Выйти</span>}
+                </div>
+            </div>
             }
         </div>
     }

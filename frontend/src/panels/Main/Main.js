@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap";
 import ModuleContent from "../../components/ModuleContent/ModuleContent";
 import ModulesList from "../../components/ModulesList/ModulesList";
 import UserProfile from "../../components/UserProfile/UserProfile";
-import {List, PersonLinesFill} from 'react-bootstrap-icons';
+import {List, BoxArrowRight} from 'react-bootstrap-icons';
 import './Main.css'
 import NavigationDrawer from "../../elements/NavigationDrawer/NavigationDrawer";
 import DocumentationContent from "../../components/DocumentationContent/DocumentationContent";
@@ -14,6 +14,8 @@ import Students from "../../components/Students/Students";
 import BuildingData from "../../components/BuildingData/BuildingData";
 import PrivateRoute from "../../components/PrivateRoute/PrivateRoute";
 import User from "../../components/User/User";
+import ModalGroupMembers from "../../components/ModalGroupMembers/ModalGroupMembers";
+import ModalExit from "../../components/ModalExit/ModalExit";
 
 class Main extends React.Component {
 
@@ -30,7 +32,8 @@ class Main extends React.Component {
             height: window.innerHeight,
             isModulesDrawerShowed: false,
             isUserDrawerShowed: false,
-            contentPanel: 'lessons'
+            contentPanel: 'lessons',
+            modalShow: false
         }
 
     }
@@ -86,6 +89,12 @@ class Main extends React.Component {
         })
     }
 
+    setModalShow = (modalShow) => {
+        this.setState({
+            modalShow: modalShow
+        })
+    }
+
     componentDidMount() {
         document.title = "Уроки"
         this.props.setUserData()
@@ -127,14 +136,9 @@ class Main extends React.Component {
                                  closeDrawer={this.setModulesDrawerShow}
                                  setQuestionsData={this.setQuestionsData}
                                  getQuestions={this.props.getQuestions}
-                                 currentLessonId={this.state.currentLessonId}/>
-                </NavigationDrawer>
-            }
-            {
-                this.state.isUserDrawerShowed &&
-                <NavigationDrawer right={true} onClose={() => this.setUserDrawerShow(false)}>
-                    <UserProfile logOut={this.props.logOut} setUserData={this.props.setUserData}
-                                 userData={this.props.userData}/>
+                                 currentLessonId={this.state.currentLessonId}
+
+                    />
                 </NavigationDrawer>
             }
             <div style={{display: this.state.width > 770 ? 'flex' : null,}}>
@@ -157,8 +161,8 @@ class Main extends React.Component {
                             <List size={32}/>
                         </div>
                         <div style={{display: 'flex', alignItems: 'center'}}>Главная</div>
-                        <div onClick={() => this.setUserDrawerShow(true)}>
-                            <PersonLinesFill size={32}/>
+                        <div onClick={() => this.setModalShow(true)}>
+                            <BoxArrowRight size={32}/>
                         </div>
                     </div>
                 }
@@ -179,7 +183,9 @@ class Main extends React.Component {
                                      width={this.state.width}
                                      userData={this.props.userData}
                                      token={this.props.token}
-                                     currentLessonId={this.state.currentLessonId}/>
+                                     currentLessonId={this.state.currentLessonId}
+                                     setModalShow={this.setModalShow}
+                        />
                     </div>
                 }
                 <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
@@ -221,6 +227,12 @@ class Main extends React.Component {
 
                 </div>
             </div>
+            {
+                this.state.modalShow && <ModalExit
+                    show={this.state.modalShow}
+                    logOut={this.props.logOut}
+                    onHide={() => this.setModalShow(false)}/>
+            }
         </>
     }
 }
