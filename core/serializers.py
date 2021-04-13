@@ -81,6 +81,13 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
 
+class PrivateUserSerializer(serializers.ModelSerializer):
+    total_score = serializers.IntegerField(source='userextension.total_score')
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'total_score')
+
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Lesson

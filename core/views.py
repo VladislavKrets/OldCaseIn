@@ -42,6 +42,9 @@ class LoginView(views.APIView):
 
 
 class UserDataApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         serializer = serializers.UserSerializer(instance=request.user)
         return response.Response(serializer.data)
@@ -289,6 +292,23 @@ class FloorModelMixin(ListModelMixin, GenericAPIView):
 
     def get_queryset(self):
         return models.FloorData.objects.filter(building=self.kwargs['building']).order_by('floor_number')
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class GroupUserMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PrivateUserSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        group = user.userextension.group
+        if not group:
+            return models.User.objects.none()
+        return models.User.objects.filter(userextension__group=group)\
+            .order_by('-userextension__total_score')
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)

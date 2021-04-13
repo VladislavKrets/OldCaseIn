@@ -213,6 +213,7 @@ class Main extends React.Component {
                                     /> : <User logOut={this.props.logOut}
                                                userData={this.props.userData}
                                                setUserData={this.props.setUserData}
+                                               getUserGroupData={this.props.getUserGroupData}
                                                token={this.props.token}
                                     />
                     }

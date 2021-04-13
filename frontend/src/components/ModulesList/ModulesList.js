@@ -36,17 +36,17 @@ class ModulesList extends React.Component {
                      this.props.setContentPanel('user')
                      this.props.closeDrawer(false)
                  }}>
-                <div className={'modules-card-content'}>
+                <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                     <Person height={'26px'} width={'26px'}/>
-                    {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Профиль</span>}
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Профиль</span>}
                 </div>
             </div>
             <Accordion onClick={() => this.props.setContentPanel('lessons')}>
                 <Card>
                     <Accordion.Toggle as={Card.Header} variant="link" eventKey={`1`}>
-                        <div className={'modules-card-content'}>
+                        <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                             <Collection height={'26px'} width={'26px'}/>
-                            {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Модули</span>}
+                            {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Модули</span>}
                         </div>
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={`1`}>
@@ -91,36 +91,36 @@ class ModulesList extends React.Component {
                 this.props.setContentPanel('documentation')
                 this.props.closeDrawer(false)
             }}>
-                <div className={'modules-card-content'}>
+                <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                     <FileEarmarkText height={'26px'} width={'26px'}/>
-                    {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Документация</span>}
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Документация</span>}
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
                 this.props.setContentPanel('calendar')
                 this.props.closeDrawer(false)
             }}>
-                <div className={'modules-card-content'}>
+                <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                     <CalendarEvent height={'26px'} width={'26px'}/>
-                    {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Календарь событий</span>}
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Календарь событий</span>}
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
                 this.props.setContentPanel('bot')
                 this.props.closeDrawer(false)
             }}>
-                <div className={'modules-card-content'}>
+                <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                     <InfoCircle height={'26px'} width={'26px'}/>
-                    {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Бот</span>}
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Бот</span>}
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
                 this.props.setContentPanel('building')
                 this.props.closeDrawer(false)
             }}>
-                <div className={'modules-card-content'}>
+                <div className={'modules-card-content'  + (this.state.width ? ' modules-card-content-center' : '')}>
                     <Building height={'26px'} width={'26px'}/>
-                    {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Схема здания</span>}
+                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Схема здания</span>}
                 </div>
             </div>
             {
@@ -129,9 +129,9 @@ class ModulesList extends React.Component {
                     this.props.setContentPanel('students')
                     this.props.closeDrawer(false)
                 }}>
-                    <div className={'modules-card-content'}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <People height={'26px'} width={'26px'}/>
-                        {this.props.width && this.props.width > 1270 && <span style={{paddingLeft: '20px'}}>Ученики</span>}
+                        {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Ученики</span>}
                     </div>
                 </div>
             }

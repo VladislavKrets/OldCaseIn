@@ -30,5 +30,6 @@ urlpatterns += [
     path('bot/', views.BotApiView.as_view()),
     path('buildings/<int:building>/floors/', views.FloorModelMixin.as_view()),
     path('buildings/', views.BuildingModelMixin.as_view()),
-    path('bot/', views.BotApiView.as_view())
+    path('bot/', views.BotApiView.as_view()),
+    path('group_user_data/', views.GroupUserMixin.as_view())
 ]

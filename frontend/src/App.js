@@ -218,6 +218,15 @@ class App extends React.Component {
         })
     }
 
+    getUserGroupData = () => {
+        return axios.get(`group_user_data/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -284,6 +293,7 @@ class App extends React.Component {
                           token={this.state.token}
                           getBuildings={this.getBuildings}
                           getFloors={this.getFloors}
+                          getUserGroupData={this.getUserGroupData}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

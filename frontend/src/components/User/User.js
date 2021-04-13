@@ -1,13 +1,24 @@
 import React from "react";
 import './User.css'
+import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
+import ModalGroupMembers from "../ModalGroupMembers/ModalGroupMembers";
 
 class User extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            modalShow: false,
+        }
     }
 
     capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    setModalShow = (modalShow) => {
+        this.setState({
+            modalShow: modalShow
+        })
     }
 
     render() {
@@ -77,7 +88,7 @@ class User extends React.Component {
                         </h4>
                     </div>
                 </div>
-                <div className={'user-content-card'}>
+                <div className={'user-content-card'} style={{cursor: 'pointer'}} onClick={() => this.setModalShow(true)}>
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
                             Моя группа
@@ -95,6 +106,12 @@ class User extends React.Component {
                     </div>
                 </div>
             </div>
+            {
+                this.state.modalShow && <ModalGroupMembers
+                    show={this.state.modalShow}
+                    getUserGroupData={this.props.getUserGroupData}
+                    onHide={() => this.setModalShow(false)}/>
+            }
         </div>
     }
 }
