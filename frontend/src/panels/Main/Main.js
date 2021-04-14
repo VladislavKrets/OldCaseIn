@@ -40,6 +40,8 @@ class Main extends React.Component {
             moduleLoading: false,
         }
         this.prevKey = null
+        this.prevWidth = window.innerWidth
+        this.prevHeight = window.innerHeight
     }
 
     setModuleLoading = (loading) => {
@@ -82,6 +84,8 @@ class Main extends React.Component {
     }
 
     updateSize = () => {
+        this.prevWidth = this.state.width
+        this.prevHeight = this.state.height
         this.setState({
             width: window.innerWidth,
             height: window.innerHeight,
@@ -119,9 +123,15 @@ class Main extends React.Component {
     }
 
     setPrevKey = () => {
-        const prevKey = Date.now()
-        this.prevKey = prevKey
-        return prevKey
+        if (this.state.lessonKey && this.prevWidth === this.state.width
+            && this.prevHeight === this.state.height) {
+            const prevKey = Date.now()
+            this.prevKey = prevKey
+            return prevKey
+        }
+        this.prevWidth = this.state.width
+        this.prevHeight = this.state.height
+        return this.prevKey
     }
 
     componentDidMount() {
@@ -230,7 +240,7 @@ class Main extends React.Component {
                 }
                 <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
                     {this.state.contentPanel === 'lessons' ?
-                        <ModuleContent key={this.state.lessonKey ? this.setPrevKey() : this.prevKey}
+                        <ModuleContent key={this.setPrevKey()}
                                        setCurrentLesson={this.setCurrentLesson}
                                        lessonData={this.state.lessonData}
                                        modules={this.state.modules}
