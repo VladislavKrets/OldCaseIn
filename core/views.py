@@ -164,8 +164,10 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
             models.SavedQuestionAnswer.objects.filter(answer__question=question,
                                                       user=self.request.user).delete()
             return self.create(request, args, kwargs)
-        if self.get_queryset().exists():
-            elem = self.get_queryset().first()
+        queryset = models.SavedQuestionAnswer.objects.filter(user=self.request.user,
+                                                         answer=answer)
+        if queryset.exists():
+            elem = queryset.first()
             kwargs['pk'] = elem.id
             self.kwargs['pk'] = kwargs['pk']
             return self.partial_update(request, args, kwargs)

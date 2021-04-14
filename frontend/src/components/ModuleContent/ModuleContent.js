@@ -25,20 +25,20 @@ class ModuleContent extends React.Component {
     handleChange = (event, type) => {
         if (type === 'radio') {
             for (let i = 0; i < event.target.form.length; i++) {
-                this.setState({[event.target.form[i].value]: false})
+                this.setState({[event.target.form[i].name]: false})
             }
             this.setState({
-                [event.target.value]: event.target.checked
+                [event.target.name]: event.target.checked
             })
-            this.saveAnswer(event.target.value, {})
+            this.saveAnswer(event.target.name, {})
         } else if (type === 'checkbox') {
             this.setState({
-                [event.target.value]: event.target.checked
+                [event.target.name]: event.target.checked
             })
             if (event.target.checked) {
-                this.saveAnswer(event.target.value, {})
+                this.saveAnswer(event.target.name, {})
             } else {
-                this.removeAnswer(event.target.value)
+                this.removeAnswer(event.target.name)
             }
         } else if (type === 'text') {
             this.setState({
@@ -87,6 +87,7 @@ class ModuleContent extends React.Component {
             })
     }
 
+
     render() {
         const data = {}
         if (this.props.questionData && !this.state.isDataLoaded) {
@@ -106,12 +107,14 @@ class ModuleContent extends React.Component {
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'moduleContent'}>
                     {
-                        !this.props.lessonData && <div className={'no-lessons'}>
+                        (!this.props.currentModule || !this.props.currentLessonId
+                            || !this.props.lessonData) && <div className={'no-lessons'}>
                             Здесь будет отображаться статистика прохождения курса
                         </div>
                     }
                     {
-                        this.props.lessonData &&
+                        this.props.currentModule && this.props.currentLessonId
+                            && this.props.lessonData &&
                         <div className={'moduleContent-content'}>
                             <Jumbotron>
                                 <h3 className={'moduleContent-title'}>
@@ -159,27 +162,29 @@ class ModuleContent extends React.Component {
                                             {
                                                 item.answers.map(answer => {
                                                     {
-                                                        return <Form.Group controlId={`${item.id}`}>
+                                                        return <Form.Group>
                                                             <div>
                                                                 {
                                                                     item.question_type === 'radio'
                                                                         ? <Form.Check
+                                                                            id={`${answer.id}`}
                                                                             type={'radio'}
                                                                             disabled={!!this.props.lessonData.result}
-                                                                            checked={this.state[`${answer.id}`]}
+                                                                            checked={!!this.state[`${answer.id}`]}
                                                                             label={answer.answer}
-                                                                            value={`${answer.id}`}
-                                                                            name={`${item.id}`}
+                                                                            value={`${item.id}`}
+                                                                            name={`${answer.id}`}
                                                                             onChange={(e) => this.handleChange(e, 'radio')}
                                                                         />
                                                                         : item.question_type === 'checkbox'
                                                                         ? <Form.Check
+                                                                            id={`${answer.id}`}
                                                                             disabled={!!this.props.lessonData.result}
-                                                                            checked={this.state[`${answer.id}`]}
+                                                                            checked={!!this.state[`${answer.id}`]}
                                                                             label={answer.answer}
                                                                             type={'checkbox'}
-                                                                            value={`${answer.id}`}
-                                                                            name={`${item.id}`}
+                                                                            value={`${item.id}`}
+                                                                            name={`${answer.id}`}
                                                                             onChange={(e) => this.handleChange(e, 'checkbox')}
                                                                         />
                                                                         : item.question_type === 'text'

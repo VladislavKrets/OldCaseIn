@@ -17,12 +17,15 @@ class IsAuthenticated(permissions.BasePermission):
 
     def has_permission(self, request, view):
         is_authenticated = bool(request.user and request.user.is_authenticated)
-        last_login = request.user.last_login
-        now = datetime.now()
-        if is_authenticated and (last_login is None or last_login.date() != now.date()):
-            request.user.last_login = now
-            request.user.save()
-            userextension = request.user.userextension
-            userextension.days_count += 1
-            userextension.save()
+        try:
+            last_login = request.user.last_login
+            now = datetime.now()
+            if is_authenticated and (last_login is None or last_login.date() != now.date()):
+                request.user.last_login = now
+                request.user.save()
+                userextension = request.user.userextension
+                userextension.days_count += 1
+                userextension.save()
+        except AttributeError:
+            pass
         return is_authenticated

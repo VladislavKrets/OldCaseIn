@@ -33,9 +33,10 @@ class Main extends React.Component {
             isModulesDrawerShowed: false,
             isUserDrawerShowed: false,
             contentPanel: 'user',
-            modalShow: false
+            modalShow: false,
+            lessonKey: false,
         }
-
+        this.prevKey = null
     }
 
     setCurrentLesson = (currentModule, currentLessonId) => {
@@ -95,6 +96,12 @@ class Main extends React.Component {
         })
     }
 
+    setPrevKey = () => {
+        const prevKey = Date.now()
+        this.prevKey = prevKey
+        return prevKey
+    }
+
     componentDidMount() {
         document.title = "Уроки"
         this.props.setUserData()
@@ -117,6 +124,12 @@ class Main extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateSize);
+    }
+
+    setLessonKey = (key) => {
+        this.setState({
+            lessonKey: key
+        })
     }
 
     render() {
@@ -184,13 +197,15 @@ class Main extends React.Component {
                                      userData={this.props.userData}
                                      token={this.props.token}
                                      currentLessonId={this.state.currentLessonId}
+                                     setLessonKey={this.setLessonKey}
                                      setModalShow={this.setModalShow}
                         />
                     </div>
                 }
                 <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
                     {this.state.contentPanel === 'lessons' ?
-                        <ModuleContent setCurrentLesson={this.setCurrentLesson}
+                        <ModuleContent key={this.state.lessonKey ? this.setPrevKey() : this.prevKey}
+                                       setCurrentLesson={this.setCurrentLesson}
                                        lessonData={this.state.lessonData}
                                        modules={this.state.modules}
                                        setLessonData={this.setPlainLessonData}
