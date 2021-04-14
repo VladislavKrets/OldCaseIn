@@ -27,13 +27,16 @@ class ModulesList extends React.Component {
     }
 
     chooseLesson = (module, lessonId) => {
+        this.props.setModuleLoading(true)
         this.props.setCurrentLesson(module, lessonId)
-        this.props.getLesson(lessonId).then(data => {
-            this.props.setLessonData(data.data)
+        this.props.getLesson(lessonId).then(data1 => {
+            this.props.getQuestions(lessonId).then(data => {
+                this.props.setLessonData(data1.data)
+                this.props.setQuestionsData(data.data)
+                this.props.setModuleLoading(false)
+            })
         })
-        this.props.getQuestions(lessonId).then(data => {
-            this.props.setQuestionsData(data.data)
-        })
+
         this.props.closeDrawer(false)
     }
 
@@ -60,7 +63,7 @@ class ModulesList extends React.Component {
                                           this.props.setLessonKey(false)
                                           this.props.setCurrentLesson(null, null)
                                       }
-                          }>
+                                      }>
                         <div
                             className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                             <Collection height={'26px'} width={'26px'}/>

@@ -36,9 +36,16 @@ class Main extends React.Component {
             contentPanel: 'user',
             modalShow: false,
             lessonKey: false,
-            completedModalShow: false
+            completedModalShow: false,
+            moduleLoading: false,
         }
         this.prevKey = null
+    }
+
+    setModuleLoading = (loading) => {
+        this.setState({
+            moduleLoading: loading
+        })
     }
 
     setCurrentLesson = (currentModule, currentLessonId) => {
@@ -165,6 +172,9 @@ class Main extends React.Component {
                                  setQuestionsData={this.setQuestionsData}
                                  getQuestions={this.props.getQuestions}
                                  currentLessonId={this.state.currentLessonId}
+                                 setLessonKey={this.setLessonKey}
+                                 setModalShow={this.setModalShow}
+                                 setModuleLoading={this.setModuleLoading}
 
                     />
                 </NavigationDrawer>
@@ -214,6 +224,7 @@ class Main extends React.Component {
                                      currentLessonId={this.state.currentLessonId}
                                      setLessonKey={this.setLessonKey}
                                      setModalShow={this.setModalShow}
+                                     setModuleLoading={this.setModuleLoading}
                         />
                     </div>
                 }
@@ -234,6 +245,7 @@ class Main extends React.Component {
                                        saveAnswer={this.props.saveAnswer}
                                        modalShow={this.setCompletedWithDataModalShow}
                                        removeAnswer={this.props.removeAnswer}
+                                       loading={this.state.moduleLoading}
                                        currentLessonId={this.state.currentLessonId}/>
                         : this.state.contentPanel === 'documentation' ?
                             <DocumentationContent getDocuments={this.props.getDocuments}/>
