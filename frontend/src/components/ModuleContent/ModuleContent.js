@@ -80,7 +80,7 @@ class ModuleContent extends React.Component {
                     resultData: data.data,
                     queryCount: this.state.queryCount - 1
                 })
-                this.setModalShow(true)
+                this.props.modalShow(true, data.data)
                 const lessonData = this.props.lessonData;
                 lessonData.result = data.data
                 this.props.setLessonData(lessonData)
@@ -220,13 +220,6 @@ class ModuleContent extends React.Component {
                     }
                 </div>
             </div>
-            {this.props.lessonData && this.state.resultData &&
-            <ModalTestCompleted
-                lessonData={this.props.lessonData}
-                resultData={this.state.resultData}
-                show={this.state.modalShow}
-                onHide={() => this.setModalShow(false)}
-            />}
         </div>
     }
 }

@@ -16,6 +16,7 @@ import PrivateRoute from "../../components/PrivateRoute/PrivateRoute";
 import User from "../../components/User/User";
 import ModalGroupMembers from "../../components/ModalGroupMembers/ModalGroupMembers";
 import ModalExit from "../../components/ModalExit/ModalExit";
+import ModalTestCompleted from "../../components/ModalTestCompleted/ModalTestCompleted";
 
 class Main extends React.Component {
 
@@ -35,6 +36,7 @@ class Main extends React.Component {
             contentPanel: 'user',
             modalShow: false,
             lessonKey: false,
+            completedModalShow: false
         }
         this.prevKey = null
     }
@@ -87,6 +89,19 @@ class Main extends React.Component {
     setUserDrawerShow = (show) => {
         this.setState({
             isUserDrawerShowed: show
+        })
+    }
+
+    setCompletedWithDataModalShow = (modalShow, resultData) => {
+        this.setState({
+            completedModalShow: modalShow,
+            resultData: resultData
+        })
+    }
+
+    setCompletedModalShow = (modalShow) => {
+        this.setState({
+            completedModalShow: modalShow,
         })
     }
 
@@ -217,6 +232,7 @@ class Main extends React.Component {
                                        contentPanel={this.state.contentPanel}
                                        setContentPanel={this.setContentPanel}
                                        saveAnswer={this.props.saveAnswer}
+                                       modalShow={this.setCompletedWithDataModalShow}
                                        removeAnswer={this.props.removeAnswer}
                                        currentLessonId={this.state.currentLessonId}/>
                         : this.state.contentPanel === 'documentation' ?
@@ -248,6 +264,13 @@ class Main extends React.Component {
                     logOut={this.props.logOut}
                     onHide={() => this.setModalShow(false)}/>
             }
+            {this.state.lessonData && this.state.completedModalShow &&
+            <ModalTestCompleted
+                lessonData={this.state.lessonData}
+                resultData={this.state.resultData}
+                show={this.state.completedModalShow}
+                onHide={() => this.setCompletedModalShow(false)}
+            />}
         </>
     }
 }
