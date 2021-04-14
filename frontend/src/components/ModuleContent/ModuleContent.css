@@ -25,7 +25,7 @@
     position: relative;
     align-items: center;
     box-sizing: border-box;
-    background: linear-gradient(to bottom, rgb(54, 69, 136) 0%, rgb(111, 118, 181) 40%, rgb(160, 171, 210) 60%, rgb(218, 216, 234) 80%, rgb(254, 254, 255) 100%);
+    background-image: linear-gradient(#a0f1ea, #8c9cd4);
 }
 
 .info {

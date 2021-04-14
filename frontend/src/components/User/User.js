@@ -28,7 +28,7 @@ class User extends React.Component {
     }
 
     render() {
-        return <div className={'user-content'}>
+        return this.props.userData ? <div className={'user-content'}>
             <div style={{margin: '0 12px', boxSizing: 'border-box'}}>
                 <h3 style={{
                     textAlign: 'center',
@@ -128,7 +128,7 @@ class User extends React.Component {
                     getUserGroupData={this.props.getUserGroupData}
                     onHide={() => this.setModalShow(false)}/>
             }
-        </div>
+        </div> : <div/>
     }
 }
 

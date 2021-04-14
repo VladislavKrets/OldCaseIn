@@ -125,9 +125,21 @@ class PrivateUserSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Lesson
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        user = self.context['user']
+        result = models.LessonResult.objects.filter(user=user, lesson=instance)
+        if len(result) == 0:
+            data['result'] = None
+        else:
+            serializer = LessonResultSerializer(instance=result.first())
+            data['result'] = serializer.data
+        return data
 
 
 class LessonResultSerializer(serializers.ModelSerializer):
@@ -161,7 +173,9 @@ class ModuleSerializer(serializers.ModelSerializer):
 
     def get_lessons(self, instance):
         lessons = models.Lesson.objects.filter(module=instance).order_by('number')
-        return LessonSerializer(lessons, many=True).data
+        serializer = LessonSerializer(lessons, many=True)
+        serializer.context['user'] = self.context['user']
+        return serializer.data
 
 
 class QuestionAnswerSerializer(serializers.ModelSerializer):

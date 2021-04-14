@@ -60,6 +60,11 @@ class ModuleMixin(ListModelMixin, GenericAPIView):
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
+
 
 class LessonMixin(RetrieveModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
