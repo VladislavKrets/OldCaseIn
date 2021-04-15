@@ -2,6 +2,10 @@ document.querySelector('#lin').addEventListener("mouseup", _MOUSEUP);
 document.querySelector('#lin').addEventListener("mousemove", throttle(function(event){ _MOUSEMOVE(event);},30));
 document.querySelector('#lin').addEventListener("mousedown", _MOUSEDOWN, true);
 
+document.querySelector('#lin').addEventListener("touchend", _MOUSEUP);
+document.querySelector('#lin').addEventListener("touchmove", throttle(function(event){ _MOUSEMOVE(event);},30));
+document.querySelector('#lin').addEventListener("touchstart", _MOUSEDOWN, true);
+
 $(document).on('click', '#lin', function(event) {
     event.preventDefault();
 });
@@ -19,6 +23,7 @@ document.querySelector('#panel').addEventListener('mousemove', function(event) {
     delete lengthTemp;
   }
 });
+
 
 window.addEventListener('resize', function(event){
   width_viewbox = $('#lin').width();
@@ -70,6 +75,7 @@ document.addEventListener("keydown", function(event) {
 
   function _MOUSEMOVE(event) {
     event.preventDefault();
+    
     $('.sub').hide(100);
 
     //**************************************************************************
@@ -1118,8 +1124,8 @@ document.addEventListener("keydown", function(event) {
 // *****************************************************************************************************
 
 function _MOUSEDOWN(event) {
-
 event.preventDefault();
+
     // *******************************************************************
     // **************************   DISTANCE MODE   **********************
     // *******************************************************************
@@ -1386,6 +1392,7 @@ event.preventDefault();
 //**********************************  ******************************************************************
 
   function _MOUSEUP(event) {
+      
     if (showRib) $('#boxScale').show(200);
     drag = 'off';
     cursor('default');
