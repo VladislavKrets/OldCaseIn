@@ -6,9 +6,6 @@ document.querySelector('#lin').addEventListener("touchend", _MOUSEUP);
 document.querySelector('#lin').addEventListener("touchmove", throttle(function(event){ _MOUSEMOVE(event);},30));
 document.querySelector('#lin').addEventListener("touchstart", _MOUSEDOWN, true);
 
-let currentX = 0
-let currentY = 0
-
 $(document).on('click', '#lin', function(event) {
     event.preventDefault();
 });
@@ -78,7 +75,7 @@ document.addEventListener("keydown", function(event) {
 
   function _MOUSEMOVE(event) {
     event.preventDefault();
-    if (isOnlyView) mode = 'distance_mode'
+    
     $('.sub').hide(100);
 
     //**************************************************************************
@@ -1127,10 +1124,8 @@ document.addEventListener("keydown", function(event) {
 // *****************************************************************************************************
 
 function _MOUSEDOWN(event) {
-      currentX = event.offsetX;
-      currentY = event.offsetY;
 event.preventDefault();
-    if (isOnlyView) mode = 'distance_mode'
+
     // *******************************************************************
     // **************************   DISTANCE MODE   **********************
     // *******************************************************************
@@ -1397,8 +1392,7 @@ event.preventDefault();
 //**********************************  ******************************************************************
 
   function _MOUSEUP(event) {
-      console.log(isOnlyView)
-    if (isOnlyView) mode = 'distance_mode'
+      
     if (showRib) $('#boxScale').show(200);
     drag = 'off';
     cursor('default');
