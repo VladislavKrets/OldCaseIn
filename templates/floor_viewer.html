@@ -625,7 +625,7 @@
     </div>
 </div>
 
-<div style="position:absolute;bottom:10px;left:10px;font-size:1.5em;color:#08d" id="boxinfo">
+<div style="position:absolute;bottom:10px;left:10px;font-size:1.5em;color:#08d;display: none" id="boxinfo">
 </div>
 
 <div id="moveBox"
@@ -666,6 +666,7 @@
 
     <div style="clear:both"></div>
 </div>
+<input id="viewer" type="hidden" value="true">
 </body>
 <script src="{% static 'floor_editor/jquery.min.js' %}"></script>
 <script src="{% static 'floor_editor/bootstrap.min.js' %}"></script>
@@ -683,6 +684,7 @@
     const json = JSON.parse(data);
     initHistory()
     load(0, false, false, json);
+    $('#boxwall').children('path').forEach(x => x.addEventListener('mousedown', null))
 
     document.getElementById('wallTools').innerHTML = "";
 </script>

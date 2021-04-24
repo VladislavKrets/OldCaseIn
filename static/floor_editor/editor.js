@@ -1,4 +1,5 @@
-var editor = {
+const viewer = document.getElementById("viewer").value
+var editor = viewer === 'true' ? {} : {
 
   wall: function(start, end, type, thick) {
       this.thick = thick;

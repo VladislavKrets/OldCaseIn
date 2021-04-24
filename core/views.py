@@ -1,5 +1,6 @@
 from django.db.models.functions import RowNumber, Rank
 from drf_yasg import openapi
+from drf_yasg.openapi import Parameter, IN_QUERY
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
@@ -20,6 +21,8 @@ from core import bot
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(request_body=serializers.LoginSerializer,
+                         operation_description="This endpoint gets credentials and returns token")
     def post(self, request):  # auth
         serializer = serializers.LoginSerializer(data=request.data)
         if not serializer.is_valid():
@@ -28,6 +31,8 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
+    @swagger_auto_schema(request_body=serializers.RegistrationSerializer,
+                         operation_description="This endpoint gets registration data and returns token")
     def put(self, request):  # registration
         serializer = serializers.RegistrationSerializer(data=request.data)
         if not serializer.is_valid():
@@ -36,6 +41,10 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
+    @swagger_auto_schema(manual_parameters=[
+        Parameter('registration_code', IN_QUERY, type='string', required=True)
+    ],
+        operation_description="This endpoint checks registration code")
     def patch(self, request):  # check code
         is_registration_code_exists = models.RegistrationCode \
             .objects.filter(code=request.data['registration_code']).exists()
@@ -46,6 +55,7 @@ class UserDataApiView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(operation_description="This endpoint returns user data")
     def get(self, request):
         serializer = serializers.UserSerializer(instance=request.user)
         return response.Response(serializer.data)
@@ -57,6 +67,7 @@ class ModuleMixin(ListModelMixin, GenericAPIView):
     serializer_class = serializers.ModuleSerializer
     queryset = models.Module.objects.all().order_by('number')
 
+    @swagger_auto_schema(operation_description="This endpoint returns modules list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
@@ -72,6 +83,7 @@ class LessonMixin(RetrieveModelMixin, GenericAPIView):
     serializer_class = serializers.LessonSerializer
     queryset = models.Lesson.objects.all().order_by('number')
 
+    @swagger_auto_schema(operation_description="This endpoint returns lesson data")
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, args, kwargs)
 
@@ -91,6 +103,7 @@ class QuestionMixin(ListModelMixin, GenericAPIView):
         lesson = self.kwargs['lesson']
         return models.Question.objects.filter(lesson=lesson)
 
+    @swagger_auto_schema(operation_description="This endpoint returns questions list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
@@ -152,6 +165,7 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
         return models.SavedQuestionAnswer.objects.filter(user=self.request.user,
                                                          answer=self.kwargs['answer'])
 
+    @swagger_auto_schema(operation_description="This endpoint saves user answer")
     def post(self, request, *args, **kwargs):
         answer = self.kwargs['answer']
         answer = models.QuestionAnswer.objects.get(pk=answer)
@@ -165,7 +179,7 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
                                                       user=self.request.user).delete()
             return self.create(request, args, kwargs)
         queryset = models.SavedQuestionAnswer.objects.filter(user=self.request.user,
-                                                         answer=answer)
+                                                             answer=answer)
         if queryset.exists():
             elem = queryset.first()
             kwargs['pk'] = elem.id
@@ -173,6 +187,7 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
             return self.partial_update(request, args, kwargs)
         return self.create(request, args, kwargs)
 
+    @swagger_auto_schema(operation_description="This endpoint deletes user answer")
     def delete(self, request, *args, **kwargs):
         if self.get_queryset().exists():
             lesson = self.get_queryset().first().answer.question.lesson
@@ -193,12 +208,16 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
 
 class ResultTestApiView(APIView):
 
+    @swagger_auto_schema(responses={'200': serializers.LessonResultSerializer},
+                         operation_description="This endpoint submits current lesson test")
     def get(self, request, *args, **kwargs):
         lesson_pk = kwargs['lesson']
         test_results = models.LessonResult.objects.get(user=request.user, lesson_pk=lesson_pk)
         serializer = serializers.LessonResultSerializer(instance=test_results)
         return response.Response(data=serializer.data)
 
+    @swagger_auto_schema(responses={'200': serializers.LessonResultSerializer},
+                         operation_description="This endpoint submits current lesson test")
     def post(self, request, *args, **kwargs):
         lesson_pk = kwargs['lesson']
         lesson = models.Lesson.objects.get(pk=lesson_pk)
@@ -271,7 +290,8 @@ class BotApiView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(request_body=serializers.BotTrainerSerializer)
+    @swagger_auto_schema(request_body=serializers.BotTrainerSerializer,
+                         operation_description="This endpoint requests question to bot and returns answer")
     def post(self, request):
         serializer = serializers.BotTrainerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -289,6 +309,7 @@ class BuildingModelMixin(ListModelMixin, GenericAPIView):
     serializer_class = serializers.BuildingSerializer
     queryset = models.Building.objects.all().order_by('address')
 
+    @swagger_auto_schema(operation_description="This endpoint returns buildings list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
@@ -301,6 +322,7 @@ class FloorModelMixin(ListModelMixin, GenericAPIView):
     def get_queryset(self):
         return models.FloorData.objects.filter(building=self.kwargs['building']).order_by('floor_number')
 
+    @swagger_auto_schema(operation_description="This endpoint returns floors list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
