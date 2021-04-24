@@ -7,8 +7,44 @@
     -moz-box-shadow: 4px 4px 34px 7px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 34px 7px rgba(34, 60, 80, 0.2);
     z-index: 11;
+    animation: 0.7s drawer-show;
 }
 
+@-webkit-keyframes drawer-show {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@-moz-keyframes drawer-show {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@-o-keyframes drawer-show {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes drawer-show {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
 @media (max-width: 770px) {
     .drawer {
         width: 40%;
