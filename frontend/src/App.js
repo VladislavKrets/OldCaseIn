@@ -227,6 +227,15 @@ class App extends React.Component {
         })
     }
 
+    getCurrentBuilding = (id) => {
+        return axios.get(`buildings/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -291,6 +300,7 @@ class App extends React.Component {
                           addEvent={this.addEvent}
                           askBotQuestion={this.askBotQuestion}
                           token={this.state.token}
+                          getCurrentBuilding={this.getCurrentBuilding}
                           getBuildings={this.getBuildings}
                           getFloors={this.getFloors}
                           getUserGroupData={this.getUserGroupData}

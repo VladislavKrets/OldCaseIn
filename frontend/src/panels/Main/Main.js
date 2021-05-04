@@ -248,10 +248,12 @@ class Main extends React.Component {
                             <Students/>
                         }
                     </PrivateRoute>
-                    <PrivateRoute loading={false} token={this.props.token} exact
+                    <PrivateRoute loading={false} token={this.props.token}
                                   path={`${this.props.match.url}/building`}>
                         <BuildingData
+                            getCurrentBuilding={this.props.getCurrentBuilding}
                             getBuildings={this.props.getBuildings}
+                            token={this.props.token}
                             getFloors={this.props.getFloors}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact

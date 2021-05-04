@@ -314,6 +314,17 @@ class BuildingModelMixin(ListModelMixin, GenericAPIView):
         return self.list(request, args, kwargs)
 
 
+class CurrentBuildingModelMixin(RetrieveModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.BuildingSerializer
+    queryset = models.Building.objects.all().order_by('address')
+
+    @swagger_auto_schema(operation_description="This endpoint returns current building")
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, args, kwargs)
+
+
 class FloorModelMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
