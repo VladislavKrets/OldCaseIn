@@ -262,8 +262,8 @@ class App extends React.Component {
     render() {
         return (
             <Switch>
-                <Route exact path='/auth/'>
-                    {this.state.token ? <Redirect to="/main/"/> : !this.state.loading ?
+                <Route path='/auth'>
+                    {this.state.token ? <Redirect to="/main/me"/> : !this.state.loading ?
                         <Auth login={this.login}
                               token={this.state.token}
                               setToken={this.setToken}
@@ -272,7 +272,7 @@ class App extends React.Component {
                         /> : null
                     }
                 </Route>
-                <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/main/'}>
+                <PrivateRoute loading={this.state.loading} token={this.state.token} path={'/main'}>
                     <Main logOut={this.logOut}
                           getModules={this.getModules}
                           getLesson={this.getLesson}

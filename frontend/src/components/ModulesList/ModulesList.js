@@ -45,7 +45,7 @@ class ModulesList extends React.Component {
             <div className={'card-header'}
                  style={{borderBottom: 'none', borderTop: '1px solid rgba(0,0,0,.125)',}}
                  onClick={() => {
-                     this.props.setContentPanel('user')
+                     this.props.history.push('/main/user')
                      this.props.closeDrawer(false)
                  }}>
                 <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
@@ -55,7 +55,7 @@ class ModulesList extends React.Component {
                 </div>
             </div>
             <Accordion onClick={() => {
-                this.props.setContentPanel('lessons')
+                this.props.history.push('/main/modules')
             }}>
                 <Card>
                     <Accordion.Toggle as={Card.Header} variant="link" eventKey={`1`}
@@ -116,7 +116,7 @@ class ModulesList extends React.Component {
                 </Card>
             </Accordion>
             <div className={'card-header'} onClick={() => {
-                this.props.setContentPanel('documentation')
+                this.props.history.push('/main/documents')
                 this.props.closeDrawer(false)
             }}>
                 <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
@@ -126,7 +126,7 @@ class ModulesList extends React.Component {
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
-                this.props.setContentPanel('calendar')
+                this.props.history.push('/main/calendar')
                 this.props.closeDrawer(false)
             }}>
                 <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
@@ -136,7 +136,7 @@ class ModulesList extends React.Component {
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
-                this.props.setContentPanel('bot')
+                this.props.history.push('/main/bot')
                 this.props.closeDrawer(false)
             }}>
                 <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
@@ -145,7 +145,7 @@ class ModulesList extends React.Component {
                 </div>
             </div>
             <div className={'card-header'} onClick={() => {
-                this.props.setContentPanel('building')
+                this.props.history.push('/main/building')
                 this.props.closeDrawer(false)
             }}>
                 <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
@@ -157,7 +157,7 @@ class ModulesList extends React.Component {
             {
                 this.props.userData && this.props.userData.type === 'master' &&
                 <div className={'card-header'} onClick={() => {
-                    this.props.setContentPanel('students')
+                    this.props.history.push('/main/students')
                     this.props.closeDrawer(false)
                 }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>

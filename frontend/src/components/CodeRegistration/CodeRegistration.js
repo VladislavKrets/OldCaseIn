@@ -1,6 +1,7 @@
 import React from 'react'
 import {Form, Col, Button, Alert} from "react-bootstrap";
 import './CodeRegistration.css'
+import {withRouter} from "react-router";
 
 class CodeRegistration extends React.Component {
 
@@ -27,7 +28,7 @@ class CodeRegistration extends React.Component {
                 })
                 if (data.data.exists) {
                     this.props.setRegistrationCode(this.state.registrationCode)
-                    this.props.changePanel("registration")
+                    this.props.history.push("/auth/register")
                 }
             }).catch(e => {
             this.setState({
@@ -69,4 +70,4 @@ class CodeRegistration extends React.Component {
     }
 }
 
-export default CodeRegistration
+export default withRouter(CodeRegistration)

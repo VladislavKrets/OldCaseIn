@@ -1,5 +1,6 @@
 import React from 'react'
 import {Form, Col, Button, Alert} from "react-bootstrap";
+import {Redirect} from "react-router";
 
 
 class Registration extends React.Component {
@@ -60,7 +61,7 @@ class Registration extends React.Component {
 
 
     render() {
-        return <div>
+        return !this.props.registrationCode ? <Redirect to={'/auth/code'}/> : <div>
             <form onSubmit={this.onSubmit} className={'auth-form'}>
                 <div className={'auth-form-raw'}>
                     <input className={'auth-input'} placeholder="Введите имя" name={'name'}

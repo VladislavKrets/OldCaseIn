@@ -1,6 +1,8 @@
 import React from 'react'
 import {Form, Button, Alert} from "react-bootstrap";
 import './Login.css'
+import {Link} from "react-router-dom";
+import {withRouter} from "react-router";
 
 class Login extends React.Component {
 
@@ -64,16 +66,16 @@ class Login extends React.Component {
                     </div>
                 }
                 <div style={{marginTop: '20px', textAlign: 'center'}}>
-                    <a style={{textDecoration: 'none',
+                    <Link to={'/auth/code'} style={{textDecoration: 'none',
                         color: '#387cbd',
                         fontSize: '1.25rem',
-                        cursor: 'pointer'}} onClick={() => this.props.changePanel('code_registration')}>
+                        cursor: 'pointer'}}>
                         Зарегистрироваться
-                    </a>
+                    </Link>
                 </div>
             </form>
         </div>
     }
 }
 
-export default Login
+export default withRouter(Login)

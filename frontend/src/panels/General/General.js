@@ -17,7 +17,7 @@ class General extends React.Component {
                              data-image-width="766" data-image-height="269" data-href="https://www.rosatom.ru/"
                              data-target="_blank"/>
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                            <Link to="auth/"
+                            <Link to="auth/login"
                                   className="general-enter-button">ВХОД</Link>
                         </div>
                     </div>

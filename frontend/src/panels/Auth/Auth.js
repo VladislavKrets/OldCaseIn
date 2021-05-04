@@ -1,11 +1,12 @@
 import React from 'react'
-import {Redirect, withRouter} from "react-router";
+import {Redirect, Route, withRouter} from "react-router";
 import LoginButtons from "../../components/LoginButtons/LoginButtons";
 import CodeRegistration from "../../components/CodeRegistration/CodeRegistration";
 import Login from "../../components/Login/Login";
 import Registration from "../../components/Registration/Registration";
 import logo from '../../assets/logo.png'
 import './Auth.css'
+import PrivateRoute from "../../components/PrivateRoute/PrivateRoute";
 
 class Auth extends React.Component {
     constructor(props) {
@@ -58,21 +59,23 @@ class Auth extends React.Component {
                     <img src={logo} className={'general-logo'}/>
                 </div>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                    {
-                        this.state.panel === 'code_registration' ?
-                            <CodeRegistration
-                                setRegistrationCode={this.setRegistrationCode}
-                                changePanel={this.changePanel}
-                                checkRegistrationCode={this.props.checkRegistrationCode}
-                            />
-                            : this.state.panel === 'login' ?
-                            <Login login={this.props.login} setToken={this.props.setToken}
-                                   changePanel={this.changePanel}/>
-                            : <Registration register={this.props.register}
-                                            setToken={this.props.setToken}
-                                            registrationCode={this.state.registrationCode}
-                            />
-                    }
+                    <Route exact path={`${this.props.match.url}/login`}>
+                        <Login login={this.props.login} setToken={this.props.setToken}
+                               changePanel={this.changePanel}/>
+                    </Route>
+                    <Route exact path={`${this.props.match.url}/code`}>
+                        <CodeRegistration
+                            setRegistrationCode={this.setRegistrationCode}
+                            changePanel={this.changePanel}
+                            checkRegistrationCode={this.props.checkRegistrationCode}
+                        />
+                    </Route>
+                    <Route exact path={`${this.props.match.url}/register`}>
+                        <Registration register={this.props.register}
+                                      setToken={this.props.setToken}
+                                      registrationCode={this.state.registrationCode}
+                        />
+                    </Route>
                 </div>
             </div>
         </div>

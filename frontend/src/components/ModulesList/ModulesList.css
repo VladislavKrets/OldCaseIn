@@ -45,6 +45,12 @@
     font-weight: bold;
 }
 
+.unstyled-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+}
+
 @media (max-width: 1270px) {
     .modules-card-content-center {
         padding-left: 0;

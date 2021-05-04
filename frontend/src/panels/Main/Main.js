@@ -1,5 +1,5 @@
 import React from "react";
-import {Switch, withRouter} from "react-router";
+import {Redirect, Switch, withRouter} from "react-router";
 import {Button} from "react-bootstrap";
 import ModuleContent from "../../components/ModuleContent/ModuleContent";
 import ModulesList from "../../components/ModulesList/ModulesList";
@@ -170,6 +170,7 @@ class Main extends React.Component {
                 this.state.isModulesDrawerShowed &&
                 <NavigationDrawer onClose={() => this.setModulesDrawerShow(false)}>
                     <ModulesList getModules={this.props.getModules}
+                                 history={this.props.history}
                                  currentModuleId={this.state.currentModuleId}
                                  setLessonData={this.setLessonData}
                                  setCurrentLesson={this.setCurrentLesson}
@@ -217,6 +218,7 @@ class Main extends React.Component {
                 {
                     this.state.width > 770 && <div style={{width: '20%'}}>
                         <ModulesList getModules={this.props.getModules}
+                                     history={this.props.history}
                                      currentModuleId={this.state.currentModuleId}
                                      setLessonData={this.setLessonData}
                                      setCurrentLesson={this.setCurrentLesson}
@@ -239,7 +241,28 @@ class Main extends React.Component {
                     </div>
                 }
                 <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
-                    {this.state.contentPanel === 'lessons' ?
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/students`}>
+                        {this.state.userData && this.state.userData.type !== 'master' ?
+                            <Redirect to={'/main/me'}/> :
+                            <Students/>
+                        }
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/building`}>
+                        <BuildingData
+                            getBuildings={this.props.getBuildings}
+                            getFloors={this.props.getFloors}/>
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/calendar`}>
+                        <CalendarContent
+                            addEvent={this.props.addEvent}
+                            getEvents={this.props.getEvents}
+                        />
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/modules`}>
                         <ModuleContent key={this.setPrevKey()}
                                        setCurrentLesson={this.setCurrentLesson}
                                        lessonData={this.state.lessonData}
@@ -257,27 +280,26 @@ class Main extends React.Component {
                                        removeAnswer={this.props.removeAnswer}
                                        loading={this.state.moduleLoading}
                                        currentLessonId={this.state.currentLessonId}/>
-                        : this.state.contentPanel === 'documentation' ?
-                            <DocumentationContent getDocuments={this.props.getDocuments}/>
-                            : this.state.contentPanel === 'bot' ?
-                                <BotContent getBotThemes={this.props.getBotThemes}
-                                            askBotQuestion={this.props.askBotQuestion}/>
-                                : this.state.contentPanel === 'calendar' ? <CalendarContent
-                                    addEvent={this.props.addEvent}
-                                    getEvents={this.props.getEvents}
-                                /> : this.state.contentPanel === 'students' ? <Students/>
-                                    : this.state.contentPanel === 'building' ? <BuildingData
-                                        getBuildings={this.props.getBuildings}
-                                        getFloors={this.props.getFloors}
-                                    /> : <User logOut={this.props.logOut}
-                                               getUser={this.props.getUser}
-                                               userData={this.props.userData}
-                                               setUserData={this.props.setUserData}
-                                               getUserGroupData={this.props.getUserGroupData}
-                                               token={this.props.token}
-                                    />
-                    }
-
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/bot`}>
+                        <BotContent getBotThemes={this.props.getBotThemes}
+                                        askBotQuestion={this.props.askBotQuestion}/>
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/documents`}>
+                        <DocumentationContent getDocuments={this.props.getDocuments}/>
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/me`}>
+                        <User logOut={this.props.logOut}
+                              getUser={this.props.getUser}
+                              userData={this.props.userData}
+                              setUserData={this.props.setUserData}
+                              getUserGroupData={this.props.getUserGroupData}
+                              token={this.props.token}
+                        />
+                    </PrivateRoute>
                 </div>
             </div>
             {
