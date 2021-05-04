@@ -12,5 +12,12 @@ def my_view(request, pk):
         return HttpResponse(status=400)
     if not Token.objects.filter(key=token).exists():
         return HttpResponse(status=401)
-    response = TemplateResponse(request, 'floor_viewer.html', {'json': mark_safe(floor.json_floor)})
+    token = Token.objects.get(key=token)
+    user = token.user.userextension
+    room_number = ''
+    if user.floor_data == floor and user.room_number:
+        room_number = user.room_number
+    response = TemplateResponse(request, 'floor_viewer.html',
+                                {'json': mark_safe(floor.json_floor),
+                                 'room_number': room_number})
     return response

@@ -161,6 +161,22 @@ def restrict_type(value):
         raise ValidationError('This user is not master')
 
 
+class Building(models.Model):
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.address
+
+
+class FloorData(models.Model):
+    floor_number = models.PositiveIntegerField()
+    json_floor = models.TextField()
+    building = models.ForeignKey(to=Building, on_delete=models.deletion.CASCADE)
+
+    def __str__(self):
+        return self.building.address + ' этаж ' + str(self.floor_number)
+
+
 class UserExtension(models.Model):
     class UserTypes(models.TextChoices):
         USER = 'user', 'user'
@@ -179,12 +195,18 @@ class UserExtension(models.Model):
                                validators=(restrict_type,),
                                on_delete=models.deletion.SET_NULL, blank=True)
     group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.SET_NULL, null=True, blank=True)
+    floor_data = models.ForeignKey(to=FloorData, on_delete=models.deletion.SET_NULL, null=True, blank=True)
+    room_number = models.PositiveIntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.master:
             self.master = None
         if not self.group:
             self.group = None
+        if not self.floor_data:
+            self.floor_data = None
+        if not self.room_number:
+            self.room_number = None
         super(UserExtension, self).save(*args, **kwargs)
 
 
@@ -199,15 +221,3 @@ class BotTrainer(models.Model):
         bot.train()
         return instance
 
-
-class Building(models.Model):
-    address = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.address
-
-
-class FloorData(models.Model):
-    floor_number = models.PositiveIntegerField()
-    json_floor = models.TextField()
-    building = models.ForeignKey(to=Building, on_delete=models.deletion.CASCADE)

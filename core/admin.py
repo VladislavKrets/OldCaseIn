@@ -38,7 +38,7 @@ class UserExtensionForm(ModelForm):
             User.objects.filter(userextension__type='master').exclude(userextension=self.instance)
 
 
-class UserExtensionInline(admin.TabularInline):
+class UserExtensionInline(admin.StackedInline):
     model = UserExtension
     fk_name = 'user'
     form = UserExtensionForm
