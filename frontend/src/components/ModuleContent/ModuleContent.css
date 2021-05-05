@@ -105,6 +105,7 @@
 .rbc-calendar{
     position: relative;
     z-index: 2;
+    flex-grow: 1;
 }
 
 @media (max-width: 770px) {

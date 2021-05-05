@@ -47,7 +47,7 @@ export default class CalendarContent extends React.Component {
     render() {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
-                <div className={'moduleContent'}>
+                <div className={'moduleContent'} style={{display: 'flex', flexDirection: 'column'}}>
                     <div style={{
                         padding: "40px 12px 20px 12px",
                         position: 'relative',
