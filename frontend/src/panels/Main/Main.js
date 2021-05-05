@@ -266,7 +266,7 @@ class Main extends React.Component {
                             getEvents={this.props.getEvents}
                         />
                     </PrivateRoute>
-                    <PrivateRoute loading={false} token={this.props.token} exact
+                    <PrivateRoute loading={false} token={this.props.token}
                                   path={`${this.props.match.url}/courses`}>
                         {/*<ModuleContent key={this.setPrevKey()}
                                        getCourses={this.props.getCourses}
@@ -288,6 +288,22 @@ class Main extends React.Component {
                                        currentLessonId={this.state.currentLessonId}/>*/}
                         <Courses
                             getCourses={this.props.getCourses}
+                            setCurrentLesson={this.setCurrentLesson}
+                            lessonData={this.state.lessonData}
+                            modules={this.state.modules}
+                            setLessonData={this.setPlainLessonData}
+                            saveTestResults={this.props.saveTestResults}
+                            loadTestResults={this.props.loadTestResults}
+                            loadCurrentResult={this.props.loadCurrentResult}
+                            questionData={this.state.questionsData}
+                            currentModule={this.state.currentModule}
+                            contentPanel={this.state.contentPanel}
+                            setContentPanel={this.setContentPanel}
+                            saveAnswer={this.props.saveAnswer}
+                            modalShow={this.setCompletedWithDataModalShow}
+                            removeAnswer={this.props.removeAnswer}
+                            loading={this.state.moduleLoading}
+                            currentLessonId={this.state.currentLessonId}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
