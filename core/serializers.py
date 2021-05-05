@@ -249,6 +249,12 @@ class BotAnswerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Course
+        fields = '__all__'
+
+
 class BotThemeSerializer(serializers.ModelSerializer):
     answers = BotAnswerSerializer(many=True)
 

@@ -50,8 +50,16 @@ class App extends React.Component {
         })
     }
 
-    getModules = () => {
-        return axios.get('/modules/', {
+    getCourses = () => {
+        return axios.get('/courses/', {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getModules = (id) => {
+        return axios.get(`/courses/${id}/modules/`, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
             }
@@ -284,6 +292,7 @@ class App extends React.Component {
                 <PrivateRoute loading={this.state.loading} token={this.state.token} path={'/main'}>
                     <Main logOut={this.logOut}
                           getModules={this.getModules}
+                          getCourses={this.getCourses}
                           getLesson={this.getLesson}
                           getQuestions={this.getQuestions}
                           saveAnswer={this.saveAnswer}

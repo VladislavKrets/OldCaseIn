@@ -9,7 +9,8 @@ from django.utils.safestring import mark_safe
 from core.models import Module, Lesson, \
     Question, QuestionAnswer, SavedQuestionAnswer, \
     LessonResult, BotTheme, BotAnswer, DrugNDropAnswer, RegistrationCode, \
-    EventCalendar, Documentation, UserExtension, BotTrainer, FloorData, Building, UserGroup
+    EventCalendar, Documentation, UserExtension, BotTrainer,\
+    FloorData, Building, UserGroup, Course
 import nested_admin
 
 
@@ -78,6 +79,7 @@ class BotThemeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Building)
+admin.site.register(Course)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(RegistrationCode)

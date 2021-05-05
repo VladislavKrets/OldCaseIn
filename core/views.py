@@ -65,7 +65,9 @@ class ModuleMixin(ListModelMixin, GenericAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ModuleSerializer
-    queryset = models.Module.objects.all().order_by('number')
+
+    def get_queryset(self):
+        return models.Module.objects.filter(course=self.kwargs['course']).order_by('number')
 
     @swagger_auto_schema(operation_description="This endpoint returns modules list")
     def get(self, request, *args, **kwargs):
@@ -310,6 +312,17 @@ class BuildingModelMixin(ListModelMixin, GenericAPIView):
     queryset = models.Building.objects.all().order_by('address')
 
     @swagger_auto_schema(operation_description="This endpoint returns buildings list")
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class CourseListModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.CourseSerializer
+    queryset = models.Course.objects.all()
+
+    @swagger_auto_schema(operation_description="This endpoint returns courses list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 

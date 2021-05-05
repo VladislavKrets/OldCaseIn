@@ -162,14 +162,14 @@ class ModulesList extends React.Component {
                 </div>
                 <div className={'card-header'} onClick={() => {
                     this.props.closeDrawer(false)
-                    this.props.history.push('/main/modules')
+                    this.props.history.push('/main/courses')
                 }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <BarChartLine height={'26px'} width={'26px'}/>
                         {(!this.props.width || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
-                            fontWeight: window.location.pathname.endsWith('/modules') ? '900' : 'normal'
+                            fontWeight: window.location.pathname.includes('/main/courses') ? '900' : 'normal'
                         }}>Обучение</span>}
                     </div>
                 </div>

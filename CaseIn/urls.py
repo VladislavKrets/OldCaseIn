@@ -45,6 +45,6 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     url(r'^_nested_admin/', include('nested_admin.urls')),
     path('api/', include('core.urls')),
-    path('floor_view/<int:pk>/', views.my_view),
+    path('floor_view/<int:pk>/', views.floor_view),
     re_path('.*', TemplateView.as_view(template_name='index.html'))  # for react
 ]

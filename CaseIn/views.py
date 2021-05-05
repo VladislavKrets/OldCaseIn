@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from core import models
 
 
-def my_view(request, pk):
+def floor_view(request, pk):
     floor = models.FloorData.objects.get(pk=pk)
     token = request.COOKIES.get('token', None)
     if not token:

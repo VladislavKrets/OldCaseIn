@@ -17,6 +17,7 @@ import User from "../../components/User/User";
 import ModalGroupMembers from "../../components/ModalGroupMembers/ModalGroupMembers";
 import ModalExit from "../../components/ModalExit/ModalExit";
 import ModalTestCompleted from "../../components/ModalTestCompleted/ModalTestCompleted";
+import Courses from "../../components/Courses/Courses";
 
 class Main extends React.Component {
 
@@ -266,8 +267,9 @@ class Main extends React.Component {
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
-                                  path={`${this.props.match.url}/modules`}>
-                        <ModuleContent key={this.setPrevKey()}
+                                  path={`${this.props.match.url}/courses`}>
+                        {/*<ModuleContent key={this.setPrevKey()}
+                                       getCourses={this.props.getCourses}
                                        setCurrentLesson={this.setCurrentLesson}
                                        lessonData={this.state.lessonData}
                                        modules={this.state.modules}
@@ -283,12 +285,15 @@ class Main extends React.Component {
                                        modalShow={this.setCompletedWithDataModalShow}
                                        removeAnswer={this.props.removeAnswer}
                                        loading={this.state.moduleLoading}
-                                       currentLessonId={this.state.currentLessonId}/>
+                                       currentLessonId={this.state.currentLessonId}/>*/}
+                        <Courses
+                            getCourses={this.props.getCourses}
+                        />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/bot`}>
                         <BotContent getBotThemes={this.props.getBotThemes}
-                                        askBotQuestion={this.props.askBotQuestion}/>
+                                    askBotQuestion={this.props.askBotQuestion}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/documents`}>
