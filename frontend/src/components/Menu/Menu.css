@@ -47,6 +47,16 @@
     background-color: #DEF7FF;
     box-shadow: 40px 0 0 0 white;
 }
+
+.modules-list-none-overflow.no-pseudo-elements::before{
+    display: none;
+}
+
+.modules-list-none-overflow.no-pseudo-elements::after{
+    display: none;
+}
+
+
 .modules-list {
     height: 100vh;
     background-color: #DEF7FF;

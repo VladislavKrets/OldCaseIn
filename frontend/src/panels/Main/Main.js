@@ -20,6 +20,7 @@ import ModalTestCompleted from "../../components/ModalTestCompleted/ModalTestCom
 import Courses from "../../components/Courses/Courses";
 import ModulesList from "../../components/ModulesList/ModulesList";
 import Modules from "../../components/Modules/Modules";
+import Messages from "../../components/Messages/Messages";
 
 class Main extends React.Component {
 
@@ -335,6 +336,10 @@ class Main extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/documents`}>
                         <DocumentationContent getDocuments={this.props.getDocuments}/>
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/messages`}>
+                        <Messages/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/me`}>

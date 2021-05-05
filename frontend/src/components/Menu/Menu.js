@@ -48,7 +48,8 @@ class Menu extends React.Component {
                 }
             };
         }
-        return <div className={'modules-list-none-overflow'}>
+        return <div className={'modules-list-none-overflow'
+        + (window.location.pathname.match(/\/main\/courses\/\d+.*/) ? ' no-pseudo-elements' : '')}>
             <div className={'modules-list'}>
                 <div style={{display: 'flex', justifyContent: 'center', padding: '30px 0'}}>
                     <img src={logo} style={{width: '60%'}}/>

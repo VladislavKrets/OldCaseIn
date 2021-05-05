@@ -11,8 +11,11 @@ class Modules extends React.Component {
     }
 
     render() {
-        return <div>
-
+        return <div className={'moduleContent-background'} style={{borderRadius: '20px'}}>
+            <div className={'moduleContent-no-overflow-parent'} style={{borderRadius: '20px'}}>
+                <div className={'moduleContent'} style={{borderRadius: '20px'}}>
+                </div>
+            </div>
         </div>
     }
 }
