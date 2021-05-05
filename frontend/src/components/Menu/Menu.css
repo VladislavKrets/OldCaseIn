@@ -1,0 +1,106 @@
+.modules-list::-webkit-scrollbar {
+    width: 2px;
+    height: 10px;
+    background: transparent;
+}
+
+.modules-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(13deg, #d6c8d9 14%, #8592e6 56%);
+    border-radius: 10px;
+}
+
+.modules-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(13deg, #c7ceff 14%, #f9d4ff 64%);
+}
+
+.modules-list::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 7px 10px 12px #f0f0f0;
+    background: transparent;
+}
+.modules-list-none-overflow {
+    height: 100vh;
+    background-color: #DEF7FF;
+    box-sizing: border-box;
+    position: relative;
+}
+.modules-list-none-overflow::before {
+    content: '';
+    position: absolute;
+    right: -80px;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+    border-top-left-radius: 50%;
+    background-color: white;
+    box-shadow: -40px 0 0 0 #DEF7FF;
+}
+.modules-list-none-overflow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+    border-bottom-right-radius: 50%;
+    background-color: #DEF7FF;
+    box-shadow: 40px 0 0 0 white;
+}
+.modules-list {
+    height: 100vh;
+    background-color: #DEF7FF;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+.list-modules-title {
+    text-align: center;
+    padding-top: 12px;
+}
+
+.list-modules-lesson-item {
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.card-header {
+    cursor: pointer;
+    background-color: inherit;
+    border: none;
+}
+
+.modules-card-content {
+    padding-left: 40px;
+    font-weight: bold;
+}
+
+.unstyled-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+}
+
+@media (max-width: 1270px) {
+    .modules-card-content-center {
+        padding-left: 0;
+        text-align: center;
+    }
+}
+
+@media (max-width: 770px) {
+    .modules-list::-webkit-scrollbar {
+        width: 2px;
+        height: 10px;
+    }
+    .modules-list-none-overflow::after {
+        display: none;
+    }
+    .modules-list-none-overflow::before{
+        display: none;
+    }
+    .modules-card-content {
+        padding-left: 0;
+        font-weight: bold;
+    }
+}

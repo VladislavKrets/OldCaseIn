@@ -2,7 +2,7 @@ import React from "react";
 import {Redirect, Switch, withRouter} from "react-router";
 import {Button} from "react-bootstrap";
 import ModuleContent from "../../components/ModuleContent/ModuleContent";
-import ModulesList from "../../components/ModulesList/ModulesList";
+import Menu from "../../components/Menu/Menu";
 import UserProfile from "../../components/UserProfile/UserProfile";
 import {List, BoxArrowRight} from 'react-bootstrap-icons';
 import './Main.css'
@@ -18,6 +18,8 @@ import ModalGroupMembers from "../../components/ModalGroupMembers/ModalGroupMemb
 import ModalExit from "../../components/ModalExit/ModalExit";
 import ModalTestCompleted from "../../components/ModalTestCompleted/ModalTestCompleted";
 import Courses from "../../components/Courses/Courses";
+import ModulesList from "../../components/ModulesList/ModulesList";
+import Modules from "../../components/Modules/Modules";
 
 class Main extends React.Component {
 
@@ -43,6 +45,12 @@ class Main extends React.Component {
         this.prevKey = null
         this.prevWidth = window.innerWidth
         this.prevHeight = window.innerHeight
+    }
+
+    setModules = (modules) => {
+        this.setState({
+            modules: modules
+        })
     }
 
     setModuleLoading = (loading) => {
@@ -170,24 +178,24 @@ class Main extends React.Component {
             {
                 this.state.isModulesDrawerShowed &&
                 <NavigationDrawer onClose={() => this.setModulesDrawerShow(false)}>
-                    <ModulesList getModules={this.props.getModules}
-                                 history={this.props.history}
-                                 match={this.props.match}
-                                 currentModuleId={this.state.currentModuleId}
-                                 setLessonData={this.setLessonData}
-                                 setCurrentLesson={this.setCurrentLesson}
-                                 modules={this.state.modules}
-                                 getLesson={this.props.getLesson}
-                                 contentPanel={this.state.contentPanel}
-                                 setContentPanel={this.setContentPanel}
-                                 setModulesData={this.setModulesData}
-                                 closeDrawer={this.setModulesDrawerShow}
-                                 setQuestionsData={this.setQuestionsData}
-                                 getQuestions={this.props.getQuestions}
-                                 currentLessonId={this.state.currentLessonId}
-                                 setLessonKey={this.setLessonKey}
-                                 setModalShow={this.setModalShow}
-                                 setModuleLoading={this.setModuleLoading}
+                    <Menu getModules={this.props.getModules}
+                          history={this.props.history}
+                          match={this.props.match}
+                          currentModuleId={this.state.currentModuleId}
+                          setLessonData={this.setLessonData}
+                          setCurrentLesson={this.setCurrentLesson}
+                          modules={this.state.modules}
+                          getLesson={this.props.getLesson}
+                          contentPanel={this.state.contentPanel}
+                          setContentPanel={this.setContentPanel}
+                          setModulesData={this.setModulesData}
+                          closeDrawer={this.setModulesDrawerShow}
+                          setQuestionsData={this.setQuestionsData}
+                          getQuestions={this.props.getQuestions}
+                          currentLessonId={this.state.currentLessonId}
+                          setLessonKey={this.setLessonKey}
+                          setModalShow={this.setModalShow}
+                          setModuleLoading={this.setModuleLoading}
 
                     />
                 </NavigationDrawer>
@@ -219,31 +227,34 @@ class Main extends React.Component {
                 }
                 {
                     this.state.width > 770 && <div style={{width: '20%'}}>
-                        <ModulesList getModules={this.props.getModules}
-                                     history={this.props.history}
-                                     match={this.props.match}
-                                     currentModuleId={this.state.currentModuleId}
-                                     setLessonData={this.setLessonData}
-                                     setCurrentLesson={this.setCurrentLesson}
-                                     modules={this.state.modules}
-                                     getLesson={this.props.getLesson}
-                                     contentPanel={this.state.contentPanel}
-                                     setContentPanel={this.setContentPanel}
-                                     setModulesData={this.setModulesData}
-                                     setQuestionsData={this.setQuestionsData}
-                                     getQuestions={this.props.getQuestions}
-                                     closeDrawer={this.setModulesDrawerShow}
-                                     width={this.state.width}
-                                     userData={this.props.userData}
-                                     token={this.props.token}
-                                     currentLessonId={this.state.currentLessonId}
-                                     setLessonKey={this.setLessonKey}
-                                     setModalShow={this.setModalShow}
-                                     setModuleLoading={this.setModuleLoading}
+                        <Menu getModules={this.props.getModules}
+                              history={this.props.history}
+                              match={this.props.match}
+                              currentModuleId={this.state.currentModuleId}
+                              setLessonData={this.setLessonData}
+                              setCurrentLesson={this.setCurrentLesson}
+                              modules={this.state.modules}
+                              getLesson={this.props.getLesson}
+                              contentPanel={this.state.contentPanel}
+                              setContentPanel={this.setContentPanel}
+                              setModulesData={this.setModulesData}
+                              setQuestionsData={this.setQuestionsData}
+                              getQuestions={this.props.getQuestions}
+                              closeDrawer={this.setModulesDrawerShow}
+                              width={this.state.width}
+                              userData={this.props.userData}
+                              token={this.props.token}
+                              currentLessonId={this.state.currentLessonId}
+                              setLessonKey={this.setLessonKey}
+                              setModalShow={this.setModalShow}
+                              setModuleLoading={this.setModuleLoading}
                         />
                     </div>
                 }
-                <div style={{width: this.state.width > 770 ? '80%' : '100%'}}>
+                <div
+                    style={{width: this.state.width > 770
+                        && window.location.pathname.match(/\/main\/courses\/\d+.*/)
+                            ? '60%' : this.state.width > 770 ? '80%' : '100%'}}>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/students`}>
                         {this.state.userData && this.state.userData.type !== 'master' ?
@@ -267,7 +278,15 @@ class Main extends React.Component {
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
-                                  path={`${this.props.match.url}/courses`}>
+                                  path={`${this.props.match.url}/courses/:id`}>
+                        <Modules
+                            setModules={this.setModules}
+                            modules={this.state.modules}
+                            getModules={this.props.getModules}
+                        />
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token}
+                                  exact path={`${this.props.match.url}/courses`}>
                         {/*<ModuleContent key={this.setPrevKey()}
                                        getCourses={this.props.getCourses}
                                        setCurrentLesson={this.setCurrentLesson}
@@ -290,7 +309,9 @@ class Main extends React.Component {
                             getCourses={this.props.getCourses}
                             setCurrentLesson={this.setCurrentLesson}
                             lessonData={this.state.lessonData}
+                            setModules={this.setModules}
                             modules={this.state.modules}
+                            getModules={this.props.getModules}
                             setLessonData={this.setPlainLessonData}
                             saveTestResults={this.props.saveTestResults}
                             loadTestResults={this.props.loadTestResults}
@@ -326,6 +347,13 @@ class Main extends React.Component {
                         />
                     </PrivateRoute>
                 </div>
+                {
+                    this.state.width > 770 && window.location.pathname.match(/\/main\/courses\/\d+.*/)
+                    && <div style={{width: '20%'}}>
+                        <ModulesList
+                            modules={this.state.modules}
+                        />
+                    </div>}
             </div>
             {
                 this.state.modalShow && <ModalExit

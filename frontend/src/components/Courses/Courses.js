@@ -49,6 +49,8 @@ class Courses extends React.Component {
                                         margin: '12px',
                                         width: '410px',
                                         cursor: 'pointer'
+                                    }} onClick={() => {
+                                        this.props.history.push(`${this.props.match.url}/${item.id}`)
                                     }}>
                                         <div style={{
                                             backgroundPosition: 'center center',
