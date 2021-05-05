@@ -51,6 +51,7 @@ export default class CalendarContent extends React.Component {
                     <Plus width={'32px'} height={'32px'}/>
                 </div>
                 <div className={'moduleContent'}>
+                    <div style={{position: 'relative', zIndex: 2, width: '100%', height: '100%', boxSizing: 'border-box'}}>
                     <Calendar
                         events={this.state.events}
                         views={[Views.MONTH]}
@@ -62,6 +63,7 @@ export default class CalendarContent extends React.Component {
                         }}
                         localizer={localizer}
                     />
+                    </div>
                 </div>
                 {
                     this.state.modalShow && <ModalAddCalendar

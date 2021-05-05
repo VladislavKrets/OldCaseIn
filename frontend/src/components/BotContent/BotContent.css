@@ -22,7 +22,10 @@
     width: 100%;
     min-width: 100%;
 }
-
+.themes-container {
+    z-index: 2;
+    position: relative;
+}
 .bot-message {
     border: 1px solid black;
     border-radius: 10px;

@@ -25,7 +25,6 @@
     position: relative;
     align-items: center;
     box-sizing: border-box;
-    background-image: linear-gradient(#a0f1ea, #8c9cd4);
 }
 
 .info {
@@ -39,11 +38,11 @@
 
 .moduleContent-no-overflow-parent {
     width: 100%;
-    margin: 15px;
     position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    height: 75%;
-    border-radius: 12px;
+    height: 100%;
     background-color: white;
 }
 
@@ -54,7 +53,6 @@
     box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
-    border-radius: 12px;
     background-color: white;
 }
 
@@ -108,19 +106,14 @@
 
 @media (min-width: 770px) {
     .float-button-add-calendar {
-        top: -50px;
-        right: 0
+        top: 50px;
+        right: 50px;
     }
 }
 
 @media (max-width: 770px) {
     .moduleContent-background {
-        padding-top: 20px;
-    }
-
-    .moduleContent-no-overflow-parent {
-        height: 85%;
-        margin: 5px;
+        padding-top: 45px;
     }
 
     .moduleContent::-webkit-scrollbar {

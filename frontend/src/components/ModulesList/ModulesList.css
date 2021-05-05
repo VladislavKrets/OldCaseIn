@@ -1,6 +1,7 @@
 .modules-list::-webkit-scrollbar {
-    width: 10px;
+    width: 2px;
     height: 10px;
+    background: transparent;
 }
 
 .modules-list::-webkit-scrollbar-thumb {
@@ -13,14 +14,42 @@
 }
 
 .modules-list::-webkit-scrollbar-track {
-    background: #ffffff;
     border-radius: 10px;
     box-shadow: inset 7px 10px 12px #f0f0f0;
+    background: transparent;
 }
-
+.modules-list-none-overflow {
+    height: 100vh;
+    background-color: #DEF7FF;
+    box-sizing: border-box;
+    position: relative;
+}
+.modules-list-none-overflow::before {
+    content: '';
+    position: absolute;
+    right: -80px;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+    border-top-left-radius: 50%;
+    background-color: white;
+    box-shadow: -40px 0 0 0 #DEF7FF;
+}
+.modules-list-none-overflow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+    border-bottom-right-radius: 50%;
+    background-color: #DEF7FF;
+    box-shadow: 40px 0 0 0 white;
+}
 .modules-list {
     height: 100vh;
-    padding-top: 20px;
+    background-color: #DEF7FF;
     box-sizing: border-box;
     overflow-y: scroll;
 }
@@ -37,7 +66,8 @@
 
 .card-header {
     cursor: pointer;
-    background-color: white;
+    background-color: inherit;
+    border: none;
 }
 
 .modules-card-content {
@@ -63,7 +93,12 @@
         width: 2px;
         height: 10px;
     }
-
+    .modules-list-none-overflow::after {
+        display: none;
+    }
+    .modules-list-none-overflow::before{
+        display: none;
+    }
     .modules-card-content {
         padding-left: 0;
         font-weight: bold;

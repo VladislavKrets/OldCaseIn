@@ -1,6 +1,7 @@
 import React from "react";
 import {Accordion, Card, Button} from "react-bootstrap";
 import './ModulesList.css'
+import logo from '../../assets/logo.png'
 import {Link} from "react-router-dom";
 import {
     Person,
@@ -10,7 +11,7 @@ import {
     Building,
     InfoCircle,
     People,
-    BoxArrowRight
+    BoxArrowRight, BarChartLine, CalendarWeek, ChatText
 } from 'react-bootstrap-icons'
 
 class ModulesList extends React.Component {
@@ -41,20 +42,38 @@ class ModulesList extends React.Component {
     }
 
     render() {
-        return <div className={'modules-list'}>
-            <div className={'card-header'}
-                 style={{borderBottom: 'none', borderTop: '1px solid rgba(0,0,0,.125)',}}
-                 onClick={() => {
-                     this.props.history.push('/main/user')
-                     this.props.closeDrawer(false)
-                 }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <Person height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) &&
-                    <span style={{paddingLeft: '20px'}}>Профиль</span>}
+        if (!String.prototype.includes) {
+            String.prototype.includes = function (search, start) {
+                if (typeof start !== 'number') {
+                    start = 0;
+                }
+                if (start + search.length > this.length) {
+                    return false;
+                } else {
+                    return this.indexOf(search, start) !== -1;
+                }
+            };
+        }
+        return <div className={'modules-list-none-overflow'}>
+            <div className={'modules-list'}>
+                <div style={{display: 'flex', justifyContent: 'center', padding: '30px 0'}}>
+                    <img src={logo} style={{width: '60%'}}/>
                 </div>
-            </div>
-            <Accordion onClick={() => {
+                <div className={'card-header'}
+                     onClick={() => {
+                         this.props.history.push('/main/me')
+                         this.props.closeDrawer(false)
+                     }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <Person height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/me') ? '900' : 'normal'
+                        }}>Профиль</span>}
+                    </div>
+                </div>
+                {/*<Accordion onClick={() => {
                 this.props.history.push('/main/modules')
             }}>
                 <Card>
@@ -114,69 +133,114 @@ class ModulesList extends React.Component {
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
-            </Accordion>
-            <div className={'card-header'} onClick={() => {
-                this.props.history.push('/main/documents')
-                this.props.closeDrawer(false)
-            }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <FileEarmarkText height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) &&
-                    <span style={{paddingLeft: '20px'}}>Документация</span>}
-                </div>
-            </div>
-            <div className={'card-header'} onClick={() => {
-                this.props.history.push('/main/calendar')
-                this.props.closeDrawer(false)
-            }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <CalendarEvent height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) &&
-                    <span style={{paddingLeft: '20px'}}>Календарь событий</span>}
-                </div>
-            </div>
-            <div className={'card-header'} onClick={() => {
-                this.props.history.push('/main/bot')
-                this.props.closeDrawer(false)
-            }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <InfoCircle height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Бот</span>}
-                </div>
-            </div>
-            <div className={'card-header'} onClick={() => {
-                this.props.history.push('/main/building')
-                this.props.closeDrawer(false)
-            }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <Building height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) &&
-                    <span style={{paddingLeft: '20px'}}>Схема здания</span>}
-                </div>
-            </div>
-            {
-                this.props.userData && this.props.userData.type === 'master' &&
+            </Accordion>*/}
                 <div className={'card-header'} onClick={() => {
-                    this.props.history.push('/main/students')
+                    this.props.history.push('/main/calendar')
                     this.props.closeDrawer(false)
                 }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                        <People height={'26px'} width={'26px'}/>
+                        <CalendarWeek height={'26px'} width={'26px'}/>
                         {(!this.props.width || this.props.width > 1270) &&
-                        <span style={{paddingLeft: '20px'}}>Ученики</span>}
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/calendar') ? '900' : 'normal'
+                        }}>Задачи</span>}
                     </div>
                 </div>
-            }
-            {this.props.setModalShow && <div className={'card-header'} onClick={() => {
-                this.props.setModalShow(true)
-                this.props.closeDrawer(false)
-            }}>
-                <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                    <BoxArrowRight height={'26px'} width={'26px'}/>
-                    {(!this.props.width || this.props.width > 1270) && <span style={{paddingLeft: '20px'}}>Выйти</span>}
+                <div className={'card-header'} onClick={() => {
+                    this.props.closeDrawer(false)
+                    this.props.history.push('/main/messages')
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <ChatText height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/messages') ? '900' : 'normal'
+                        }}>Сообщения</span>}
+                    </div>
                 </div>
+                <div className={'card-header'} onClick={() => {
+                    this.props.closeDrawer(false)
+                    this.props.history.push('/main/modules')
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <BarChartLine height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/modules') ? '900' : 'normal'
+                        }}>Обучение</span>}
+                    </div>
+                </div>
+                <div className={'card-header'} onClick={() => {
+                    this.props.history.push('/main/documents')
+                    this.props.closeDrawer(false)
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <FileEarmarkText height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/documents') ? '900' : 'normal'
+                        }}>Документация</span>}
+                    </div>
+                </div>
+                <div className={'card-header'} onClick={() => {
+                    this.props.history.push('/main/bot')
+                    this.props.closeDrawer(false)
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <InfoCircle height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.endsWith('/bot') ? '900' : 'normal'
+                        }}>Помощник</span>}
+                    </div>
+                </div>
+                <div className={'card-header'} onClick={() => {
+                    this.props.history.push('/main/building')
+                    this.props.closeDrawer(false)
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <Building height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{
+                            paddingLeft: '20px',
+                            fontWeight: window.location.pathname.includes('/main/building') ? '900' : 'normal'
+                        }}>Схема здания</span>}
+                    </div>
+                </div>
+                {
+                    this.props.userData && this.props.userData.type === 'master' &&
+                    <div className={'card-header'} onClick={() => {
+                        this.props.history.push('/main/students')
+                        this.props.closeDrawer(false)
+                    }}>
+                        <div
+                            className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                            <People height={'26px'} width={'26px'}/>
+                            {(!this.props.width || this.props.width > 1270) &&
+                            <span style={{
+                                paddingLeft: '20px',
+                                fontWeight: window.location.pathname.includes('/main/students') ? '900' : 'normal'
+                            }}>Ученики</span>}
+                        </div>
+                    </div>
+                }
+                {this.props.setModalShow && <div className={'card-header'} onClick={() => {
+                    this.props.setModalShow(true)
+                    this.props.closeDrawer(false)
+                }}>
+                    <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
+                        <BoxArrowRight height={'26px'} width={'26px'}/>
+                        {(!this.props.width || this.props.width > 1270) &&
+                        <span style={{paddingLeft: '20px', fontWeight: 'normal'}}>Выйти</span>}
+                    </div>
+                </div>
+                }
             </div>
-            }
         </div>
     }
 }

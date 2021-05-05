@@ -171,6 +171,7 @@ class Main extends React.Component {
                 <NavigationDrawer onClose={() => this.setModulesDrawerShow(false)}>
                     <ModulesList getModules={this.props.getModules}
                                  history={this.props.history}
+                                 match={this.props.match}
                                  currentModuleId={this.state.currentModuleId}
                                  setLessonData={this.setLessonData}
                                  setCurrentLesson={this.setCurrentLesson}
@@ -219,6 +220,7 @@ class Main extends React.Component {
                     this.state.width > 770 && <div style={{width: '20%'}}>
                         <ModulesList getModules={this.props.getModules}
                                      history={this.props.history}
+                                     match={this.props.match}
                                      currentModuleId={this.state.currentModuleId}
                                      setLessonData={this.setLessonData}
                                      setCurrentLesson={this.setCurrentLesson}
