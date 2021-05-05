@@ -47,11 +47,26 @@ export default class CalendarContent extends React.Component {
     render() {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
-                <div className={'float-button-add-calendar'} onClick={() => this.setModalShow(true)}>
-                    <Plus width={'32px'} height={'32px'}/>
-                </div>
                 <div className={'moduleContent'}>
-                    <div style={{position: 'relative', zIndex: 2, width: '100%', height: '100%', boxSizing: 'border-box'}}>
+                    <div style={{
+                        padding: "40px 12px 20px 12px",
+                        position: 'relative',
+                        zIndex: 2,
+                        fontWeight: '900',
+                        fontSize: '2em',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div>
+                            Календарь событий
+                        </div>
+                        <div>
+                            <div className={'float-button-add-calendar'} onClick={() => this.setModalShow(true)}>
+                                <Plus width={'32px'} height={'32px'}/>
+                            </div>
+                        </div>
+                    </div>
                     <Calendar
                         events={this.state.events}
                         views={[Views.MONTH]}
@@ -63,7 +78,6 @@ export default class CalendarContent extends React.Component {
                         }}
                         localizer={localizer}
                     />
-                    </div>
                 </div>
                 {
                     this.state.modalShow && <ModalAddCalendar

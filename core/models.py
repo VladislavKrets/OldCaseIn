@@ -32,6 +32,11 @@ class RegistrationCode(models.Model):
         return self.code
 
 
+class Course(models.Model):
+    name = models.CharField(max_length=255)
+    preview_photo = models.ImageField(upload_to='course_previews', storage=gd_storage)
+
+
 class Module(models.Model):
     name = models.CharField(max_length=255)
     number = models.PositiveIntegerField()
@@ -46,6 +51,7 @@ class Lesson(models.Model):
     themes = models.TextField()
     video = models.FileField(upload_to='videos', storage=gd_storage)
     number = models.PositiveIntegerField()
+    course = models.ForeignKey(to=Course, on_delete=models.deletion.CASCADE, null=True)
 
     def __str__(self):
         return self.themes

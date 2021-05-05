@@ -2,6 +2,7 @@ import React from "react";
 import './User.css'
 import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
 import ModalGroupMembers from "../ModalGroupMembers/ModalGroupMembers";
+import defaultProfile from "../../assets/default_profile.svg"
 
 class User extends React.Component {
     constructor(props) {
@@ -29,18 +30,19 @@ class User extends React.Component {
 
     render() {
         return this.props.userData ? <div className={'user-content'}>
-            <div style={{margin: '0 12px', boxSizing: 'border-box'}}>
-                <h3 style={{
-                    textAlign: 'center',
-                    color: '#73a7ff',
-                    backgroundColor: '#f7faff',
-                    fontWeight: 'bold',
-                    width: '100%',
-                    borderRadius: '12px',
-                    padding: '20px 0',
-                    boxSizing: 'border-box',
-
-                }}>{this.capitalizeFirstLetter(this.props.userData.first_name)} {this.capitalizeFirstLetter(this.props.userData.last_name)}</h3>
+            <div className={'user-hello'}>
+                <div style={{fontWeight: '900', fontSize: '2em'}}>
+                    Здравствуйте, {this.capitalizeFirstLetter(this.props.userData.first_name)}!
+                </div>
+                <div style={{display: 'flex'}}>
+                    <div style={{marginRight: '7px'}}>
+                        <img src={defaultProfile}/>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', fontWeight: '900'}}>
+                        <div>{this.capitalizeFirstLetter(this.props.userData.first_name)}</div>
+                        <div>{this.capitalizeFirstLetter(this.props.userData.last_name)}</div>
+                    </div>
+                </div>
             </div>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                 <div className={'user-content-card'}>
@@ -104,7 +106,8 @@ class User extends React.Component {
                         </h4>
                     </div>
                 </div>
-                <div className={'user-content-card'} style={{cursor: 'pointer'}} onClick={() => this.setModalShow(true)}>
+                <div className={'user-content-card'} style={{cursor: 'pointer'}}
+                     onClick={() => this.setModalShow(true)}>
                     <div>
                         <h3 style={{color: 'inherit', textAlign: 'center', marginBottom: '30px', fontWeight: 'bold'}}>
                             Моя группа
