@@ -34,8 +34,34 @@
     white-space: -moz-pre-wrap;
     white-space: -o-pre-wrap;
     word-wrap: break-word;
+    overflow: hidden;
 }
-
+.module-content-button {
+    border: none;
+    outline: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 1px;
+    background-image: none;
+    height: auto;
+    padding: 9px 38px 9px 37px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: #54C0EB;
+    border-radius: 50px;
+    text-decoration: none;
+}
+.module-content-button:hover{
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #3916fe;
+}
+.module-content-button:disabled {
+    background-color: #54C0EB;
+    opacity: 0.6;
+    cursor: default;
+}
 .moduleContent-no-overflow-parent {
     width: 100%;
     position: relative;

@@ -3,6 +3,7 @@ import React from "react";
 import Students from "../Students/Students";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import ModuleContent from "../ModuleContent/ModuleContent";
+import LessonTest from "../LessonTest/LessonTest";
 
 class Modules extends React.Component {
 
@@ -47,6 +48,19 @@ class Modules extends React.Component {
                             </div>
                         </div>
                     }
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`/main/courses/:course/modules/:module/lessons/:lesson/test`}>
+                        <LessonTest
+                            key={window.location.pathname}
+                            getLesson={this.props.getLesson}
+                            saveTestResults={this.props.saveTestResults}
+                            loadTestResults={this.props.loadTestResults}
+                            loadCurrentResult={this.props.loadCurrentResult}
+                            saveAnswer={this.props.saveAnswer}
+                            getQuestions={this.props.getQuestions}
+                            removeAnswer={this.props.removeAnswer}
+                        />
+                    </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`/main/courses/:course/modules/:module/lessons/:lesson`}>
                         <ModuleContent key={window.location.pathname}

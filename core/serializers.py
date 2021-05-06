@@ -139,10 +139,16 @@ class LessonSerializer(serializers.ModelSerializer):
         else:
             serializer = LessonResultSerializer(instance=result.first())
             data['result'] = serializer.data
+        data['has_test'] = models.Question.objects.filter(lesson=instance).exists()
         return data
 
 
 class LessonMinifiedSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['has_test'] = models.Question.objects.filter(lesson=instance).exists()
+        return data
 
     class Meta:
         model = models.Lesson

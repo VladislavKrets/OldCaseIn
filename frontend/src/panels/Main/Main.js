@@ -287,28 +287,17 @@ class Main extends React.Component {
                             modules={this.state.modules}
                             getCourse={this.props.getCourse}
                             getModules={this.props.getModules}
+                            saveTestResults={this.props.saveTestResults}
+                            loadTestResults={this.props.loadTestResults}
+                            loadCurrentResult={this.props.loadCurrentResult}
                             getModule={this.props.getModule}
+                            getQuestions={this.props.getQuestions}
+                            saveAnswer={this.props.saveAnswer}
+                            removeAnswer={this.props.removeAnswer}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
                                   exact path={`${this.props.match.url}/courses`}>
-                        {/*<ModuleContent key={this.setPrevKey()}
-                                       getCourses={this.props.getCourses}
-                                       setCurrentLesson={this.setCurrentLesson}
-                                       lessonData={this.state.lessonData}
-                                       modules={this.state.modules}
-                                       setLessonData={this.setPlainLessonData}
-                                       saveTestResults={this.props.saveTestResults}
-                                       loadTestResults={this.props.loadTestResults}
-                                       loadCurrentResult={this.props.loadCurrentResult}
-                                       questionData={this.state.questionsData}
-                                       currentModule={this.state.currentModule}
-                                       contentPanel={this.state.contentPanel}
-                                       setContentPanel={this.setContentPanel}
-                                       saveAnswer={this.props.saveAnswer}
-                                       modalShow={this.setCompletedWithDataModalShow}
-                                       removeAnswer={this.props.removeAnswer}
-                                       loading={this.state.moduleLoading}
                                        currentLessonId={this.state.currentLessonId}/>*/}
                         <Courses
                             getCourses={this.props.getCourses}
@@ -317,10 +306,6 @@ class Main extends React.Component {
                             setModules={this.setModules}
                             modules={this.state.modules}
                             getModules={this.props.getModules}
-                            setLessonData={this.setPlainLessonData}
-                            saveTestResults={this.props.saveTestResults}
-                            loadTestResults={this.props.loadTestResults}
-                            loadCurrentResult={this.props.loadCurrentResult}
                             questionData={this.state.questionsData}
                             currentModule={this.state.currentModule}
                             contentPanel={this.state.contentPanel}
