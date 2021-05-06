@@ -66,6 +66,14 @@ class App extends React.Component {
         })
     }
 
+    getCourse = (id) => {
+        return axios.get(`/courses/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
     getLesson = (lessonId) => {
         return axios.get(`/lessons/${lessonId}/`, {
             headers: {
@@ -313,6 +321,7 @@ class App extends React.Component {
                           getBuildings={this.getBuildings}
                           getFloors={this.getFloors}
                           getUserGroupData={this.getUserGroupData}
+                          getCourse={this.getCourse}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

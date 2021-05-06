@@ -16,6 +16,7 @@ from django.db.models import F, Window
 from core.permissions import IsStudentsAccessed, IsOwner, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from core import bot
+from rest_framework import viewsets
 
 
 class LoginView(views.APIView):
@@ -305,37 +306,18 @@ class BotApiView(APIView):
         return response.Response(data={'text': bot_response}, status=status.HTTP_200_OK)
 
 
-class BuildingModelMixin(ListModelMixin, GenericAPIView):
+class BuildingViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.BuildingSerializer
     queryset = models.Building.objects.all().order_by('address')
 
-    @swagger_auto_schema(operation_description="This endpoint returns buildings list")
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
 
-
-class CourseListModelMixin(ListModelMixin, GenericAPIView):
+class CourseViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.CourseSerializer
     queryset = models.Course.objects.all()
-
-    @swagger_auto_schema(operation_description="This endpoint returns courses list")
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
-
-
-class CurrentBuildingModelMixin(RetrieveModelMixin, GenericAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-    serializer_class = serializers.BuildingSerializer
-    queryset = models.Building.objects.all().order_by('address')
-
-    @swagger_auto_schema(operation_description="This endpoint returns current building")
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, args, kwargs)
 
 
 class FloorModelMixin(ListModelMixin, GenericAPIView):

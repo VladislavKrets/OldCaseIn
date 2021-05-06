@@ -279,10 +279,12 @@ class Main extends React.Component {
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
-                                  path={`${this.props.match.url}/courses/:id`}>
+                                  path={`${this.props.match.url}/courses/:course`}>
                         <Modules
                             setModules={this.setModules}
+                            token={this.props.token}
                             modules={this.state.modules}
+                            getCourse={this.props.getCourse}
                             getModules={this.props.getModules}
                         />
                     </PrivateRoute>
