@@ -62,17 +62,13 @@ class UserDataApiView(APIView):
         return response.Response(serializer.data)
 
 
-class ModuleMixin(ListModelMixin, GenericAPIView):
+class ModuleViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ModuleSerializer
 
     def get_queryset(self):
         return models.Module.objects.filter(course=self.kwargs['course']).order_by('number')
-
-    @swagger_auto_schema(operation_description="This endpoint returns modules list")
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

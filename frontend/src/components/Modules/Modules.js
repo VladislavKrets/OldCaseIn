@@ -2,6 +2,7 @@ import {Redirect, withRouter} from "react-router";
 import React from "react";
 import Students from "../Students/Students";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import ModuleContent from "../ModuleContent/ModuleContent";
 
 class Modules extends React.Component {
 
@@ -29,7 +30,7 @@ class Modules extends React.Component {
             <div className={'moduleContent-no-overflow-parent'} style={{borderRadius: '40px'}}>
                 <div className={'moduleContent'} style={{borderRadius: '40px'}}>
                     {
-                        window.location.pathname.match(/\/main\/courses\/\d+/) &&
+                        window.location.pathname.match(/\/main\/courses\/\d+$/) &&
                         <div style={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -47,11 +48,28 @@ class Modules extends React.Component {
                         </div>
                     }
                     <PrivateRoute loading={false} token={this.props.token} exact
-                                  path={`${this.props.match.url}/lessons/:lesson`}>
-                        {this.state.userData && this.state.userData.type !== 'master' ?
-                            <Redirect to={'/main/me'}/> :
-                            <Students/>
-                        }
+                                  path={`/main/courses/:course/modules/:module/lessons/:lesson`}>
+                        <ModuleContent key={window.location.pathname}
+                                       getCourses={this.props.getCourses}
+                                       getCourse={this.props.getCourse}
+                                       setCurrentLesson={this.props.setCurrentLesson}
+                                       lessonData={this.props.lessonData}
+                                       modules={this.props.modules}
+                                       setLessonData={this.props.setPlainLessonData}
+                                       saveTestResults={this.props.saveTestResults}
+                                       loadTestResults={this.props.loadTestResults}
+                                       loadCurrentResult={this.props.loadCurrentResult}
+                                       questionData={this.state.questionsData}
+                                       currentModule={this.state.currentModule}
+                                       contentPanel={this.props.contentPanel}
+                                       setContentPanel={this.setContentPanel}
+                                       saveAnswer={this.props.saveAnswer}
+                                       modalShow={this.props.setCompletedWithDataModalShow}
+                                       removeAnswer={this.props.removeAnswer}
+                                       loading={this.state.moduleLoading}
+                                       getLesson={this.props.getLesson}
+                                       getModule={this.props.getModule}
+                                       currentLessonId={this.state.currentLessonId}/>
                     </PrivateRoute>
                 </div>
             </div>

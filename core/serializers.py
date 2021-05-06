@@ -142,6 +142,13 @@ class LessonSerializer(serializers.ModelSerializer):
         return data
 
 
+class LessonMinifiedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Lesson
+        fields = ('id', 'number')
+
+
 class LessonResultSerializer(serializers.ModelSerializer):
     number = serializers.IntegerField(source='lesson.number')
 
@@ -173,8 +180,7 @@ class ModuleSerializer(serializers.ModelSerializer):
 
     def get_lessons(self, instance):
         lessons = models.Lesson.objects.filter(module=instance).order_by('number')
-        serializer = LessonSerializer(lessons, many=True)
-        serializer.context['user'] = self.context['user']
+        serializer = LessonMinifiedSerializer(lessons, many=True)
         return serializer.data
 
 

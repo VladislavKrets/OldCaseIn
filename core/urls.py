@@ -5,12 +5,12 @@ from rest_framework.routers import SimpleRouter
 router = SimpleRouter()
 router.register(r'events', views.EventsModelViewSet, basename='events')
 router.register(r'buildings', views.BuildingViewSet, basename='buildings')
+router.register(r'courses/(?P<course>\d+)/modules', views.ModuleViewSet, basename='modules')
 router.register(r'courses', views.CourseViewSet, basename='courses')
 
 urlpatterns = [
     path('login/', views.LoginView.as_view()),
     path('user/', views.UserDataApiView.as_view()),
-    path('courses/<int:course>/modules/', views.ModuleMixin.as_view()),
     path('lessons/<int:pk>/', views.LessonMixin.as_view()),
     path('lesson/<int:lesson>/questions/', views.QuestionMixin.as_view()),
     path('answer/<int:answer>/save/',

@@ -283,9 +283,11 @@ class Main extends React.Component {
                         <Modules
                             setModules={this.setModules}
                             token={this.props.token}
+                            getLesson={this.props.getLesson}
                             modules={this.state.modules}
                             getCourse={this.props.getCourse}
                             getModules={this.props.getModules}
+                            getModule={this.props.getModule}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
@@ -358,6 +360,7 @@ class Main extends React.Component {
                     this.state.width > 770 && window.location.pathname.match(/\/main\/courses\/\d+.*/)
                     && <div style={{width: '20%'}}>
                         <ModulesList
+                            history={this.props.history}
                             modules={this.state.modules}
                         />
                     </div>}

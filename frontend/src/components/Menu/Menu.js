@@ -68,67 +68,6 @@ class Menu extends React.Component {
                         }}>Профиль</span>}
                     </div>
                 </div>
-                {/*<Accordion onClick={() => {
-                this.props.history.push('/main/modules')
-            }}>
-                <Card>
-                    <Accordion.Toggle as={Card.Header} variant="link" eventKey={`1`}
-                                      onClick={() => {
-                                          this.props.setLessonKey(false)
-                                          this.props.setCurrentLesson(null, null)
-                                      }
-                                      }>
-                        <div
-                            className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                            <Collection height={'26px'} width={'26px'}/>
-                            {(!this.props.width || this.props.width > 1270) &&
-                            <span style={{paddingLeft: '20px'}}>Модули</span>}
-                        </div>
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey={`1`}>
-                        <Card.Body>
-                            <Accordion>
-                                {
-                                    this.props.modules.map((item, idx) => {
-                                        const lessonsLen = item.lessons.length;
-                                        return <Card>
-                                            <Card.Header onClick={() => this.props.setLessonKey(false)}>
-                                                <Accordion.Toggle as={Button} variant="link" eventKey={`${idx}`}>
-                                                    <span>Модуль {item.number}</span>
-                                                </Accordion.Toggle>
-                                            </Card.Header>
-                                            <Accordion.Collapse eventKey={`${idx}`}>
-                                                <Card.Body>
-                                                    {item.lessons.map((x, index) => {
-                                                        return index + 1 !== lessonsLen ? <>
-                                                            <div className={'list-modules-lesson-item '}
-                                                                 onClick={() => {
-                                                                     this.props.setLessonKey(true)
-                                                                     this.chooseLesson(item, x.id)
-                                                                 }}>
-                                                                Урок {x.number}
-                                                            </div>
-                                                            <hr/>
-                                                        </> : <>
-                                                            <div className={'list-modules-lesson-item '}
-                                                                 onClick={() => {
-                                                                     this.props.setLessonKey(true)
-                                                                     this.chooseLesson(item, x.id)
-                                                                 }}>
-                                                                Урок {x.number}
-                                                            </div>
-                                                        </>
-                                                    })}
-                                                </Card.Body>
-                                            </Accordion.Collapse>
-                                        </Card>
-                                    })
-                                }
-                            </Accordion>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>
-            </Accordion>*/}
                 <div className={'card-header'} onClick={() => {
                     this.props.history.push('/main/calendar')
                     this.props.closeDrawer(false)
