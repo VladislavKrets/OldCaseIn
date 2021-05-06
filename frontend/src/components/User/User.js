@@ -31,7 +31,7 @@ class User extends React.Component {
     render() {
         return this.props.userData ? <div className={'user-content'}>
             <div className={'user-hello'}>
-                <div style={{fontWeight: '900', fontSize: '2em'}}>
+                <div className={'hello-phrase'}>
                     Здравствуйте, {this.capitalizeFirstLetter(this.props.userData.first_name)}!
                 </div>
                 <div style={{display: 'flex'}}>

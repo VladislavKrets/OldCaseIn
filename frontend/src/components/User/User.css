@@ -28,6 +28,7 @@
     border-radius: 10px;
     box-shadow: inset 7px 10px 12px #f0f0f0;
 }
+
 .user-hello {
     position: relative;
     z-index: 2;
@@ -39,6 +40,7 @@
     width: 100%;
 
 }
+
 .user-content-card {
     padding: 12px;
     box-sizing: border-box;
@@ -51,6 +53,12 @@
     margin: 12px;
     flex-grow: 1;
 }
+
+.hello-phrase {
+    font-weight: 900;
+    font-size: 2em;
+}
+
 @media (max-width: 770px) {
     .user-content::-webkit-scrollbar {
         width: 2px;
@@ -59,5 +67,16 @@
 
     .user-content {
         padding: 57px 12px 0;
+    }
+
+    .user-hello {
+        flex-direction: column-reverse;
+    }
+
+    .hello-phrase {
+        padding-top: 15px;
+        text-align: center;
+        font-weight: 900;
+        font-size: 1.2em;
     }
 }

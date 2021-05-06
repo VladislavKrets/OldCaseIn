@@ -42,12 +42,12 @@ class ModuleContent extends React.Component {
     render() {
         return this.state.course && this.state.module && this.state.lesson ?
             <div className={'moduleContent-content'}>
-                <div style={{padding: '50px'}}>
-                    <h2 style={{fontWeight: '900'}}>
+                <div className={'full-module-content-block'}>
+                    <h2 style={{fontWeight: '900'}} className={'course-name-header'}>
                         {this.state.course.name}
                     </h2>
                 </div>
-                <div style={{padding: '50px'}}>
+                <div className={'full-module-content-block'}>
                     <h5 style={{fontWeight: '900'}}>
                         Модуль {this.state.module.number}. {this.state.module.name}
                     </h5>
@@ -55,12 +55,12 @@ class ModuleContent extends React.Component {
                         Урок {this.state.lesson.number}.
                     </h5>
                 </div>
-                <div style={{padding: '50px'}}>
+                <div className={'full-module-content-block'}>
                                 <pre className={'info'} style={{textAlign: 'center', fontSize: '1.25rem'}}>
                                     {this.state.lesson.themes}
                                 </pre>
                 </div>
-                <div style={{padding: '50px'}}>
+                <div className={'full-module-content-block'}>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <video className={'lesson-video'} controls="controls"
                                src={this.state.lesson.video}>
@@ -68,7 +68,7 @@ class ModuleContent extends React.Component {
                     </div>
                 </div>
                 {
-                    this.state.lesson.result && <div style={{padding: '50px'}}>
+                    this.state.lesson.result && <div className={'full-module-content-block'}>
                         <div className={'moduleContent-test-completed'}>
                             Тест сдан
                         </div>
@@ -80,7 +80,8 @@ class ModuleContent extends React.Component {
                 }
                 {
                     !this.state.lesson.result && this.state.lesson.has_test && <div
-                        style={{padding: '50px', display: 'flex', justifyContent: 'center', width: '100%'}}>
+                        className={'full-module-content-block'}
+                        style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                         <Link to={`${this.props.match.url}/test`}
                               className={'module-content-button'}>
                             Пройти тест

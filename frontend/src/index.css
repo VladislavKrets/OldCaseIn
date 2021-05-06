@@ -13,3 +13,8 @@ code {
   font-family: 'Montserrat', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@media (max-width: 770px) {
+  body {
+    background-color: white;
+  }
+}

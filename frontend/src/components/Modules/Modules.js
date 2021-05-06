@@ -27,9 +27,9 @@ class Modules extends React.Component {
     }
 
     render() {
-        return <div className={'moduleContent-background'} style={{borderRadius: '40px'}}>
-            <div className={'moduleContent-no-overflow-parent'} style={{borderRadius: '40px'}}>
-                <div className={'moduleContent'} style={{borderRadius: '40px'}}>
+        return <div className={'moduleContent-background modules-border-radius'}>
+            <div className={'moduleContent-no-overflow-parent'}>
+                <div className={'moduleContent'}>
                     {
                         window.location.pathname.match(/\/main\/courses\/\d+$/) &&
                         <div style={{
@@ -39,7 +39,7 @@ class Modules extends React.Component {
                             width: '100%',
                             height: '100%'
                         }}>
-                            <div>
+                            <div style={{textAlign: 'center'}}>
                                 {
                                     this.state.course && <h3>
                                         Курс "{this.state.course.name}"

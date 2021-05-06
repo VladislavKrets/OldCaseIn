@@ -114,7 +114,7 @@ class LessonTest extends React.Component {
     render() {
         return <>
             {this.state.lesson && this.state.test && this.state.test.map(item => {
-                return <div style={{padding: '50px'}}>
+                return <div className={'full-module-content-block'}>
                     <Form>
                         <div style={{
                             fontWeight: 'bold',
@@ -168,7 +168,7 @@ class LessonTest extends React.Component {
             })
             }
             {this.state.lesson && this.state.test && this.state.test.length !== 0 &&
-            <div style={{padding: '50px', display: 'flex', justifyContent: 'center'}}>
+            <div className={'full-module-content-block'} style={{display: 'flex', justifyContent: 'center'}}>
                 <button
                     className={'module-content-button'}
                     disabled={!!this.state.lesson.result

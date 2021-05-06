@@ -298,7 +298,6 @@ class Main extends React.Component {
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
                                   exact path={`${this.props.match.url}/courses`}>
-                                       currentLessonId={this.state.currentLessonId}/>*/}
                         <Courses
                             getCourses={this.props.getCourses}
                             setCurrentLesson={this.setCurrentLesson}

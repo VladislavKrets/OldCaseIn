@@ -45,19 +45,10 @@ class Courses extends React.Component {
                         }}>
                             {
                                 this.state.courses.map(item => {
-                                    return <div style={{
-                                        margin: '12px',
-                                        width: '410px',
-                                        cursor: 'pointer'
-                                    }} onClick={() => {
+                                    return <div className={'course-block'} onClick={() => {
                                         this.props.history.push(`${this.props.match.url}/${item.id}`)
                                     }}>
-                                        <div style={{
-                                            backgroundPosition: 'center center',
-                                            backgroundRepeat: 'no-repeat',
-                                            borderRadius: '12px',
-                                            height: '150px',
-                                            width: '400px',
+                                        <div className={'course-block-preview'} style={{
                                             backgroundImage: `url(${item.preview_photo})`
                                         }}>
                                         </div>
