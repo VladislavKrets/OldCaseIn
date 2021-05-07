@@ -232,7 +232,7 @@ class Main extends React.Component {
                     this.state.width <= 770 && <div
                         style={{
                             position: 'fixed',
-                            zIndex: '1',
+                            zIndex: '3',
                             top: '0',
                             left: '0',
                             backgroundColor: 'white',
