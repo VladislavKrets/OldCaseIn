@@ -23,6 +23,7 @@ class User extends React.Component {
     }
 
     componentDidMount() {
+        this.props.setHeaderName('Профиль')
         this.props.getUser().then(data => {
             this.props.setUserData(data.data)
         })

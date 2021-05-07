@@ -11,6 +11,7 @@ export default class DocumentationContent extends React.Component {
     }
 
     componentDidMount() {
+        this.props.setHeaderName('Документы')
         this.props.getDocuments().then(data => {
             this.setState({
                 documents: data.data

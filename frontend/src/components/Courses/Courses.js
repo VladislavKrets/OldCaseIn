@@ -13,6 +13,7 @@ class Courses extends React.Component {
     }
 
     componentDidMount() {
+        this.props.setHeaderName('Обучение')
         this.props.getCourses().then(data => {
             this.setState({
                 courses: data.data

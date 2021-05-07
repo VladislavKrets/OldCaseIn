@@ -42,11 +42,18 @@ class Main extends React.Component {
             lessonKey: false,
             completedModalShow: false,
             moduleLoading: false,
-            isModuleListDrawerShowed: false
+            isModuleListDrawerShowed: false,
+            headerName: 'Главная'
         }
         this.prevKey = null
         this.prevWidth = window.innerWidth
         this.prevHeight = window.innerHeight
+    }
+
+    setHeaderName = (headerName) => {
+        this.setState({
+            headerName: headerName
+        })
     }
 
     setModules = (modules) => {
@@ -235,11 +242,11 @@ class Main extends React.Component {
                             boxSizing: 'border-box',
                             justifyContent: 'space-between',
                             padding: '5px 10px'
-                        }}>
+                        }} className={'mobile-nav-bar'}>
                         <div onClick={() => this.setModulesDrawerShow(true)}>
                             <List size={32}/>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', fontWeight: '900'}}>Главная</div>
+                        <div style={{display: 'flex', alignItems: 'center', fontWeight: '900'}}>{this.state.headerName}</div>
                         {window.location.pathname.match(/\/main\/courses\/\d+.*/) ?
                             <div onClick={() => this.setModulesListDrawerShow(true)}>
                                 <Collection size={32}/>
@@ -286,7 +293,9 @@ class Main extends React.Component {
                                   path={`${this.props.match.url}/students`}>
                         {this.state.userData && this.state.userData.type !== 'master' ?
                             <Redirect to={'/main/me'}/> :
-                            <Students/>
+                            <Students
+                                setHeaderName={this.setHeaderName}
+                            />
                         }
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}
@@ -295,12 +304,14 @@ class Main extends React.Component {
                             getCurrentBuilding={this.props.getCurrentBuilding}
                             getBuildings={this.props.getBuildings}
                             token={this.props.token}
+                            setHeaderName={this.setHeaderName}
                             getFloors={this.props.getFloors}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/calendar`}>
                         <CalendarContent
                             addEvent={this.props.addEvent}
+                            setHeaderName={this.setHeaderName}
                             getEvents={this.props.getEvents}
                         />
                     </PrivateRoute>
@@ -313,6 +324,7 @@ class Main extends React.Component {
                             modules={this.state.modules}
                             getCourse={this.props.getCourse}
                             getModules={this.props.getModules}
+                            setHeaderName={this.setHeaderName}
                             saveTestResults={this.props.saveTestResults}
                             loadTestResults={this.props.loadTestResults}
                             loadCurrentResult={this.props.loadCurrentResult}
@@ -331,6 +343,7 @@ class Main extends React.Component {
                             setModules={this.setModules}
                             modules={this.state.modules}
                             getModules={this.props.getModules}
+                            setHeaderName={this.setHeaderName}
                             questionData={this.state.questionsData}
                             currentModule={this.state.currentModule}
                             contentPanel={this.state.contentPanel}
@@ -345,21 +358,24 @@ class Main extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/bot`}>
                         <BotContent getBotThemes={this.props.getBotThemes}
+                                    setHeaderName={this.setHeaderName}
                                     askBotQuestion={this.props.askBotQuestion}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/documents`}>
-                        <DocumentationContent getDocuments={this.props.getDocuments}/>
+                        <DocumentationContent getDocuments={this.props.getDocuments}
+                        setHeaderName={this.setHeaderName}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/messages`}>
-                        <Messages/>
+                        <Messages setHeaderName={this.setHeaderName}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/me`}>
                         <User logOut={this.props.logOut}
                               getUser={this.props.getUser}
                               userData={this.props.userData}
+                              setHeaderName={this.setHeaderName}
                               setUserData={this.props.setUserData}
                               getUserGroupData={this.props.getUserGroupData}
                               token={this.props.token}

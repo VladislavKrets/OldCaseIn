@@ -49,7 +49,7 @@ export default class BotContent extends React.Component {
     }
 
     componentDidMount() {
-
+        this.props.setHeaderName('Помощник')
     }
 
     render() {

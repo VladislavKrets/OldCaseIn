@@ -3,6 +3,10 @@ import React from "react";
 
 class Messages extends React.Component {
 
+    componentDidMount() {
+        this.props.setHeaderName('Сообщения')
+    }
+
     render() {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
