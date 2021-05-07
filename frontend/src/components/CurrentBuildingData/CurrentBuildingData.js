@@ -26,17 +26,25 @@ class CurrentBuildingData extends React.Component {
 
     render() {
         return <>
-            <h3 style={{textAlign: 'center', padding: '15px 0'}}>
-                {this.state.currentBuilding && this.state.currentBuilding.address}</h3>
+            <div style={{
+                padding: "40px 12px 20px 12px",
+                position: 'relative',
+                zIndex: 2,
+                fontWeight: '900',
+                fontSize: '2em',
+
+            }} className={'module-content-header'}>
+                {this.state.currentBuilding && this.state.currentBuilding.address}
+            </div>
             {
                 this.state.currentBuildingFloors.map(item => {
-                    return <div className={'file-container'}>
+                    return <div className={'file-container'} style={{textAlign: 'center'}}>
                         <a style={{
                             display: 'block',
                             fontWeight: 'bold',
                             fontSize: '1.2em',
                             cursor: 'pointer',
-                            textDecoration: "underline"
+                            textDecoration: "underline",
                         }} href={`/floor_view/${item.id}/`}
                            target={'_blank'}
                         >

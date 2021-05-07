@@ -37,7 +37,16 @@ class BuildingData extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token}
                                   exact path={`${this.props.match.url}`}>
                         <>
-                            <h3 style={{textAlign: 'center', padding: '15px 0'}}>Здания</h3>
+                            <div style={{
+                                padding: "40px 12px 20px 12px",
+                                position: 'relative',
+                                zIndex: 2,
+                                fontWeight: '900',
+                                fontSize: '2em',
+
+                            }} className={'module-content-header'}>
+                                Схема здания
+                            </div>
                             {
                                 !this.state.currentBuilding && this.state.buildings.map(item => {
                                     return <div className={'file-container'}>
@@ -45,7 +54,8 @@ class BuildingData extends React.Component {
                                             fontWeight: 'bold',
                                             fontSize: '1.2em',
                                             cursor: 'pointer',
-                                            textDecoration: "underline"
+                                            textDecoration: "underline",
+                                            textAlign: 'center'
                                         }} onClick={() => {
                                             this.props.history.push(`/main/building/${item.id}`)
                                         }}>
