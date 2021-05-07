@@ -1,21 +1,22 @@
 .moduleContent::-webkit-scrollbar {
-    width: 2px;
+    width: 0px;
     height: 10px;
+    background: transparent;
 }
 
 .moduleContent::-webkit-scrollbar-thumb {
-    background: linear-gradient(13deg, #d6c8d9 14%, #8592e6 56%);
+    background: transparent;
     border-radius: 10px;
 }
 
 .moduleContent::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(13deg, #c7ceff 14%, #f9d4ff 64%);
+    background: transparent;
 }
 
 .moduleContent::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: transparent;
     border-radius: 10px;
-    box-shadow: inset 7px 10px 12px #f0f0f0;
+    box-shadow: none;
 }
 
 .moduleContent-background {

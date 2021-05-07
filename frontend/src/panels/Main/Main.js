@@ -4,7 +4,7 @@ import {Button} from "react-bootstrap";
 import ModuleContent from "../../components/ModuleContent/ModuleContent";
 import Menu from "../../components/Menu/Menu";
 import UserProfile from "../../components/UserProfile/UserProfile";
-import {List, BoxArrowRight} from 'react-bootstrap-icons';
+import {List, BoxArrowRight, Collection} from 'react-bootstrap-icons';
 import './Main.css'
 import NavigationDrawer from "../../elements/NavigationDrawer/NavigationDrawer";
 import DocumentationContent from "../../components/DocumentationContent/DocumentationContent";
@@ -42,6 +42,7 @@ class Main extends React.Component {
             lessonKey: false,
             completedModalShow: false,
             moduleLoading: false,
+            isModuleListDrawerShowed: false
         }
         this.prevKey = null
         this.prevWidth = window.innerWidth
@@ -174,10 +175,16 @@ class Main extends React.Component {
         })
     }
 
+    setModulesListDrawerShow = (isShow) => {
+        this.setState({
+            isModuleListDrawerShowed: isShow
+        })
+    }
+
     render() {
         return <>
             {
-                this.state.isModulesDrawerShowed &&
+                this.state.width < 770 && this.state.isModulesDrawerShowed &&
                 <NavigationDrawer onClose={() => this.setModulesDrawerShow(false)}>
                     <Menu getModules={this.props.getModules}
                           history={this.props.history}
@@ -201,6 +208,18 @@ class Main extends React.Component {
                     />
                 </NavigationDrawer>
             }
+            {
+                this.state.width < 770
+                && window.location.pathname.match(/\/main\/courses\/\d+.*/)
+                && this.state.isModuleListDrawerShowed &&
+                <NavigationDrawer onClose={() => this.setModulesListDrawerShow(false)} right={true}>
+                    <ModulesList
+                        history={this.props.history}
+                        modules={this.state.modules}
+                        onClose={() => this.setModulesListDrawerShow(false)}
+                    />
+                </NavigationDrawer>
+            }
             <div style={{display: this.state.width > 770 ? 'flex' : null,}}>
                 {
                     this.state.width <= 770 && <div
@@ -220,10 +239,15 @@ class Main extends React.Component {
                         <div onClick={() => this.setModulesDrawerShow(true)}>
                             <List size={32}/>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center'}}>Главная</div>
-                        <div onClick={() => this.setModalShow(true)}>
+                        <div style={{display: 'flex', alignItems: 'center', fontWeight: '900'}}>Главная</div>
+                        {window.location.pathname.match(/\/main\/courses\/\d+.*/) ?
+                            <div onClick={() => this.setModulesListDrawerShow(true)}>
+                                <Collection size={32}/>
+                            </div> :
+                            <div onClick={() => this.setModalShow(true)}>
                             <BoxArrowRight size={32}/>
                         </div>
+                        }
                     </div>
                 }
                 {
@@ -253,9 +277,11 @@ class Main extends React.Component {
                     </div>
                 }
                 <div
-                    style={{width: this.state.width > 770
+                    style={{
+                        width: this.state.width > 770
                         && window.location.pathname.match(/\/main\/courses\/\d+.*/)
-                            ? '60%' : this.state.width > 770 ? '80%' : '100%'}}>
+                            ? '60%' : this.state.width > 770 ? '80%' : '100%'
+                    }}>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/students`}>
                         {this.state.userData && this.state.userData.type !== 'master' ?
@@ -346,6 +372,7 @@ class Main extends React.Component {
                         <ModulesList
                             history={this.props.history}
                             modules={this.state.modules}
+                            onClose={() =>this.setModulesListDrawerShow(false)}
                         />
                     </div>}
             </div>
@@ -355,13 +382,6 @@ class Main extends React.Component {
                     logOut={this.props.logOut}
                     onHide={() => this.setModalShow(false)}/>
             }
-            {this.state.lessonData && this.state.completedModalShow &&
-            <ModalTestCompleted
-                lessonData={this.state.lessonData}
-                resultData={this.state.resultData}
-                show={this.state.completedModalShow}
-                onHide={() => this.setCompletedModalShow(false)}
-            />}
         </>
     }
 }

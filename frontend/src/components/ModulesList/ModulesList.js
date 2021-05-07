@@ -23,6 +23,7 @@ export default class ModulesList extends React.Component {
                                             <div className={'list-modules-lesson-item '}
                                                  onClick={() => {
                                                      this.props.history.push(`/main/courses/${courseId}/modules/${item.id}/lessons/${x.id}`)
+                                                     this.props.onClose()
                                                  }}>
                                                 Урок {x.number}
                                             </div>
@@ -31,6 +32,7 @@ export default class ModulesList extends React.Component {
                                             <div className={'list-modules-lesson-item '}
                                                  onClick={() => {
                                                      this.props.history.push(`/main/courses/${courseId}/modules/${item.id}/lessons/${x.id}`)
+                                                     this.props.onClose()
                                                  }}>
                                                 Урок {x.number}
                                             </div>
