@@ -23,15 +23,21 @@ export default class DocumentationContent extends React.Component {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'moduleContent'}>
-                    <h3 style={{textAlign: 'center', padding: '15px 0'}}>Документы компании</h3>
+                    <div style={{
+                        padding: "40px 12px 20px 12px",
+                        position: 'relative',
+                        zIndex: 2,
+                        fontWeight: '900',
+                        fontSize: '2em',
+
+                    }} className={'module-content-header'}>
+                        Документы компании
+                    </div>
                     {
                         this.state.documents.map(item => {
                             return <div className={'file-container'}>
-                                <div style={{fontWeight: 'bold', fontSize: '1.2em'}}>
-                                    {item.title}
-                                </div>
                                 <div className={'doc-file'}>
-                                    <a href={item.document} target="_blank" download>Скачать</a>
+                                    <a href={item.document} target="_blank" download>{item.title}</a>
                                 </div>
                             </div>
                         })

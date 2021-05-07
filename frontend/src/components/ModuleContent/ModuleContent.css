@@ -149,6 +149,11 @@
 }
 
 @media (max-width: 770px) {
+
+    .module-content-header{
+        text-align: center;
+    }
+
     .moduleContent-background {
         padding-top: 45px;
     }

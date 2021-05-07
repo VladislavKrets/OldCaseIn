@@ -32,7 +32,7 @@ class Courses extends React.Component {
                         fontWeight: '900',
                         fontSize: '2em',
 
-                    }}>
+                    }} className={'module-content-header'}>
                         Доступные курсы
                     </div>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
