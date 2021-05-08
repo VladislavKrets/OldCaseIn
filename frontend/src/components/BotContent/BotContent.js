@@ -49,6 +49,7 @@ export default class BotContent extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Помощник'
         this.props.setHeaderName('Помощник')
     }
 

@@ -37,6 +37,7 @@ export default class CalendarContent extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Задачи'
         this.props.setHeaderName('Задачи')
         this.props.getEvents().then(data => {
             this.setState({

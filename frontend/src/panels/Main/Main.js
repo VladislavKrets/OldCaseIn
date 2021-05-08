@@ -153,7 +153,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-        document.title = "Уроки"
+        //document.title = "Главная"
         this.props.setUserData()
         window.addEventListener('resize', this.updateSize);
     }

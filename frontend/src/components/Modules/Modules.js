@@ -16,6 +16,7 @@ class Modules extends React.Component {
 
     componentDidMount() {
         this.props.setModules([])
+        document.title = 'Обучение'
         this.props.setHeaderName('Обучение')
         this.props.getModules(this.props.match.params.course).then(data => {
             this.props.setModules(data.data)

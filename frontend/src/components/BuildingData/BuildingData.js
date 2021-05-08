@@ -17,6 +17,7 @@ class BuildingData extends React.Component {
     }
 
     componentDidMount() {
+        document.title = 'Схема здания'
         this.props.setHeaderName('Схема здания')
         this.props.getBuildings().then(data => {
             this.setState({

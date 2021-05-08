@@ -4,6 +4,7 @@ import React from "react";
 class Messages extends React.Component {
 
     componentDidMount() {
+        document.title = 'Сообщения'
         this.props.setHeaderName('Сообщения')
     }
 
