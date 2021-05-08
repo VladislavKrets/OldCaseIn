@@ -230,3 +230,27 @@ class BotTrainer(models.Model):
         bot.train()
         return instance
 
+
+def validate_message_content(content):
+    if content is None or content == "" or content.isspace():
+        raise ValidationError(
+            'Content is empty/invalid',
+            code='invalid'
+        )
+
+
+class Message(models.Model):
+
+    author = models.ForeignKey(
+        to=User,
+        related_name='author_messages',
+        on_delete=models.CASCADE
+    )
+    recipient = models.ForeignKey(to=User, related_name='recipient_massages',
+                                  null=True, default=None, on_delete=models.deletion.CASCADE)
+    content = models.TextField(validators=[validate_message_content])
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def last_50_messages():
+        return Message.objects.order_by('-created_at').all()[:50]
+

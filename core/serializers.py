@@ -316,3 +316,12 @@ class FloorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FloorData
         fields = ('id', 'floor_number', 'building',)
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    author = PrivateUserSerializer()
+    recipient = PrivateUserSerializer()
+
+    class Meta:
+        model = models.Message
+        fields = '__all__'

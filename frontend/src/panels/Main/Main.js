@@ -246,14 +246,18 @@ class Main extends React.Component {
                         <div onClick={() => this.setModulesDrawerShow(true)}>
                             <List size={32}/>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center', fontWeight: '900'}}>{this.state.headerName}</div>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            fontWeight: '900'
+                        }}>{this.state.headerName}</div>
                         {window.location.pathname.match(/\/main\/courses\/\d+.*/) ?
                             <div onClick={() => this.setModulesListDrawerShow(true)}>
                                 <Collection size={32}/>
                             </div> :
                             <div onClick={() => this.setModalShow(true)}>
-                            <BoxArrowRight size={32}/>
-                        </div>
+                                <BoxArrowRight size={32}/>
+                            </div>
                         }
                     </div>
                 }
@@ -364,11 +368,13 @@ class Main extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/documents`}>
                         <DocumentationContent getDocuments={this.props.getDocuments}
-                        setHeaderName={this.setHeaderName}/>
+                                              setHeaderName={this.setHeaderName}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/messages`}>
-                        <Messages setHeaderName={this.setHeaderName}/>
+                        <Messages setHeaderName={this.setHeaderName}
+                                  userData={this.props.userData}
+                                  token={this.props.token}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/me`}>
@@ -388,7 +394,7 @@ class Main extends React.Component {
                         <ModulesList
                             history={this.props.history}
                             modules={this.state.modules}
-                            onClose={() =>this.setModulesListDrawerShow(false)}
+                            onClose={() => this.setModulesListDrawerShow(false)}
                         />
                     </div>}
             </div>

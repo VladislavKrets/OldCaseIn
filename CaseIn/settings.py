@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'nested_admin',
     'gdstorage',
     'drf_yasg',
+    'channels',
     'core',
 ]
 
@@ -150,6 +151,16 @@ SWAGGER_SETTINGS = {
     }
 }
 
+ASGI_APPLICATION = "core.routing.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ['redis://localhost:6379/4']
+        }
+    },
+}
 
 try:
     from .local_settings import *
