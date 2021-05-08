@@ -52,7 +52,7 @@ class Menu extends React.Component {
         + (window.location.pathname.match(/\/main\/courses\/\d+.*/) ? ' no-pseudo-elements' : '')}>
             <div className={'modules-list'}>
                 <div style={{display: 'flex', justifyContent: 'center', padding: '30px 0'}}>
-                    <img src={logo} style={{width: '60%'}}/>
+                    <img src={logo} style={{width: '60%', position: "relative", zIndex: 2}}/>
                 </div>
                 <div className={'card-header'}
                      onClick={() => {

@@ -37,7 +37,8 @@ export default class DocumentationContent extends React.Component {
                         this.state.documents.map(item => {
                             return <div className={'file-container'}>
                                 <div className={'doc-file'}>
-                                    <a href={item.document} target="_blank" download>{item.title}</a>
+                                    <a href={item.document} style={{position: 'relative', zIndex: 2}}
+                                       target="_blank" download>{item.title}</a>
                                 </div>
                             </div>
                         })
