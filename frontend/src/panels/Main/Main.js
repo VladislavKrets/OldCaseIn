@@ -374,6 +374,7 @@ class Main extends React.Component {
                                   path={`${this.props.match.url}/messages`}>
                         <Messages setHeaderName={this.setHeaderName}
                                   userData={this.props.userData}
+                                  getUser={this.props.getAllUser}
                                   token={this.props.token}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact

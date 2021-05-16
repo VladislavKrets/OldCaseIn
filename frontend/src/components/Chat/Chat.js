@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import './Chat.css';
-
 import WebSocketInstance from '../../services/WebSocket'
 import {withRouter} from "react-router";
+import defaultProfile from "../../assets/default_profile.svg";
+import Moment from 'react-moment';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messages: []
+            messages: [],
+            to: null
         }
 
         this.waitForSocketConnection(() => {
@@ -36,6 +38,12 @@ class Chat extends Component {
 
     componentDidMount() {
         this.scrollToBottom();
+        console.log(this.props.match.params.id)
+        this.props.getUser(this.props.match.params.id).then(data => {
+            this.setState({
+                to: data.data
+            })
+        })
     }
 
     componentDidUpdate() {
@@ -78,11 +86,27 @@ class Chat extends Component {
 
     renderMessages = (messages) => {
         const currentUser = this.props.token;
-        return messages.map((message, i) => <li key={message.id}
-                                                className={message.author.id === this.props.userData.id ? 'me' : 'him'}>
-            <h4 className='author'>{message.author.first_name} {message.author.last_name}</h4>
-            <p>{message.content}</p>
-        </li>);
+        return messages.map((message, i) => <div key={message.id}
+                                                 style={{width: '100%', padding: '12px', display: 'flex'}}>
+            <div style={{paddingRight: '12px'}}>
+                <img src={defaultProfile}/>
+            </div>
+            <div style={{flexGrow: 1}}>
+                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <div>{message.author.id === this.props.userData.id
+                        ? this.props.userData.first_name : this.state.to.first_name}</div>
+                    <div>
+                        <Moment format="HH:mm">
+                            {message.created_at}
+                        </Moment>
+                    </div>
+                </div>
+                <div style={{borderRadius: '20px', padding: '12px'}}
+                     className={message.author.id === this.props.userData.id ? 'me' : 'him'}>
+                    {message.content}
+                </div>
+            </div>
+        </div>);
     }
 
     render() {
@@ -91,14 +115,14 @@ class Chat extends Component {
         return (
             <div className='chat'>
                 <div className='container'>
-                    <ul ref={(el) => {
+                    <div ref={(el) => {
                         this.messagesEnd = el;
                     }}>
                         {
-                            messages &&
+                            this.props.userData && this.state.to && messages &&
                             this.renderMessages(messages)
                         }
-                    </ul>
+                    </div>
                 </div>
                 <div className='container message-form'>
                     <form onSubmit={(e) => {
@@ -120,4 +144,5 @@ class Chat extends Component {
         );
     }
 }
+
 export default withRouter(Chat)

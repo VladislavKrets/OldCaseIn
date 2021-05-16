@@ -34,6 +34,7 @@ class Messages extends React.Component {
                         <Chat
                             token={this.props.token}
                             userData={this.props.userData}
+                            getUser={this.props.getUser}
                         />
                     </PrivateRoute>
                 </div>

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db.models.functions import RowNumber, Rank
 from drf_yasg import openapi
 from drf_yasg.openapi import Parameter, IN_QUERY
@@ -345,3 +346,11 @@ class GroupUserMixin(ListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
+
+
+class UserViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PrivateUserSerializer
+    queryset = User.objects.exclude(is_superuser=True)
+
