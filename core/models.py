@@ -239,6 +239,16 @@ def validate_message_content(content):
         )
 
 
+class Dialog(models.Model):
+    first_user = models.ForeignKey(to=User,
+                                   related_name='dialogs', on_delete=models.deletion.CASCADE)
+    second_user = models.ForeignKey(to=User,
+                                    related_name='second_dialogs', on_delete=models.deletion.CASCADE)
+
+    class Meta:
+        unique_together = [['first_user', 'second_user']]
+
+
 class Message(models.Model):
 
     author = models.ForeignKey(
@@ -246,8 +256,7 @@ class Message(models.Model):
         related_name='author_messages',
         on_delete=models.CASCADE
     )
-    recipient = models.ForeignKey(to=User, related_name='recipient_massages',
-                                  null=True, default=None, on_delete=models.deletion.CASCADE)
+    dialog = models.ForeignKey(to=Dialog, related_name='messages', on_delete=models.deletion.CASCADE)
     content = models.TextField(validators=[validate_message_content])
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 

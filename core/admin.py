@@ -79,6 +79,7 @@ class BotThemeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Building)
+admin.site.register(FloorData, FloorDataAdmin)
 admin.site.register(Course)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
@@ -87,7 +88,6 @@ admin.site.register(Module)
 admin.site.register(Lesson)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(BotTheme, BotThemeAdmin)
-admin.site.register(FloorData, FloorDataAdmin)
 admin.site.register(SavedQuestionAnswer)
 admin.site.register(EventCalendar)
 admin.site.register(LessonResult)

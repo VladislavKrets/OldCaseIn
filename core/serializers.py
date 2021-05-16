@@ -320,7 +320,6 @@ class FloorSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     author = PrivateUserSerializer()
-    recipient = PrivateUserSerializer()
 
     class Meta:
         model = models.Message

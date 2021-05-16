@@ -48,16 +48,16 @@ class WebSocketService {
     }
   }
 
-  initChatUser(token) {
-    this.sendMessage({ command: 'init_chat', token: token });
+  initChatUser(token, to) {
+    this.sendMessage({ command: 'init_chat', token: token, to: to });
   }
 
-  fetchMessages(token) {
-    this.sendMessage({ command: 'fetch_messages', token: token });
+  fetchMessages(token, to) {
+    this.sendMessage({ command: 'fetch_messages', token: token, to: to });
   }
 
-  newChatMessage(token, message) {
-    this.sendMessage({ command: 'new_message', token: token, text: message.text });
+  newChatMessage(token, message, to) {
+    this.sendMessage({ command: 'new_message', token: token, text: message.text, to: to});
   }
 
   addCallbacks(messagesCallback, newMessageCallback) {

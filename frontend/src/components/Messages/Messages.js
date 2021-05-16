@@ -3,6 +3,7 @@ import React from "react";
 import InitChat from '../InitChat/Form'
 import Chat from '../Chat/Chat'
 import WebSocketInstance from '../../services/WebSocket'
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 class Messages extends React.Component {
 
@@ -28,10 +29,13 @@ class Messages extends React.Component {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'moduleContent'}>
-                    <Chat
-                        token={this.props.token}
-                        userData={this.props.userData}
-                    />
+                    <PrivateRoute loading={false} token={this.props.token}
+                                  path={`${this.props.match.url}/:id`}>
+                        <Chat
+                            token={this.props.token}
+                            userData={this.props.userData}
+                        />
+                    </PrivateRoute>
                 </div>
             </div>
         </div>

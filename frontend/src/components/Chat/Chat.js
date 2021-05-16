@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import './Chat.css';
 
 import WebSocketInstance from '../../services/WebSocket'
+import {withRouter} from "react-router";
 
-export default class Chat extends Component {
+class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,9 +12,9 @@ export default class Chat extends Component {
         }
 
         this.waitForSocketConnection(() => {
-            WebSocketInstance.initChatUser(this.props.token);
+            WebSocketInstance.initChatUser(this.props.token, this.props.match.params.id);
             WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
-            WebSocketInstance.fetchMessages(this.props.token);
+            WebSocketInstance.fetchMessages(this.props.token, this.props.match.params.id);
         });
     }
 
@@ -68,7 +69,7 @@ export default class Chat extends Component {
             token: this.props.token,
             text: message
         };
-        WebSocketInstance.newChatMessage(this.props.token, messageObject);
+        WebSocketInstance.newChatMessage(this.props.token, messageObject, this.props.match.params.id);
         this.setState({
             message: ''
         })
@@ -79,7 +80,8 @@ export default class Chat extends Component {
         const currentUser = this.props.token;
         return messages.map((message, i) => <li key={message.id}
                                                 className={message.author.id === this.props.userData.id ? 'me' : 'him'}>
-            <h4 className='author'>{message.author.first_name} {message.author.last_name}</h4><p>{message.content}</p>
+            <h4 className='author'>{message.author.first_name} {message.author.last_name}</h4>
+            <p>{message.content}</p>
         </li>);
     }
 
@@ -89,8 +91,6 @@ export default class Chat extends Component {
         return (
             <div className='chat'>
                 <div className='container'>
-                    <h1>Chatting as {this.props.userData.first_name} {this.props.userData.last_name}</h1>
-                    <h3>Displaying only the last 50 messages</h3>
                     <ul ref={(el) => {
                         this.messagesEnd = el;
                     }}>
@@ -120,3 +120,4 @@ export default class Chat extends Component {
         );
     }
 }
+export default withRouter(Chat)

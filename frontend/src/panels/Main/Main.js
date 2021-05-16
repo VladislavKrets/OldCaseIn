@@ -370,7 +370,7 @@ class Main extends React.Component {
                         <DocumentationContent getDocuments={this.props.getDocuments}
                                               setHeaderName={this.setHeaderName}/>
                     </PrivateRoute>
-                    <PrivateRoute loading={false} token={this.props.token} exact
+                    <PrivateRoute loading={false} token={this.props.token}
                                   path={`${this.props.match.url}/messages`}>
                         <Messages setHeaderName={this.setHeaderName}
                                   userData={this.props.userData}

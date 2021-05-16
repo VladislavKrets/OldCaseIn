@@ -17,6 +17,7 @@ class ChatConsumer(WebsocketConsumer):
         token = data['token']
         token = Token.objects.get(key=token)
         user = token.user
+        to = User.objects.get(pk=data['to'])
         content = {
             'command': 'init_chat'
         }
@@ -24,13 +25,22 @@ class ChatConsumer(WebsocketConsumer):
             content['error'] = 'Unable to get or create User with username: ' + user.first_name
             self.send_message(content)
         content['success'] = 'Chatting in with success with username: ' + user.first_name
+        try:
+            dialog = models.Dialog.objects.get(first_user=to, second_user=user)
+        except models.Dialog.DoesNotExist:
+            dialog = models.Dialog.objects.get_or_create(first_user=user, second_user=to)[0]
         self.send_message(content)
 
     def fetch_messages(self, data):
         token = data['token']
         token = Token.objects.get(key=token)
         user = token.user
-        messages = Message.objects.filter(Q(author=user) | Q(recipient=user)).order_by('created_at')
+        to = User.objects.get(pk=data['to'])
+        try:
+            dialog = models.Dialog.objects.get(first_user=to, second_user=user)
+        except models.Dialog.DoesNotExist:
+            dialog = models.Dialog.objects.get_or_create(first_user=user, second_user=to)[0]
+        messages = dialog.messages.order_by('created_at')
         serializer = serializers.MessageSerializer(instance=messages, many=True)
         content = {
             'command': 'messages',
@@ -39,11 +49,15 @@ class ChatConsumer(WebsocketConsumer):
         self.send_message(content)
 
     def new_message(self, data):
-        print(data)
         token = data['token']
         token = Token.objects.get(key=data['token'])
         author_user = token.user
-        message = Message.objects.create(author=author_user, content=data['text'])
+        to = User.objects.get(pk=data['to'])
+        try:
+            dialog = models.Dialog.objects.get(first_user=to, second_user=author_user)
+        except models.Dialog.DoesNotExist:
+            dialog = models.Dialog.objects.get_or_create(first_user=author_user, second_user=to)[0]
+        message = Message.objects.create(author=author_user, dialog=dialog, content=data['text'])
         serializer = serializers.MessageSerializer(instance=message)
         content = {
             'command': 'new_message',
