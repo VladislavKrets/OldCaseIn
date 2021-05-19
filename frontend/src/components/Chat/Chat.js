@@ -4,6 +4,7 @@ import WebSocketInstance from '../../services/WebSocket'
 import {withRouter} from "react-router";
 import defaultProfile from "../../assets/default_profile.svg";
 import Moment from 'react-moment';
+import {EmojiSmile, Plus, PlusCircle} from "react-bootstrap-icons";
 
 class Chat extends Component {
     constructor(props) {
@@ -87,6 +88,7 @@ class Chat extends Component {
     renderMessages = (messages) => {
         const currentUser = this.props.token;
         return messages.map((message, i) => <div key={message.id}
+                                                 className={'chat-message'}
                                                  style={{width: '100%', padding: '12px', display: 'flex'}}>
             <div style={{paddingRight: '12px'}}>
                 <img src={defaultProfile}/>
@@ -113,8 +115,18 @@ class Chat extends Component {
         const messages = this.state.messages;
         const currentUser = this.props.token;
         return (
-            <div className='chat'>
-                <div className='container'>
+            <div className='chat' style={{
+                flexGrow: 1,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#DEF7FF',
+                marginLeft: '30px',
+                borderRadius: '12px',
+                width: '60%',
+                boxSizing: "border-box"
+            }}>
+                <div className='chat-container' style={{flexGrow: '1'}}>
                     <div ref={(el) => {
                         this.messagesEnd = el;
                     }}>
@@ -128,16 +140,21 @@ class Chat extends Component {
                     <form onSubmit={(e) => {
                         e.preventDefault()
                         this.sendMessageHandler(e, this.state.message)
-                    }} className='form'>
+                    }} className='form' style={{display: 'flex', width: '100%'}}>
                         <input
+                            className={'input-message'}
                             type='text'
                             onChange={this.messageChangeHandler}
                             value={this.state.message}
-                            placeholder='Type a Message'
+                            placeholder='Сообщение'
                             required/>
-                        <button className='submit' type='submit' value='Submit'>
-                            Send
-                        </button>
+                        <input type={'submit'} style={{display: 'none'}}/>
+                        <div style={{margin: '0 4px', cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
+                            <EmojiSmile width={'32px'} height={'32px'} fill={'#C4C4C4'}/>
+                        </div>
+                        <div style={{margin: '0 4px', cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
+                            <PlusCircle width={'32px'} height={'32px'} fill={'#C4C4C4'}/>
+                        </div>
                     </form>
                 </div>
             </div>

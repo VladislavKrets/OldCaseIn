@@ -1,6 +1,56 @@
 .me {
     background-color: #F4F4F4;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all
 }
 .him {
     background-color: #D7D7D7;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-all
+}
+.chat-message{
+}
+.input-message{
+    padding: 12px;
+    border-radius: 24px;
+    border: 1px solid #C4C4C4;
+    outline: none;
+    flex-grow: 1;
+}
+.input-message:focus{
+    border-color: darkblue;
+}
+.chat {
+    padding-bottom: 12px;
+}
+.chat-container{
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 0px;
+    height: 10px;
+    background: transparent;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: none;
 }

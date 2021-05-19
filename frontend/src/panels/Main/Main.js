@@ -375,6 +375,7 @@ class Main extends React.Component {
                         <Messages setHeaderName={this.setHeaderName}
                                   userData={this.props.userData}
                                   getUser={this.props.getAllUser}
+                                  getAllUsers={this.props.getAllUsers}
                                   token={this.props.token}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact

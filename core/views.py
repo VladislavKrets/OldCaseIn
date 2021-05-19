@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
-from django.db.models import F, Window
+from django.db.models import F, Window, Q, Max
 from core.permissions import IsStudentsAccessed, IsOwner, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from core import bot
@@ -352,5 +352,22 @@ class UserViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.PrivateUserSerializer
-    queryset = User.objects.exclude(is_superuser=True)
+    queryset = User.objects.exclude(is_superuser=True) \
+        .exclude(userextension=None) \
+        .order_by('first_name',
+                  'last_name')
 
+
+class LastMessagesApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        messages = models.Message.objects\
+            .filter(Q(dialog__first_user=user) | Q(dialog__second_user=user)) \
+            .objects\
+            .order_by('dialog', '-created_at')\
+            .distinct('dialog').order_by('-created_at')
+        serializer = serializers.MessageSerializer(instance=messages, many=True)
+        return response.Response(data=messages.data)

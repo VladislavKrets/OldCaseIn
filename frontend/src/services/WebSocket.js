@@ -46,6 +46,9 @@ class WebSocketService {
     if (command === 'new_message') {
       this.callbacks[command](parsedData.message);
     }
+    if (command === 'dialogs') {
+      this.callbacks[command](parsedData.message);
+    }
   }
 
   initChatUser(token, to) {
@@ -60,9 +63,10 @@ class WebSocketService {
     this.sendMessage({ command: 'new_message', token: token, text: message.text, to: to});
   }
 
-  addCallbacks(messagesCallback, newMessageCallback) {
+  addCallbacks(messagesCallback, newMessageCallback, dialogsCallback) {
     this.callbacks['messages'] = messagesCallback;
     this.callbacks['new_message'] = newMessageCallback;
+    this.callbacks['dialogs'] = dialogsCallback
   }
 
   sendMessage(data) {

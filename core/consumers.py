@@ -29,6 +29,15 @@ class ChatConsumer(WebsocketConsumer):
             dialog = models.Dialog.objects.get(first_user=to, second_user=user)
         except models.Dialog.DoesNotExist:
             dialog = models.Dialog.objects.get_or_create(first_user=user, second_user=to)[0]
+
+        self.room_name = str(dialog.id)
+        self.room_group_name = 'chat_%s' % self.room_name
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
         self.send_message(content)
 
     def fetch_messages(self, data):
@@ -72,14 +81,6 @@ class ChatConsumer(WebsocketConsumer):
     }
 
     def connect(self):
-        self.room_name = 'room'
-        self.room_group_name = 'chat_%s' % self.room_name
-
-        # Join room group
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name,
-            self.channel_name
-        )
         self.accept()
 
     def disconnect(self, close_code):
@@ -97,7 +98,6 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(message))
 
     def send_chat_message(self, message):
-        # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {

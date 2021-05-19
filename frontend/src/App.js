@@ -106,6 +106,14 @@ class App extends React.Component {
         })
     }
 
+    getAllUsers = () => {
+        return axios.get(`/all_users/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
     getDrugNDropAnswerVariants = (questionId) => {
         return axios.get(`/question/${questionId}/drugndrop/`, {
             headers: {
@@ -340,6 +348,7 @@ class App extends React.Component {
                           getCourse={this.getCourse}
                           getModule={this.getModule}
                           getAllUser={this.getAllUser}
+                          getAllUsers={this.getAllUsers}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

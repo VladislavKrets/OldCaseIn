@@ -1,0 +1,54 @@
+.search-messages-field {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 24px;
+    padding: 0 5px;
+    cursor: text;
+    border: 1px solid #C4C4C4;
+    position: relative;
+    margin: 12px 0;
+}
+
+.search-messages-field input {
+    background: none;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 12px;
+}
+
+.users-search-message {
+    position: absolute;
+    width: 100%;
+    max-height: 400px;
+    background-color: #DEF7FF;
+    z-index: 3;
+    left: 0;
+    bottom: 0;
+    padding: 12px;
+    box-sizing: border-box;
+    transform: translateY(100%);
+    overflow-y: scroll;
+    border-radius: 20px;
+}
+.users-search-message::-webkit-scrollbar {
+    width: 0px;
+    height: 10px;
+    background: transparent;
+}
+
+.users-search-message::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.users-search-message::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+.users-search-message::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: none;
+}
