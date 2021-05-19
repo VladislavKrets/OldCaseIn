@@ -23,7 +23,7 @@
     width: 100%;
     max-height: 400px;
     background-color: #DEF7FF;
-    z-index: 3;
+    z-index: 10;
     left: 0;
     bottom: 0;
     padding: 12px;

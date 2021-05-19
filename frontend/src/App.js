@@ -267,6 +267,15 @@ class App extends React.Component {
         })
     }
 
+    getDialogs = () => {
+        return axios.get(`dialogs/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getCurrentBuilding = (id) => {
         return axios.get(`buildings/${id}/`, {
             headers: {
@@ -349,6 +358,7 @@ class App extends React.Component {
                           getModule={this.getModule}
                           getAllUser={this.getAllUser}
                           getAllUsers={this.getAllUsers}
+                          getDialogs={this.getDialogs}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

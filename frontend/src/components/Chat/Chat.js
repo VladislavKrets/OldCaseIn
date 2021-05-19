@@ -94,7 +94,7 @@ class Chat extends Component {
                 <img src={defaultProfile}/>
             </div>
             <div style={{flexGrow: 1}}>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
                     <div>{message.author.id === this.props.userData.id
                         ? this.props.userData.first_name : this.state.to.first_name}</div>
                     <div>

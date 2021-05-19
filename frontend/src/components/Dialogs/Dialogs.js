@@ -2,6 +2,7 @@ import React from "react";
 import './Dialogs.css'
 import {EmojiSmile, Search} from "react-bootstrap-icons";
 import defaultProfile from "../../assets/default_profile.svg";
+import Moment from "react-moment";
 
 class Dialogs extends React.Component {
     constructor(props) {
@@ -18,6 +19,14 @@ class Dialogs extends React.Component {
     removeUsersShown = () => {
         this.setState({
             areUsersShown: false
+        })
+    }
+
+    componentDidMount() {
+        this.props.getDialogs().then(data => {
+            this.setState({
+                dialogs: data.data
+            })
         })
     }
 
@@ -47,7 +56,7 @@ class Dialogs extends React.Component {
             </div>
             <div style={{
                 position: 'relative',
-                zIndex: 2,
+                zIndex: 3,
             }}>
                 <form onSubmit={(e) => {
                     e.preventDefault()
@@ -96,6 +105,44 @@ class Dialogs extends React.Component {
                         }
                     </div>
                 </form>
+            </div>
+            <div style={{
+                position: 'relative',
+                zIndex: 2,
+            }}>
+                {
+                    this.state.dialogs.map((item, index) => {
+                        const user = item.recipient.id === this.props.userData.id ? item.author : item.recipient
+                        return <div style={{
+                            width: '100%',
+                            padding: '12px',
+                            display: 'flex',
+                            backgroundColor: '#F4F4F4',
+                            borderRadius: '12px',
+                            cursor: 'pointer',
+                            marginBottom: '12px',
+                            zIndex: 2
+                        }} onClick={() => this.props.history
+                            .push(`/main/messages/${user.id}/`)}>
+                            <div style={{paddingRight: '12px'}}>
+                                <img src={defaultProfile}/>
+                            </div>
+                            <div style={{flexGrow: 1}}>
+                                <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
+                                    <div>{user.first_name} {user.last_name}</div>
+                                    <div>
+                                        <Moment format="HH:mm">
+                                            {item.created_at}
+                                        </Moment>
+                                    </div>
+                                </div>
+                                <div style={{borderRadius: '20px', padding: '12px'}}>
+                                    {item.content}
+                                </div>
+                            </div>
+                        </div>
+                    })
+                }
             </div>
         </div>
     }

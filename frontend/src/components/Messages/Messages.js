@@ -41,6 +41,8 @@ class Messages extends React.Component {
                         <Dialogs
                             getAllUsers={this.props.getAllUsers}
                             history={this.props.history}
+                            userData={this.props.userData}
+                            getDialogs={this.props.getDialogs}
                         />
                         <PrivateRoute loading={false} token={this.props.token}
                                       path={`${this.props.match.url}/:id`}>

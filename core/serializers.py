@@ -113,19 +113,21 @@ class PrivateUserSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if instance.userextension.group:
-            rank = models.User.objects \
-                .order_by('-userextension__total_score', 'first_name', 'last_name') \
-                .filter(userextension__group=instance.userextension.group,
-                        userextension__total_score__gte=instance.userextension.total_score,
-                        first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
-                .count()
-            data['rank'] = rank
+        try:
+            if instance.userextension.group:
+                rank = models.User.objects \
+                    .order_by('-userextension__total_score', 'first_name', 'last_name') \
+                    .filter(userextension__group=instance.userextension.group,
+                            userextension__total_score__gte=instance.userextension.total_score,
+                            first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                    .count()
+                data['rank'] = rank
+        except models.UserExtension.DoesNotExist:
+            pass
         return data
 
 
 class LessonSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.Lesson
         fields = '__all__'
@@ -318,8 +320,32 @@ class FloorSerializer(serializers.ModelSerializer):
         fields = ('id', 'floor_number', 'building',)
 
 
+class DialogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Dialog
+        fields = '__all__'
+
+
 class MessageSerializer(serializers.ModelSerializer):
     author = PrivateUserSerializer()
+
+    def to_representation(self, instance):
+        data = super(MessageSerializer, self).to_representation(instance)
+        dialog = instance.dialog
+        author = instance.author
+        first_user = dialog.first_user
+        second_user = dialog.second_user
+        print(author)
+        print(first_user)
+        print(second_user)
+        print()
+        if first_user == author:
+            serializer = PrivateUserSerializer(instance=second_user)
+            data['recipient'] = serializer.data
+        else:
+            serializer = PrivateUserSerializer(instance=first_user)
+            data['recipient'] = serializer.data
+        return data
 
     class Meta:
         model = models.Message

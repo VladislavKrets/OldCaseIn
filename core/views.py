@@ -366,8 +366,10 @@ class LastMessagesApiView(APIView):
         user = request.user
         messages = models.Message.objects\
             .filter(Q(dialog__first_user=user) | Q(dialog__second_user=user)) \
-            .objects\
             .order_by('dialog', '-created_at')\
-            .distinct('dialog').order_by('-created_at')
-        serializer = serializers.MessageSerializer(instance=messages, many=True)
-        return response.Response(data=messages.data)
+            .distinct('dialog')
+        serializer = serializers.MessageSerializer(instance=models.Message
+                                                   .objects.filter(id__in=messages)
+                                                   .order_by('-created_at'),
+                                                   many=True)
+        return response.Response(data=serializer.data)
