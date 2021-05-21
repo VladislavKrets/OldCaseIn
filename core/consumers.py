@@ -83,6 +83,8 @@ class ChatConsumer(WebsocketConsumer):
     }
 
     def connect(self):
+        self.room_name = 'chat'
+        self.room_group_name = 'chat_%s' % self.room_name
         self.accept()
 
     def disconnect(self, close_code):
@@ -127,6 +129,8 @@ class ChatConsumer(WebsocketConsumer):
 class NotificationConsumer(WebsocketConsumer):
 
     def connect(self):
+        self.room_name = 'notification'
+        self.room_group_name = 'user_%s' % self.room_name
         self.accept()
 
     def init(self, data):
@@ -162,4 +166,9 @@ class NotificationConsumer(WebsocketConsumer):
         self.commands[data['command']](self, data)
 
     def send_message(self, message):
+        self.send(text_data=json.dumps(message))
+
+    def chat_message(self, event):
+        message = event['message']
+        # Send message to WebSocket
         self.send(text_data=json.dumps(message))

@@ -20,7 +20,7 @@ class NotificationService {
   }
 
   connect() {
-    const path = config().WEBSOCKET_CHAT_PATH;
+    const path = config().WEBSOCKET_NOTIFICATION_PATH;
     this.socketRef = new WebSocket(path);
     this.socketRef.onopen = () => {
       console.log('WebSocket open');

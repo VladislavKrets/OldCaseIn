@@ -21,7 +21,7 @@ class Messages extends React.Component {
     }
 
     addMessage(message){
-        const user = this.state.userData.id === message.author.id
+        const user = this.props.userData.id === message.author.id
             ? message.recipient : message.author;
         const dialogs = this.state.dialogs.filter(x => !(x.author.id === user.id
             || x.recipient.id === user.id))
