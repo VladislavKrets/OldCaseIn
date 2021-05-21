@@ -61,6 +61,12 @@ class Chat extends Component {
 
     addMessage(message) {
         this.setState({messages: [...this.state.messages, message]});
+        const user = this.props.userData.id === message.author.id
+            ? message.recipient : message.author;
+        const dialogs = this.props.dialogs.filter(x => !(x.author.id === user.id
+            || x.recipient.id === user.id))
+        dialogs.unshift(message)
+        this.props.updateDialogs(dialogs)
     }
 
     setMessages(messages) {

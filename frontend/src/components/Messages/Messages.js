@@ -11,9 +11,12 @@ class Messages extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: false
+            loggedIn: false,
+            dialogs: [],
         }
     }
+
+    updateDialogs = dialogs => this.setState({dialogs})
 
     componentDidMount() {
         document.title = 'Сообщения'
@@ -43,6 +46,8 @@ class Messages extends React.Component {
                             history={this.props.history}
                             userData={this.props.userData}
                             getDialogs={this.props.getDialogs}
+                            dialogs={this.state.dialogs}
+                            updateDialogs={this.updateDialogs}
                         />
                         <PrivateRoute loading={false} token={this.props.token}
                                       path={`${this.props.match.url}/:id`}>
@@ -51,6 +56,8 @@ class Messages extends React.Component {
                                 token={this.props.token}
                                 userData={this.props.userData}
                                 getUser={this.props.getUser}
+                                dialogs={this.state.dialogs}
+                                updateDialogs={this.updateDialogs}
                             />
                         </PrivateRoute>
                     </div>

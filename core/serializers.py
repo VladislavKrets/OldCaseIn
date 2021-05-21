@@ -335,10 +335,6 @@ class MessageSerializer(serializers.ModelSerializer):
         author = instance.author
         first_user = dialog.first_user
         second_user = dialog.second_user
-        print(author)
-        print(first_user)
-        print(second_user)
-        print()
         if first_user == author:
             serializer = PrivateUserSerializer(instance=second_user)
             data['recipient'] = serializer.data

@@ -11,7 +11,6 @@ class Dialogs extends React.Component {
             areUsersShown: false,
             searchValue: '',
             allUsers: [],
-            dialogs: [],
         }
         this.messageSearchRef = React.createRef()
     }
@@ -23,11 +22,7 @@ class Dialogs extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getDialogs().then(data => {
-            this.setState({
-                dialogs: data.data
-            })
-        })
+        this.props.getDialogs().then(data => this.props.updateDialogs(data.data))
     }
 
     render() {
@@ -111,7 +106,7 @@ class Dialogs extends React.Component {
                 zIndex: 2,
             }}>
                 {
-                    this.state.dialogs.map((item, index) => {
+                    this.props.dialogs.map((item, index) => {
                         const user = item.recipient.id === this.props.userData.id ? item.author : item.recipient
                         return <div style={{
                             width: '100%',
