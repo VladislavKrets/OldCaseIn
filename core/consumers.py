@@ -2,6 +2,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 
+from channels.layers import get_channel_layer
 from django.db.models import F
 from django.db.models import Q
 from core import models
@@ -83,8 +84,6 @@ class ChatConsumer(WebsocketConsumer):
     }
 
     def connect(self):
-        self.room_name = 'chat'
-        self.room_group_name = 'chat_%s' % self.room_name
         self.accept()
 
     def disconnect(self, close_code):
@@ -111,7 +110,8 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def send_dialog(self, message, user):
-        async_to_sync(self.channel_layer.group_send)(
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
             "user_{}".format(user.id),
             {
                 'type': 'chat_message',
@@ -129,8 +129,6 @@ class ChatConsumer(WebsocketConsumer):
 class NotificationConsumer(WebsocketConsumer):
 
     def connect(self):
-        self.room_name = 'notification'
-        self.room_group_name = 'user_%s' % self.room_name
         self.accept()
 
     def init(self, data):
