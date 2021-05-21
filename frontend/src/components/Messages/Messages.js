@@ -4,6 +4,7 @@ import InitChat from '../InitChat/Form'
 import Chat from '../Chat/Chat'
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import Dialogs from "../Dialogs/Dialogs";
+import './Messages.css'
 import NotificationInstance from "../../services/NotificationSocket";
 import WebSocketInstance from "../../services/WebSocket";
 
@@ -62,22 +63,17 @@ class Messages extends React.Component {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'moduleContent'}>
-                    <div style={{
-                        display: 'flex',
-                        width: '100%',
-                        height: '100%',
-                        padding: '0 30px',
-                        paddingTop: '50px',
-                        paddingBottom: '12px'
-                    }}>
-                        <Dialogs
-                            getAllUsers={this.props.getAllUsers}
-                            history={this.props.history}
-                            userData={this.props.userData}
-                            getDialogs={this.props.getDialogs}
-                            dialogs={this.state.dialogs}
-                            updateDialogs={this.updateDialogs}
-                        />
+                    <div className={'messagesContent'}>
+                        {!(this.props.width < 920 && window.location.pathname.match(/main\/messages\/\d+\//)) &&
+                            <Dialogs
+                                getAllUsers={this.props.getAllUsers}
+                                history={this.props.history}
+                                userData={this.props.userData}
+                                getDialogs={this.props.getDialogs}
+                                dialogs={this.state.dialogs}
+                                updateDialogs={this.updateDialogs}
+                            />
+                        }
                         <PrivateRoute loading={false} token={this.props.token}
                                       path={`${this.props.match.url}/:id`}>
                             <Chat

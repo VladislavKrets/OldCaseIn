@@ -52,3 +52,16 @@
     border-radius: 10px;
     box-shadow: none;
 }
+
+.dialog-container{
+    flex-grow: 1;
+    width: 40%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 770px) {
+    .dialog-container {
+        width: 100%;
+        padding: 10px;
+    }
+}

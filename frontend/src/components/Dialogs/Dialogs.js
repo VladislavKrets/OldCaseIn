@@ -26,7 +26,7 @@ class Dialogs extends React.Component {
     }
 
     render() {
-        return <div style={{flexGrow: 1, width: '40%', boxSizing: 'border-box'}}>
+        return <div className={'dialog-container'} style={{flexGrow: 1, width: '40%', boxSizing: 'border-box'}}>
             {this.state.areUsersShown &&
             <div style={{
                 position: 'fixed',

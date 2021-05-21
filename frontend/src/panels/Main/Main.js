@@ -376,6 +376,7 @@ class Main extends React.Component {
                                   userData={this.props.userData}
                                   getUser={this.props.getAllUser}
                                   getAllUsers={this.props.getAllUsers}
+                                  width={this.state.width}
                                   getDialogs={this.props.getDialogs}
                                   token={this.props.token}/>
                     </PrivateRoute>

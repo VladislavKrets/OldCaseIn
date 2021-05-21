@@ -121,17 +121,7 @@ class Chat extends Component {
         const messages = this.state.messages;
         const currentUser = this.props.token;
         return (
-            <div className='chat' style={{
-                flexGrow: 1,
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#DEF7FF',
-                marginLeft: '30px',
-                borderRadius: '12px',
-                width: '60%',
-                boxSizing: "border-box"
-            }}>
+            <div className='chat'>
                 <div className='chat-container' style={{flexGrow: '1'}}>
                     <div ref={(el) => {
                         this.messagesEnd = el;
@@ -142,7 +132,7 @@ class Chat extends Component {
                         }
                     </div>
                 </div>
-                <div className='container message-form'>
+                <div style={{padding: '0 5px', paddingTop: '12px'}}>
                     <form onSubmit={(e) => {
                         e.preventDefault()
                         this.sendMessageHandler(e, this.state.message)

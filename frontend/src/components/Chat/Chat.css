@@ -5,6 +5,7 @@
     overflow-wrap: break-word;
     word-break: break-all
 }
+
 .him {
     background-color: #D7D7D7;
     max-width: 100%;
@@ -12,25 +13,42 @@
     overflow-wrap: break-word;
     word-break: break-all
 }
-.chat-message{
+
+.chat-message {
 }
-.input-message{
+
+.input-message {
     padding: 12px;
     border-radius: 24px;
     border: 1px solid #C4C4C4;
     outline: none;
     flex-grow: 1;
 }
-.input-message:focus{
+
+.input-message:focus {
     border-color: darkblue;
 }
+
 .chat {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #DEF7FF;
+    margin-left: 30px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 2;
+    width: 60%;
+    box-sizing: border-box;
     padding-bottom: 12px;
 }
-.chat-container{
+
+.chat-container {
     display: flex;
     flex-direction: column-reverse;
     width: 100%;
+
     overflow-y: scroll;
 }
 
@@ -53,4 +71,19 @@
     background: transparent;
     border-radius: 10px;
     box-shadow: none;
+}
+
+@media (max-width: 920px) {
+    .chat {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@media (max-width: 770px) {
+    .chat {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
 }
