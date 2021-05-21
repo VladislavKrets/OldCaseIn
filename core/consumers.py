@@ -73,6 +73,8 @@ class ChatConsumer(WebsocketConsumer):
             'message': serializer.data
         }
         self.send_chat_message(content)
+        self.send_dialog(content, to)
+        self.send_dialog(content, author_user)
 
     commands = {
         'init_chat': init_chat,
@@ -106,8 +108,58 @@ class ChatConsumer(WebsocketConsumer):
             }
         )
 
+    def send_dialog(self, message, user):
+        async_to_sync(self.channel_layer.group_send)(
+            "user_{}".format(user.id),
+            {
+                'type': 'chat_message',
+                'message': message
+            }
+        )
+
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
         # Send message to WebSocket
+        self.send(text_data=json.dumps(message))
+
+
+class NotificationConsumer(WebsocketConsumer):
+
+    def connect(self):
+        self.accept()
+
+    def init(self, data):
+        token = data['token']
+        token = Token.objects.get(key=token)
+        user = token.user
+        content = {
+            'command': 'init'
+        }
+        self.room_name = str(user.id)
+        self.room_group_name = 'user_%s' % self.room_name
+
+        # Join room group
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        self.send_message(content)
+
+    commands = {
+        'init': init,
+    }
+
+    def disconnect(self, close_code):
+        # leave group room
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data=None, bytes_data=None):
+        data = json.loads(text_data)
+        self.commands[data['command']](self, data)
+
+    def send_message(self, message):
         self.send(text_data=json.dumps(message))
