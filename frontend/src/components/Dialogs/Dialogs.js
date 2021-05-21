@@ -32,7 +32,7 @@ class Dialogs extends React.Component {
                 position: 'fixed',
                 width: '100vw',
                 height: '100vh',
-                zIndex: 2,
+                zIndex: 3,
                 overflow: 'hidden',
                 top: 0,
                 left: 0
@@ -51,7 +51,7 @@ class Dialogs extends React.Component {
             </div>
             <div style={{
                 position: 'relative',
-                zIndex: 3,
+                zIndex: 4,
             }}>
                 <form onSubmit={(e) => {
                     e.preventDefault()
