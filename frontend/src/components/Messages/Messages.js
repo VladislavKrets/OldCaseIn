@@ -71,6 +71,7 @@ class Messages extends React.Component {
                                 userData={this.props.userData}
                                 getDialogs={this.props.getDialogs}
                                 dialogs={this.state.dialogs}
+                                searchUser={this.props.searchUser}
                                 updateDialogs={this.updateDialogs}
                             />
                         }

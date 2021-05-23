@@ -9,6 +9,7 @@ class Dialogs extends React.Component {
         super(props);
         this.state = {
             areUsersShown: false,
+            prevSearchValue: '',
             searchValue: '',
             allUsers: [],
         }
@@ -23,6 +24,22 @@ class Dialogs extends React.Component {
 
     componentDidMount() {
         this.props.getDialogs().then(data => this.props.updateDialogs(data.data))
+    }
+
+    handleChange = e => {
+        if (this.state.prevSearchValue.trim() !== this.state.searchValue.trim()) {
+            if (e.target.value.trim()) {
+                this.props.searchUser(e.target.value.trim())
+                    .then(data => this.setState({allUsers: data.data}))
+            } else {
+                this.props.getAllUsers()
+                    .then(data => this.setState({allUsers: data.data}))
+            }
+        }
+        this.setState({
+            prevSearchValue: this.state.searchValue,
+            searchValue: e.target.value
+        })
     }
 
     render() {
@@ -74,7 +91,7 @@ class Dialogs extends React.Component {
                             ref={this.messageSearchRef}
                             type='text'
                             value={this.state.searchValue}
-                            onChange={e => this.setState({searchValue: e.target.value})}
+                            onChange={this.handleChange}
                             placeholder='Поиск'
                             required/>
                         {this.state.areUsersShown && <div

@@ -213,6 +213,15 @@ class App extends React.Component {
         })
     }
 
+    searchUser = (search) => {
+        return axios.post(`user/`, {search: search}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getEvents = () => {
         return axios.get(`events/`, {
             headers: {
@@ -359,6 +368,7 @@ class App extends React.Component {
                           getAllUser={this.getAllUser}
                           getAllUsers={this.getAllUsers}
                           getDialogs={this.getDialogs}
+                          searchUser={this.searchUser}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

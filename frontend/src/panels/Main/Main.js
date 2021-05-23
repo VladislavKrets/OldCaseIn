@@ -378,6 +378,7 @@ class Main extends React.Component {
                                   getAllUsers={this.props.getAllUsers}
                                   width={this.state.width}
                                   getDialogs={this.props.getDialogs}
+                                  searchUser={this.props.searchUser}
                                   token={this.props.token}/>
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact

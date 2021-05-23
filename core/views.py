@@ -62,6 +62,19 @@ class UserDataApiView(APIView):
         serializer = serializers.UserSerializer(instance=request.user)
         return response.Response(serializer.data)
 
+    def post(self, request):
+        search = request.data.get('search', None)
+        if not search:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        search = search.split()
+        f_eq = search.pop(0)
+        equation = Q(first_name__icontains=f_eq) | Q(last_name__icontains=f_eq)
+        for eq in search:
+            equation = equation | Q(first_name__icontains=eq) | Q(last_name__icontains=eq)
+        users = User.objects.filter(equation)
+        serializer = serializers.PrivateUserSerializer(instance=users, many=True)
+        return response.Response(data=serializer.data)
+
 
 class ModuleViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
@@ -373,3 +386,4 @@ class LastMessagesApiView(APIView):
                                                    .order_by('-created_at'),
                                                    many=True)
         return response.Response(data=serializer.data)
+
