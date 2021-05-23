@@ -27,7 +27,7 @@ class Dialogs extends React.Component {
     }
 
     handleChange = e => {
-        if (this.state.prevSearchValue.trim() !== this.state.searchValue.trim()) {
+        if (this.state.searchValue.trim() !== e.target.value.trim()) {
             if (e.target.value.trim()) {
                 this.props.searchUser(e.target.value.trim())
                     .then(data => this.setState({allUsers: data.data}))
@@ -37,7 +37,6 @@ class Dialogs extends React.Component {
             }
         }
         this.setState({
-            prevSearchValue: this.state.searchValue,
             searchValue: e.target.value
         })
     }
