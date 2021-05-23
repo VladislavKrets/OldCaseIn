@@ -86,6 +86,11 @@ class Messages extends React.Component {
                                 updateDialogs={this.updateDialogs}
                             />
                         </PrivateRoute>
+                        {this.props.width > 920 && !window.location.pathname.match(/main\/messages\/\d+\//) &&
+                        <div className='chat' style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            Выберите диалог
+                        </div>
+                        }
                     </div>
                 </div>
             </div>
