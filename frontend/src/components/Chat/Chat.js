@@ -39,11 +39,18 @@ class Chat extends Component {
 
     componentDidMount() {
         this.scrollToBottom();
-        console.log(this.props.match.params.id)
         this.props.getUser(this.props.match.params.id).then(data => {
             this.setState({
                 to: data.data
             })
+            const dialogs = this.props.dialogs
+            for (let dialog of dialogs){
+                if (dialog.author.id == this.props.match.params.id){
+                    console.log(dialog)
+                    dialog.is_read = true
+                }
+            }
+            this.props.updateDialogs(dialogs)
         })
     }
 

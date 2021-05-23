@@ -259,6 +259,7 @@ class Message(models.Model):
     dialog = models.ForeignKey(to=Dialog, related_name='messages', on_delete=models.deletion.CASCADE)
     content = models.TextField(validators=[validate_message_content])
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    is_read = models.BooleanField(default=False)
 
     def last_50_messages():
         return Message.objects.order_by('-created_at').all()[:50]

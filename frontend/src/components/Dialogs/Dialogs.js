@@ -122,7 +122,7 @@ class Dialogs extends React.Component {
                             <div style={{paddingRight: '12px'}}>
                                 <img src={defaultProfile}/>
                             </div>
-                            <div style={{flexGrow: 1}}>
+                            <div style={{flexGrow: 1, width: 'calc(100% - 83px)', maxWidth: 'calc(100% - 83px)'}}>
                                 <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
                                     <div>{user.first_name} {user.last_name}</div>
                                     <div>
@@ -131,8 +131,28 @@ class Dialogs extends React.Component {
                                         </Moment>
                                     </div>
                                 </div>
-                                <div style={{borderRadius: '20px', padding: '12px'}}>
-                                    {item.content}
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <div style={{
+                                        borderRadius: '20px',
+                                        padding: '12px',
+                                        width: 'calc(100% - 20px)',
+                                        maxWidth: 'calc(100% - 20px)',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis'
+                                    }}>
+                                        {item.content}
+                                    </div>
+                                    {
+                                        this.props.userData.id !== item.author.id && !item.is_read && <div style={{
+                                            borderRadius: '50%',
+                                            boxSizing: 'border-box',
+                                            marginLeft: '5px',
+                                            width: '10px',
+                                            height: '10px',
+                                            backgroundColor: 'blue'
+                                        }}/>
+                                    }
                                 </div>
                             </div>
                         </div>

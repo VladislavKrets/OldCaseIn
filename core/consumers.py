@@ -50,6 +50,7 @@ class ChatConsumer(WebsocketConsumer):
             dialog = models.Dialog.objects.get(first_user=to, second_user=user)
         except models.Dialog.DoesNotExist:
             dialog = models.Dialog.objects.get_or_create(first_user=user, second_user=to)[0]
+        dialog.messages.filter(is_read=False).update(is_read=True)
         messages = dialog.messages.order_by('-created_at')
         serializer = serializers.MessageSerializer(instance=messages, many=True)
         content = {
