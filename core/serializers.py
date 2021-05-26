@@ -107,10 +107,17 @@ class UserSerializer(serializers.ModelSerializer):
 class PrivateUserSerializer(serializers.ModelSerializer):
     total_score = serializers.IntegerField(source='userextension.total_score')
     type = serializers.CharField(source='userextension.type')
+    days_count = serializers.IntegerField(source='userextension.days_count')
+    master_mark = serializers.IntegerField(source='userextension.master_mark')
+    completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
+    bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
+    chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'type', 'last_name', 'total_score')
+        fields = ('id', 'username', 'first_name', 'type', 'last_name', 'total_score', 'days_count', 'master_mark',
+                  'completed_tasks_count',
+                  'bot_messages_count', 'chat_messages_count',)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
