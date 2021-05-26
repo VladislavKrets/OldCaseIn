@@ -5,6 +5,7 @@ import ModalGroupMembers from "../ModalGroupMembers/ModalGroupMembers";
 import defaultProfile from "../../assets/default_profile.svg"
 import SimpleUserData from "../SimpleUserData/SimpleUserData";
 import Master from "../Master/Master";
+import {withRouter} from "react-router";
 
 class User extends React.Component {
     constructor(props) {
@@ -26,10 +27,12 @@ class User extends React.Component {
 
     componentDidMount() {
         document.title = 'Профиль'
-        this.props.setHeaderName('Профиль')
-        this.props.getUser().then(data => {
-            this.props.setUserData(data.data)
-        })
+        if (!this.props.masterPreview) {
+            this.props.setHeaderName('Профиль')
+            this.props.getUser().then(data => {
+                this.props.setUserData(data.data)
+            })
+        }
     }
 
     render() {
@@ -39,7 +42,9 @@ class User extends React.Component {
                     <div className={'user-content'}>
                         <div className={'user-hello'}>
                             <div className={'hello-phrase'}>
-                                Здравствуйте, {this.capitalizeFirstLetter(this.props.userData.first_name)}!
+                                {!this.props.masterPreview && "Здравствуйте, " }
+                                {this.capitalizeFirstLetter(this.props.userData.first_name)}{!this.props.masterPreview && "!" }
+                                {this.props.masterPreview && ` ${this.capitalizeFirstLetter(this.props.userData.last_name)}`}
                             </div>
                             <div style={{display: 'flex'}}>
                                 <div style={{marginRight: '7px'}}>
@@ -57,12 +62,16 @@ class User extends React.Component {
                             </div>
                         </div>
                         {
-                            this.props.userData.type === 'master' ? <Master
+                            this.props.userData.type === 'master' && !this.props.masterPreview ? <Master
+                                    key={window.location.pathname}
                                     getGroups={this.props.getGroups}
                                     getMasterUser={this.props.getMasterUser}
                                     userData={this.props.userData}
+                                    history={this.props.history}
                                 />
                                 : <SimpleUserData
+                                    masterPreview={this.props.masterPreview}
+                                    key={window.location.pathname}
                                     setModalShow={this.setModalShow}
                                     userData={this.props.userData}
                                 />
@@ -76,8 +85,10 @@ class User extends React.Component {
                     getUserGroupData={this.props.getUserGroupData}
                     onHide={() => this.setModalShow(false)}/>
             }
-        </div> : <div/>
+        </div> : <div className={'moduleContent-background'}>
+            <div className={'moduleContent-no-overflow-parent'}>
+                <div className={'moduleContent'}/></div></div>
     }
 }
 
-export default User
+export default withRouter(User)

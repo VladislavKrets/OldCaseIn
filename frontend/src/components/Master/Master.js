@@ -25,16 +25,31 @@ class Master extends React.Component {
             <div className={'moduleContent-no-overflow-parent'}>
                 <div className={'moduleContent'}>
                     {this.state.groups.length > 0 && <>
-                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <div style={{display: 'flex', justifyContent: 'space-between', paddingBottom: '30px'}}>
                             <div>
 
                             </div>
-                            <div>
+                            <div style={{fontWeight: 'bold', fontSize: '1.4em'}}>
                                 {this.state.groups[this.state.currentGroup].name}
                             </div>
                             <div>
 
                             </div>
+                        </div>
+                        <div>
+                            {
+                                this.state.groups[this.state.currentGroup].users.map(item => {
+                                    return <div style={{
+                                        textAlign: 'center',
+                                        paddingBottom: '15px',
+                                        fontWeight: '1.2em',
+                                    }}>
+                                        <span style={{cursor: 'pointer'}}
+                                              onClick={() => this.props.history.push(`/main/users/${item.id}`)}>
+                                            {item.first_name} {item.last_name}</span>
+                                    </div>
+                                })
+                            }
                         </div>
                     </>}
                 </div>
@@ -43,4 +58,4 @@ class Master extends React.Component {
     }
 }
 
-export default withRouter(Master)
+export default Master

@@ -74,6 +74,9 @@ class ChatConsumer(WebsocketConsumer):
             'command': 'new_message',
             'message': serializer.data
         }
+        userextension = author_user.userextension
+        userextension.chat_messages_count += 1
+        userextension.save()
         self.send_chat_message(content)
         self.send_dialog(content, to)
         self.send_dialog(content, author_user)

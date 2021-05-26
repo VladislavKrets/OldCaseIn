@@ -59,7 +59,6 @@ class RegistrationSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     total_score = serializers.IntegerField(source='userextension.total_score')
     type = serializers.CharField(source='userextension.type')
-    master = serializers.PrimaryKeyRelatedField(read_only=True, source='userextension.master')
     days_count = serializers.IntegerField(source='userextension.days_count')
     master_mark = serializers.IntegerField(source='userextension.master_mark')
     completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
@@ -69,7 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type', 'master',
+        fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type',
                   'days_count', 'master_mark', 'completed_tasks_count',
                   'bot_messages_count', 'chat_messages_count', 'group')
 
@@ -117,13 +116,24 @@ class PrivateUserSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         try:
             if instance.userextension.group:
-                rank = models.User.objects \
+                first_rank = models.User.objects \
                     .order_by('-userextension__total_score', 'first_name', 'last_name') \
                     .filter(userextension__group=instance.userextension.group,
-                            userextension__total_score__gte=instance.userextension.total_score,
-                            first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                            userextension__total_score__gt=instance.userextension.total_score) \
                     .count()
-                data['rank'] = rank
+                second_rank = models.User.objects \
+                    .order_by('first_name', 'last_name') \
+                    .filter(userextension__group=instance.userextension.group,
+                            userextension__total_score=instance.userextension.total_score,
+                            first_name__lt=instance.first_name) \
+                    .count()
+                third_rank = models.User.objects \
+                    .order_by('last_name') \
+                    .filter(userextension__group=instance.userextension.group,
+                            userextension__total_score=instance.userextension.total_score,
+                            first_name=instance.first_name, last_name__lte=instance.last_name) \
+                    .count()
+                data['rank'] = first_rank + second_rank + third_rank
         except models.UserExtension.DoesNotExist:
             pass
         return data
@@ -131,10 +141,18 @@ class PrivateUserSerializer(serializers.ModelSerializer):
 
 class MasterUserSerializer(serializers.ModelSerializer):
     total_score = serializers.IntegerField(source='userextension.total_score')
+    type = serializers.CharField(source='userextension.type')
+    days_count = serializers.IntegerField(source='userextension.days_count')
+    master_mark = serializers.IntegerField(source='userextension.master_mark')
+    completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
+    bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
+    chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'type', 'total_score')
+        fields = ('id', 'username', 'first_name', 'last_name', 'type', 'total_score', 'days_count', 'master_mark',
+                  'completed_tasks_count',
+                  'bot_messages_count', 'chat_messages_count',)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -142,44 +160,86 @@ class MasterUserSerializer(serializers.ModelSerializer):
             userextension = instance.userextension
             group = userextension.group
             if group:
-                rank = models.User.objects \
+                first_rank = models.User.objects \
                     .order_by('-userextension__total_score', 'first_name', 'last_name') \
                     .filter(userextension__group=instance.userextension.group,
-                            userextension__total_score__gte=instance.userextension.total_score,
-                            first_name__lte=instance.first_name, last_name__lte=instance.last_name) \
+                            userextension__total_score__gt=instance.userextension.total_score) \
                     .count()
-                data['rank'] = rank
-                min_max_total_score = models.UserExtension.objects\
-                    .filter(group=group).values_list('total_score')\
-                    .annotate(total_score_min=Min('total_score'),
-                              total_score_max=Max('total_score'))
-
-                print(min_max_total_score)
+                second_rank = models.User.objects \
+                    .order_by('first_name', 'last_name') \
+                    .filter(userextension__group=instance.userextension.group,
+                            userextension__total_score=instance.userextension.total_score,
+                            first_name__lt=instance.first_name) \
+                    .count()
+                third_rank = models.User.objects \
+                    .order_by('last_name') \
+                    .filter(userextension__group=instance.userextension.group,
+                            userextension__total_score=instance.userextension.total_score,
+                            first_name=instance.first_name, last_name__lte=instance.last_name) \
+                    .count()
+                data['rank'] = first_rank + second_rank + third_rank
+                min_max_total_score = models.UserExtension.objects \
+                    .filter(group=group).values_list('total_score') \
+                    .aggregate(Min('total_score'), Max('total_score'))
+                normal_total_score = 0
+                if min_max_total_score['total_score__min'] != min_max_total_score['total_score__max']:
+                    normal_total_score = (userextension.total_score - min_max_total_score['total_score__min']) \
+                                         / (min_max_total_score['total_score__max'] - min_max_total_score[
+                        'total_score__min'])
+                data['normal_total_score'] = normal_total_score
                 min_max_days_count = models.UserExtension.objects \
                     .filter(group=group).values_list('days_count') \
-                    .annotate(days_count_min=Min('days_count'),
-                              days_count_max=Max('days_count'))
-                print(min_max_days_count)
+                    .aggregate(Min('days_count'), Max('days_count'))
+                normal_days_count = 0
+                if min_max_days_count['days_count__min'] != min_max_days_count['days_count__max']:
+                    normal_days_count = (userextension.days_count - min_max_days_count['days_count__min']) \
+                                        / (min_max_days_count['days_count__max'] - min_max_days_count[
+                        'days_count__min'])
+                data['normal_days_count'] = normal_days_count
                 min_max_master_mark = models.UserExtension.objects \
                     .filter(group=group).values_list('master_mark') \
-                    .annotate(master_mark_min=Min('master_mark'),
-                              master_mark_max=Max('master_mark'))
-                print(min_max_master_mark)
+                    .aggregate(Min('master_mark'), Max('master_mark'))
+                normal_master_mark = 0
+                if min_max_master_mark['master_mark__min'] != min_max_master_mark['master_mark__max']:
+                    normal_master_mark = (userextension.master_mark - min_max_master_mark['master_mark__min']) \
+                                         / (min_max_master_mark['master_mark__max'] - min_max_master_mark[
+                        'master_mark__min'])
+                data['normal_master_mark'] = normal_master_mark
                 min_max_completed_tasks_count = models.UserExtension.objects \
                     .filter(group=group).values_list('completed_tasks_count') \
-                    .annotate(completed_tasks_count_min=Min('completed_tasks_count'),
-                              completed_tasks_count_max=Max('completed_tasks_count'))
-                print(min_max_completed_tasks_count)
+                    .aggregate(Min('completed_tasks_count'), Max('completed_tasks_count'))
+                normal_completed_tasks_count = 0
+                if min_max_completed_tasks_count['completed_tasks_count__min'] != min_max_completed_tasks_count[
+                    'completed_tasks_count__max']:
+                    normal_completed_tasks_count = (userextension.completed_tasks_count - min_max_completed_tasks_count[
+                        'completed_tasks_count__min']) \
+                                                   / (min_max_completed_tasks_count['completed_tasks_count__max'] -
+                                                      min_max_completed_tasks_count['completed_tasks_count__min'])
+                data['normal_completed_tasks_count'] = normal_completed_tasks_count
                 min_max_bot_messages_count = models.UserExtension.objects \
                     .filter(group=group).values_list('bot_messages_count') \
-                    .annotate(bot_messages_count_min=Min('bot_messages_count'),
-                              bot_messages_count_max=Max('bot_messages_count'))
-                print(min_max_bot_messages_count)
+                    .aggregate(Min('bot_messages_count'), Max('bot_messages_count'))
+                normal_bot_messages_count = 0
+                if min_max_bot_messages_count['bot_messages_count__min'] != min_max_bot_messages_count[
+                    'bot_messages_count__max']:
+                    normal_bot_messages_count = (userextension.bot_messages_count - min_max_bot_messages_count[
+                        'bot_messages_count__min']) \
+                                                / (min_max_bot_messages_count['bot_messages_count__max'] -
+                                                   min_max_bot_messages_count[
+                                                       'bot_messages_count__min'])
+                data['normal_bot_messages_count'] = normal_bot_messages_count
                 min_max_chat_messages_count = models.UserExtension.objects \
                     .filter(group=group).values_list('chat_messages_count') \
-                    .annotate(chat_messages_count_min=Min('chat_messages_count'),
-                              chat_messages_count_max=Max('chat_messages_count'))
-                print(min_max_chat_messages_count)
+                    .aggregate(Min('chat_messages_count'), Max('chat_messages_count'))
+                normal_chat_messages_count = 0
+                if min_max_chat_messages_count['chat_messages_count__min'] != min_max_chat_messages_count[
+                    'chat_messages_count__max']:
+                    normal_chat_messages_count = (userextension.chat_messages_count - min_max_chat_messages_count[
+                        'chat_messages_count__min']) \
+                                                 / (min_max_chat_messages_count['chat_messages_count__max'] -
+                                                    min_max_chat_messages_count[
+                                                        'chat_messages_count__min'])
+                data['normal_chat_messages_count'] = normal_chat_messages_count
 
         except models.UserExtension.DoesNotExist:
             pass
@@ -411,7 +471,8 @@ class UserGroupSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        users = User.objects.filter(userextension__in=instance.users.values_list('id', flat=True))
+        users = User.objects.filter(userextension__in=instance.users.values_list('id', flat=True)) \
+            .order_by('-userextension__total_score', 'first_name', 'last_name')
         serializer = PrivateUserSerializer(instance=users, many=True)
         data['users'] = serializer.data
         return data

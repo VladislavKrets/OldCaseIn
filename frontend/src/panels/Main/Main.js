@@ -21,6 +21,7 @@ import Courses from "../../components/Courses/Courses";
 import ModulesList from "../../components/ModulesList/ModulesList";
 import Modules from "../../components/Modules/Modules";
 import Messages from "../../components/Messages/Messages";
+import MasterPreviewUser from "../../components/MasterPreviewUser/MasterPreviewUser";
 
 class Main extends React.Component {
 
@@ -384,6 +385,21 @@ class Main extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/me`}>
                         <User logOut={this.props.logOut}
+                              key={window.location.pathname}
+                              getGroups={this.props.getGroups}
+                              masterPreview={false}
+                              getMasterUser={this.props.getMasterUser}
+                              getUser={this.props.getUser}
+                              userData={this.props.userData}
+                              setHeaderName={this.setHeaderName}
+                              setUserData={this.props.setUserData}
+                              getUserGroupData={this.props.getUserGroupData}
+                              token={this.props.token}
+                        />
+                    </PrivateRoute>
+                    <PrivateRoute loading={false} token={this.props.token} exact
+                                  path={`${this.props.match.url}/users/:user`}>
+                        <MasterPreviewUser logOut={this.props.logOut}
                               getGroups={this.props.getGroups}
                               getMasterUser={this.props.getMasterUser}
                               getUser={this.props.getUser}

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/core": "^0.70.0",
+    "@nivo/radar": "^0.70.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
@@ -10,6 +12,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-icons": "^1.4.0",
     "moment": "^2.29.1",
+    "nivo": "^0.31.0",
     "react": "^17.0.1",
     "react-big-calendar": "^0.33.2",
     "react-bootstrap": "^1.5.2",
