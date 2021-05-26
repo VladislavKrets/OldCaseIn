@@ -35,7 +35,7 @@ class FloorDataAdmin(admin.ModelAdmin):
 class UserExtensionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserExtensionForm, self).__init__(*args, **kwargs)
-        self.fields['master'].queryset = \
+        self.fields['type'].queryset = \
             User.objects.filter(userextension__type='master').exclude(userextension=self.instance)
 
 

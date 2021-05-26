@@ -384,6 +384,8 @@ class Main extends React.Component {
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/me`}>
                         <User logOut={this.props.logOut}
+                              getGroups={this.props.getGroups}
+                              getMasterUser={this.props.getMasterUser}
                               getUser={this.props.getUser}
                               userData={this.props.userData}
                               setHeaderName={this.setHeaderName}

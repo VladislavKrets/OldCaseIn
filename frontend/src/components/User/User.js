@@ -3,6 +3,8 @@ import './User.css'
 import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
 import ModalGroupMembers from "../ModalGroupMembers/ModalGroupMembers";
 import defaultProfile from "../../assets/default_profile.svg"
+import SimpleUserData from "../SimpleUserData/SimpleUserData";
+import Master from "../Master/Master";
 
 class User extends React.Component {
     constructor(props) {
@@ -54,127 +56,17 @@ class User extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Ваш рейтинг:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.rank === undefined ? 'Недоступно' : this.props.userData.rank}
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Количество баллов:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.total_score}
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Количество дней в аккаунте:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.days_count}
-                                    </h4>
-                                </div>
-                            </div>
-
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Количество выполненных задач:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.completed_tasks_count}
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Количество сообщений в чате:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.chat_messages_count}
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Количество сообщений боту:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.bot_messages_count}
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'} style={{cursor: 'pointer'}}
-                                 onClick={() => this.setModalShow(true)}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Моя группа
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className={'user-content-card'}>
-                                <div>
-                                    <h3 style={{
-                                        color: 'inherit',
-                                        textAlign: 'center',
-                                        marginBottom: '30px',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        Оценка руководителя:
-                                    </h3>
-                                    <h4 style={{color: 'inherit', textAlign: 'center'}}>
-                                        {this.props.userData.master_mark}
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
+                        {
+                            this.props.userData.type === 'master' ? <Master
+                                    getGroups={this.props.getGroups}
+                                    getMasterUser={this.props.getMasterUser}
+                                    userData={this.props.userData}
+                                />
+                                : <SimpleUserData
+                                    setModalShow={this.setModalShow}
+                                    userData={this.props.userData}
+                                />
+                        }
                     </div>
                 </div>
             </div>

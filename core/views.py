@@ -387,3 +387,24 @@ class LastMessagesApiView(APIView):
                                                    many=True)
         return response.Response(data=serializer.data)
 
+
+class GroupViewSet(ListModelMixin, CreateModelMixin,
+                   RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.UserGroupSerializer
+
+    def get_queryset(self):
+        return models.UserGroup.objects.filter(master=self.request.user)
+
+
+class MasterUserViewSet(ListModelMixin,
+                        RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.MasterUserSerializer
+
+    def get_queryset(self):
+        return models.User.objects\
+            .filter(userextension__group__in=self.request.user.managed_groups.values_list('id', flat=True))
+

@@ -7,10 +7,12 @@ gd_storage = GoogleDriveStorage()
 
 
 class UserGroup(models.Model):
-    information = models.TextField(default='', blank=True)
+    name = models.CharField(default='', max_length=255)
+    master = models.ForeignKey(to=User, related_name='managed_groups',
+                               on_delete=models.deletion.CASCADE)
 
     def __str__(self):
-        return self.information
+        return self.name
 
 
 class RegistrationCode(models.Model):
@@ -199,17 +201,13 @@ class UserExtension(models.Model):
     completed_tasks_count = models.PositiveIntegerField(default=0)
     bot_messages_count = models.PositiveIntegerField(default=0)
     chat_messages_count = models.PositiveIntegerField(default=0)
-    master = models.ForeignKey(to=User, null=True,
-                               related_name='students',
-                               validators=(restrict_type,),
-                               on_delete=models.deletion.SET_NULL, blank=True)
-    group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.CASCADE, related_name='users')
     floor_data = models.ForeignKey(to=FloorData, on_delete=models.deletion.SET_NULL, null=True, blank=True)
     room_number = models.PositiveIntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.master:
-            self.master = None
+        if not self.type:
+            self.type = None
         if not self.group:
             self.group = None
         if not self.floor_data:

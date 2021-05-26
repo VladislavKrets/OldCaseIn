@@ -285,6 +285,24 @@ class App extends React.Component {
         })
     }
 
+    getGroups = () => {
+        return axios.get(`groups/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getMasterUser = (id) => {
+        return axios.get(`master_users/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getCurrentBuilding = (id) => {
         return axios.get(`buildings/${id}/`, {
             headers: {
@@ -369,6 +387,8 @@ class App extends React.Component {
                           getAllUsers={this.getAllUsers}
                           getDialogs={this.getDialogs}
                           searchUser={this.searchUser}
+                          getGroups={this.getGroups}
+                          getMasterUser={this.getMasterUser}
                     />
                 </PrivateRoute>
                 <Route exact path=''>
