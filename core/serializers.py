@@ -415,11 +415,12 @@ class EventCalendarSerializer(serializers.ModelSerializer):
         user = self.context['user']
         userextension = user.userextension
         if instance.user == user:
+            completed = instance.completed
             after_update = super(EventCalendarSerializer, self).update(instance, validated_data)
-            if not instance.completed and after_update.completed:
+            if not completed and after_update.completed:
                 userextension.completed_tasks_count += 1
                 userextension.save()
-            elif instance.completed and not after_update.completed:
+            elif completed and (not after_update.completed):
                 userextension.completed_tasks_count -= 1
                 userextension.save()
             return after_update
