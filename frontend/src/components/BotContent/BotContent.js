@@ -30,7 +30,7 @@ export default class BotContent extends React.Component {
         if (this.state.currentText !== '') {
             const text = this.state.currentText.trim()
             const content = this.state.content;
-            content.push({
+            content.unshift({
                 from: 'user',
                 text: text
             })
@@ -41,7 +41,7 @@ export default class BotContent extends React.Component {
             const objDiv = document.getElementById("bot");
             objDiv.scrollTop = objDiv.scrollHeight;
             this.props.askBotQuestion(text).then(data => {
-                content.push({
+                content.unshift({
                     from: 'bot',
                     text: data.data.text
                 })
@@ -62,7 +62,12 @@ export default class BotContent extends React.Component {
         return <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
                 <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-                    <div className={'moduleContent'} id={'bot'} style={{flexGrow: 1}}>
+                    <div className={'moduleContent'} id={'bot'} style={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        flexDirection: 'column-reverse',
+                        alignItems: 'flex-start'
+                    }}>
                         {
                             this.state.content.length === 0 && <div style={{
                                 width: '100%',
@@ -108,7 +113,11 @@ export default class BotContent extends React.Component {
                                               style={{borderRadius: '20px'}}
                                               placeholder="Введите вопрос"/>
                                 <div style={{paddingLeft: '5px'}}/>
-                                <Button type="submit" style={{borderRadius: '20px', backgroundColor: '#00D4FF', borderColor: '#00D4FF'}}>
+                                <Button type="submit" style={{
+                                    borderRadius: '20px',
+                                    backgroundColor: '#00D4FF',
+                                    borderColor: '#00D4FF'
+                                }}>
                                     Отправить
                                 </Button>
                             </div>
