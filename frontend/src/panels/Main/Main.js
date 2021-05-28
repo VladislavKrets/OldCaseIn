@@ -320,6 +320,8 @@ class Main extends React.Component {
                             getEvents={this.props.getEvents}
                             updateEvent={this.props.updateEvent}
                             deleteEvent={this.props.deleteEvent}
+                            width={this.state.width}
+                            eventsSearch={this.props.eventsSearch}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}

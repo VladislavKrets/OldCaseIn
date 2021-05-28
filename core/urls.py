@@ -33,7 +33,8 @@ urlpatterns = [
     path('buildings/<int:building>/floors/', views.FloorModelMixin.as_view()),
     path('bot/', views.BotApiView.as_view()),
     path('group_user_data/', views.GroupUserMixin.as_view()),
-    path('dialogs/', views.LastMessagesApiView.as_view())
+    path('dialogs/', views.LastMessagesApiView.as_view()),
+    path('events_search/', views.EventsSearchApiView.as_view())
 ]
 
 urlpatterns += router.urls

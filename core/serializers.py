@@ -496,3 +496,9 @@ class UserGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserGroup
         fields = '__all__'
+
+
+class RangeDatesSerializer(serializers.Serializer):
+    start = serializers.DateTimeField()
+    end = serializers.DateTimeField()
+

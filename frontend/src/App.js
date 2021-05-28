@@ -330,6 +330,15 @@ class App extends React.Component {
         })
     }
 
+    eventsSearch = (data) => {
+        return axios.post(`events_search/`, data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     setToken = (token) => {
         this.setState({
             token: token,
@@ -409,6 +418,7 @@ class App extends React.Component {
                           getMasterUser={this.getMasterUser}
                           updateEvent={this.updateEvent}
                           deleteEvent={this.deleteEvent}
+                          eventsSearch={this.eventsSearch}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

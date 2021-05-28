@@ -408,3 +408,18 @@ class MasterUserViewSet(ListModelMixin,
         return models.User.objects\
             .filter(userextension__group__in=self.request.user.managed_groups.values_list('id', flat=True))
 
+
+class EventsSearchApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = serializers.RangeDatesSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        events = models.EventCalendar.objects.filter(start__gte=data['start'],
+                                                     end__lte=data['end'], user=request.user)\
+            .order_by('start')
+        serializer = serializers.EventCalendarSerializer(instance=events, many=True)
+        return response.Response(data=serializer.data)
+

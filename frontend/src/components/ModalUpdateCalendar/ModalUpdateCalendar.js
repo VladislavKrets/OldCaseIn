@@ -20,20 +20,23 @@ export default class ModalUpdateCalendar extends React.Component {
     }
 
     updateEvent = () => {
-        this.props.updateEvent(this.state.id, this.state.content).then(_ => {
-            this.props.getEvents().then(data => {
-                this.props.setEvents(data.data)
-                this.props.onHide()
-            })
+        this.props.updateEvent(this.state.id, this.state.content).then(data => {
+            const events = this.props.events
+            for (let i = 0; i < events.length; i++) {
+                if (events[i].id === this.state.id) {
+                    events[i] = data.data
+                    break
+                }
+            }
+            this.props.setEvents(events)
+            this.props.onHide()
         })
     }
 
     deleteEvent = () => {
         this.props.deleteEvent(this.state.id).then(_ => {
-            this.props.getEvents().then(data => {
-                this.props.setEvents(data.data)
-                this.props.onHide()
-            })
+            this.props.setEvents(this.props.events.filter(x => x.id !== this.state.id))
+            this.props.onHide()
         })
     }
 
