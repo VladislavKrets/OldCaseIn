@@ -4,6 +4,7 @@ import moment from 'moment'
 import 'moment/locale/ru'
 import {Plus} from "react-bootstrap-icons"
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+import './CalendarContent.css'
 import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
 import ModalUpdateCalendar from "../ModalUpdateCalendar/ModalUpdateCalendar";
 import {Form} from "react-bootstrap";
@@ -46,7 +47,8 @@ export default class CalendarContent extends React.Component {
             events: [],
             modalShow: false,
             modalUpdateShow: false,
-            currentEvent: null
+            currentEvent: null,
+            loading: true
         }
     }
 
@@ -74,21 +76,31 @@ export default class CalendarContent extends React.Component {
         const end = moment(date).endOf('month').endOf('week')
         this.setState({
             start: start,
-            end: end
+            end: end,
+            loading: true
         })
         this.props.eventsSearch({
             start: start,
             end: end
         }).then(data => {
             this.setState({
-                events: data.data
+                events: data.data,
+                loading: false
             })
         })
     }
     getEvents = () => {
+        this.setState({
+            loading: true
+        })
         return this.props.eventsSearch({
             start: this.state.start,
             end: this.state.end
+        }).then(data => {
+            this.setState({
+                loading: false
+            })
+            return data
         })
     }
 
@@ -101,7 +113,7 @@ export default class CalendarContent extends React.Component {
     updateCheckEvent = (e, id) => {
         this.props.updateEvent(id, {completed: e.target.checked}).then(data => {
             const events = this.state.events
-            for (let i = 0 ; i < events.length; i++){
+            for (let i = 0; i < events.length; i++) {
                 if (events[i].id === id) {
                     events[i] = data.data
                     break
@@ -187,19 +199,28 @@ export default class CalendarContent extends React.Component {
                         </div>
                         {
                             this.props.width >= 770 &&
-                            <div style={{width: '40%', boxSizing: 'border-box', padding: '12px', paddingTop: '0'}}>
+                            <div className={'tasks-list-container'} style={this.state.events.length === 0 ? {
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            } : {}}>
                                 {
                                     this.state.events.map(item => {
                                         return <Form style={{display: 'flex', alignItems: 'center'}}>
                                             <Form.Control type="checkbox"
                                                           checked={item.completed}
-                                                          style={{width: '2em'}} onChange={e => this.updateCheckEvent(e, item.id)}/>
+                                                          style={{width: '2em'}}
+                                                          onChange={e => this.updateCheckEvent(e, item.id)}/>
                                             <Form.Label style={{
                                                 paddingLeft: '10px',
                                                 textDecoration: item.completed ? 'line-through' : null
                                             }}>{item.title}</Form.Label>
                                         </Form>
                                     })
+                                }
+                                {
+                                    this.state.events.length === 0 && !this.state.loading &&
+                                    <span>Не найдено задач за данный период</span>
                                 }
                             </div>
                         }
