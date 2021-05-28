@@ -256,8 +256,7 @@ class Main extends React.Component {
                             <div onClick={() => this.setModulesListDrawerShow(true)}>
                                 <Collection size={32}/>
                             </div> :
-                            <div onClick={() => this.setModalShow(true)}>
-                                <BoxArrowRight size={32}/>
+                            <div style={{width: '32px', height: '32px'}}>
                             </div>
                         }
                     </div>

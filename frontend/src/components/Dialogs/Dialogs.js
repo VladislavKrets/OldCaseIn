@@ -42,6 +42,9 @@ class Dialogs extends React.Component {
     }
 
     render() {
+        const paths = window.location.pathname.split('/')
+        let id = 0;
+        if (paths.length > 3) id = paths[3]
         return <div className={'dialog-container'} style={{flexGrow: 1, width: '40%', boxSizing: 'border-box'}}>
             {this.state.areUsersShown &&
             <div style={{
@@ -128,7 +131,7 @@ class Dialogs extends React.Component {
                             width: '100%',
                             padding: '12px',
                             display: 'flex',
-                            backgroundColor: '#F4F4F4',
+                            backgroundColor: user.id == id ? '#DEF7FF' : '#F4F4F4',
                             borderRadius: '12px',
                             cursor: 'pointer',
                             marginBottom: '12px',

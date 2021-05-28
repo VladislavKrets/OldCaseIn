@@ -146,23 +146,6 @@ class Menu extends React.Component {
                         }}>Схема здания</span>}
                     </div>
                 </div>
-                {
-                    this.props.userData && this.props.userData.type === 'master' &&
-                    <div className={'card-header'} onClick={() => {
-                        this.props.history.push('/main/students')
-                        this.props.closeDrawer(false)
-                    }}>
-                        <div
-                            className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
-                            <People height={'26px'} width={'26px'}/>
-                            {(!this.props.width || this.props.width > 1270) &&
-                            <span style={{
-                                paddingLeft: '20px',
-                                fontWeight: window.location.pathname.includes('/main/students') ? '900' : 'normal'
-                            }}>Ученики</span>}
-                        </div>
-                    </div>
-                }
                 {this.props.setModalShow && <div className={'card-header'} onClick={() => {
                     this.props.setModalShow(true)
                     this.props.closeDrawer(false)

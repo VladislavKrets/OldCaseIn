@@ -9,7 +9,12 @@ export default class BotContent extends React.Component {
         this.state = {
             history: [undefined],
             currentThemes: [],
-            content: [],
+            content: [
+                {
+                    from: 'bot',
+                    text: 'Привет! Здесь ты можешь получить ответы на свои вопросы, а я постараюсь найти ответ. Какой у тебя вопрос?'
+                }
+            ],
             currentText: ""
         }
     }
@@ -76,6 +81,8 @@ export default class BotContent extends React.Component {
                                     display: 'flex',
                                     width: '100%',
                                     boxSizing: 'border-box',
+                                    position: 'relative',
+                                    zIndex: 2,
                                     margin: '10px 0',
                                     flexDirection: item.from === 'user' ? 'row-reverse' : null
                                 }}>
@@ -98,9 +105,10 @@ export default class BotContent extends React.Component {
                         <Form onSubmit={this.onSubmit}>
                             <div style={{display: 'flex', justifyContent: 'center'}}>
                                 <Form.Control type="text" value={this.state.currentText} onChange={this.handleChange}
+                                              style={{borderRadius: '20px'}}
                                               placeholder="Введите вопрос"/>
                                 <div style={{paddingLeft: '5px'}}/>
-                                <Button type="submit">
+                                <Button type="submit" style={{borderRadius: '20px', backgroundColor: '#00D4FF', borderColor: '#00D4FF'}}>
                                     Отправить
                                 </Button>
                             </div>

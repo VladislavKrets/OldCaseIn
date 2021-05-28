@@ -38,18 +38,18 @@ class CurrentBuildingData extends React.Component {
             </div>
             {
                 this.state.currentBuildingFloors.map(item => {
-                    return <div className={'file-container'} style={{textAlign: 'center'}}>
-                        <a style={{
-                            display: 'block',
-                            fontWeight: 'bold',
-                            fontSize: '1.2em',
-                            cursor: 'pointer',
-                            textDecoration: "underline",
-                        }} href={`/floor_view/${item.id}/`}
-                           target={'_blank'}
-                        >
-                            Этаж {item.floor_number}
-                        </a>
+                    return <div className={'file-container'} style={{
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}>
+                        <div style={{textAlign: 'center', paddingBottom: '12px'}}>
+                            <a className={'floor-link'} href={`/floor_view/${item.id}/`}
+                               target={'_blank'}
+                            >
+                                Этаж {item.floor_number}
+                            </a>
+                        </div>
                     </div>
                 })
             }
