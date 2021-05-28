@@ -318,6 +318,8 @@ class Main extends React.Component {
                             addEvent={this.props.addEvent}
                             setHeaderName={this.setHeaderName}
                             getEvents={this.props.getEvents}
+                            updateEvent={this.props.updateEvent}
+                            deleteEvent={this.props.deleteEvent}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token}

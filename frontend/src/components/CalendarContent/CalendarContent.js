@@ -1,10 +1,34 @@
 import React from "react";
 import {Calendar, Views, momentLocalizer} from "react-schedule-calendar";
 import moment from 'moment'
+import 'moment/locale/ru'
 import {Plus} from "react-bootstrap-icons"
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import ModalAddCalendar from "../ModalAddCalendar/ModalAddCalendar";
+import ModalUpdateCalendar from "../ModalUpdateCalendar/ModalUpdateCalendar";
 
+moment.locale('ru')
+const localizer = momentLocalizer(moment)
+
+const messages = { // new
+  allDay: 'Все дни',
+  previous: 'Назад',
+  next: 'Вперед',
+  today: 'Сегодня',
+  month: 'Месяц',
+  week: 'Неделя',
+  day: 'День',
+  agenda: 'Повестка',
+  date: 'Дата',
+  time: 'Время',
+  event: 'Событие',
+  work_week: 'Рабочая неделя',
+  tomorrow: 'Завтра',
+  noEventsInRange: 'Нет событий в заданном диапазоне',
+  showMore: function(e) {
+          return '+' + e + ' больше'
+        }
+};
 
 const ColoredDateCellWrapper = ({children}) =>
     React.cloneElement(React.Children.only(children), {
@@ -12,7 +36,6 @@ const ColoredDateCellWrapper = ({children}) =>
             backgroundColor: 'lightblue',
         },
     })
-const localizer = momentLocalizer(moment)
 
 export default class CalendarContent extends React.Component {
 
@@ -21,12 +44,20 @@ export default class CalendarContent extends React.Component {
         this.state = {
             events: [],
             modalShow: false,
+            modalUpdateShow: false,
+            currentEvent: null
         }
     }
 
     setModalShow = (modalShow) => {
         this.setState({
             modalShow: modalShow
+        })
+    }
+
+    setModalUpdateShow = (modalShow) => {
+        this.setState({
+            modalUpdateShow: modalShow
         })
     }
 
@@ -70,15 +101,24 @@ export default class CalendarContent extends React.Component {
                         </div>
                     </div>
                     <Calendar
+                        localizer={localizer}
+                        culture={'ru'}
                         events={this.state.events}
-                        views={[Views.MONTH]}
+                        views={[Views.MONTH, Views.AGENDA]}
                         step={60}
                         showMultiDayTimes
                         defaultDate={new Date()}
+                        messages={messages}
                         components={{
                             timeSlotWrapper: ColoredDateCellWrapper,
                         }}
-                        localizer={localizer}
+                        onRangeChange={e => console.log(e)}
+                        onSelectEvent={e => {
+                            this.setState({
+                                modalUpdateShow: true,
+                                currentEvent: e
+                            })
+                        }}
                     />
                 </div>
                 {
@@ -88,6 +128,16 @@ export default class CalendarContent extends React.Component {
                         show={this.state.modalShow}
                         addEvent={this.props.addEvent}
                         onHide={() => this.setModalShow(false)}/>
+                }
+                {
+                    this.state.modalUpdateShow && <ModalUpdateCalendar
+                        getEvents={this.props.getEvents}
+                        setEvents={this.setEvents}
+                        show={this.state.modalUpdateShow}
+                        updateEvent={this.props.updateEvent}
+                        deleteEvent={this.props.deleteEvent}
+                        currentEvent={this.state.currentEvent}
+                        onHide={() => this.setModalUpdateShow(false)}/>
                 }
             </div>
         </div>

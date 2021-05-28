@@ -413,8 +413,16 @@ class EventCalendarSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user = self.context['user']
+        userextension = user.userextension
         if instance.user == user:
-            return super(EventCalendarSerializer, self).update()
+            after_update = super(EventCalendarSerializer, self).update(instance, validated_data)
+            if not instance.completed and after_update.completed:
+                userextension.completed_tasks_count += 1
+                userextension.save()
+            elif instance.completed and not after_update.completed:
+                userextension.completed_tasks_count -= 1
+                userextension.save()
+            return after_update
         raise ValidationError('Not permitted')
 
     class Meta:

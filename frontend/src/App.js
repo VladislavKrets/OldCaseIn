@@ -231,6 +231,24 @@ class App extends React.Component {
         })
     }
 
+    updateEvent = (id, data) => {
+        return axios.patch(`events/${id}/`, data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    deleteEvent = (id) => {
+        return axios.delete(`events/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getDocuments = () => {
         return axios.get(`documents/`, {
             headers: {
@@ -389,6 +407,8 @@ class App extends React.Component {
                           searchUser={this.searchUser}
                           getGroups={this.getGroups}
                           getMasterUser={this.getMasterUser}
+                          updateEvent={this.updateEvent}
+                          deleteEvent={this.deleteEvent}
                     />
                 </PrivateRoute>
                 <Route exact path=''>
