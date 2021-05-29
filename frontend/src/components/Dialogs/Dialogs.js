@@ -12,6 +12,7 @@ class Dialogs extends React.Component {
             prevSearchValue: '',
             searchValue: '',
             allUsers: [],
+            loading: true
         }
         this.messageSearchRef = React.createRef()
     }
@@ -23,7 +24,15 @@ class Dialogs extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getDialogs().then(data => this.props.updateDialogs(data.data))
+        this.setState({
+            loading: true
+        })
+        this.props.getDialogs().then(data => {
+            this.props.updateDialogs(data.data)
+            this.setState({
+                loading: false
+            })
+        })
     }
 
     handleChange = e => {
@@ -132,7 +141,7 @@ class Dialogs extends React.Component {
                 zIndex: 2,
             }}>
                 {
-                    this.props.dialogs.map((item, index) => {
+                    !this.state.loading && this.props.dialogs.length > 0 ? this.props.dialogs.map((item, index) => {
                         const user = item.recipient.id === this.props.userData.id ? item.author : item.recipient
                         return <div style={{
                             width: '100%',
@@ -189,7 +198,9 @@ class Dialogs extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    })
+                    }) : <div style={{paddingTop: '30px', textAlign: 'center', width: '100%'}}>
+                        Диалоги не найдены
+                    </div>
                 }
             </div>
         </div>

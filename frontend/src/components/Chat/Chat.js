@@ -6,6 +6,8 @@ import defaultProfile from "../../assets/default_profile.svg";
 import Moment from 'react-moment';
 import {EmojiSmile, Plus, PlusCircle} from "react-bootstrap-icons";
 import Picker from 'emoji-picker-react';
+import InfiniteScroll from "react-infinite-scroll-component";
+import {Spinner} from "react-bootstrap";
 
 class Chat extends Component {
     constructor(props) {
@@ -14,13 +16,14 @@ class Chat extends Component {
             messages: [],
             to: null,
             isEmojiDialogShown: false,
-            message: ''
+            message: '',
+            newMessages: [{text: 'text'},]
         }
 
         this.waitForSocketConnection(() => {
             WebSocketInstance.initChatUser(this.props.token, this.props.match.params.id);
             WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
-            WebSocketInstance.fetchMessages(this.props.token, this.props.match.params.id);
+            WebSocketInstance.fetchMessages(this.props.token, this.props.match.params.id, this.state.messages.length);
         });
         this.inputMessage = React.createRef()
     }
@@ -96,7 +99,10 @@ class Chat extends Component {
     }
 
     setMessages(messages) {
-        this.setState({messages: messages.reverse()});
+        this.setState({
+            messages: messages.reverse().concat(this.state.messages),
+            newMessages: messages
+        });
     }
 
     messageChangeHandler = (event) => {
@@ -161,15 +167,41 @@ class Chat extends Component {
         const currentUser = this.props.token;
         return (
             <div className='chat'>
-                <div className='chat-container' style={{flexGrow: '1'}}>
-                    <div ref={(el) => {
-                        this.messagesEnd = el;
-                    }}>
-                        {
-                            this.props.userData && this.state.to && messages &&
-                            this.renderMessages(messages)
+                <div className={'chat-container'} id="scrollableDiv" style={{flexGrow: '1', overflow: 'auto'}}>
+                    <InfiniteScroll
+                        dataLength={this.state.messages.length} //This is important field to render the next data
+                        next={() => WebSocketInstance
+                            .fetchMessages(this.props.token,
+                                this.props.match.params.id,
+                                this.state.messages.length)}
+                        hasMore={this.state.newMessages.length !== 0}
+                        inverse={true}
+                        style={{display: 'flex', flexDirection: 'column-reverse'}}
+                        loader={<div style={{
+                            boxSizing: 'border-box',
+                            padding: '12px',
+                            display: 'flex',
+                            width: '100%',
+                            justifyContent: 'center'
+                        }}>
+                            <Spinner animation="border" variant="primary"/>
+                        </div>}
+                        scrollableTarget="scrollableDiv"
+                        endMessage={
+                            <p style={{textAlign: 'center', paddingTop: '12px'}}>
+                                <b>Сообщений больше нет</b>
+                            </p>
                         }
-                    </div>
+                    >
+                        <div ref={(el) => {
+                            this.messagesEnd = el;
+                        }}>
+                            {
+                                this.props.userData && this.state.to && messages &&
+                                this.renderMessages(messages)
+                            }
+                        </div>
+                    </InfiniteScroll>
                 </div>
                 <div style={{padding: '0 5px', paddingTop: '12px'}}>
                     <form onSubmit={(e) => {

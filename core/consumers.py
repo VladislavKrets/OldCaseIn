@@ -46,12 +46,13 @@ class ChatConsumer(WebsocketConsumer):
         token = Token.objects.get(key=token)
         user = token.user
         to = User.objects.get(pk=data['to'])
+        first = int(data['firstMessage'])
         try:
             dialog = models.Dialog.objects.get(first_user=to, second_user=user)
         except models.Dialog.DoesNotExist:
             dialog = models.Dialog.objects.get_or_create(first_user=user, second_user=to)[0]
         dialog.messages.filter(is_read=False).update(is_read=True)
-        messages = dialog.messages.order_by('-created_at')
+        messages = dialog.messages.order_by('-created_at')[first:first + 25]
         serializer = serializers.MessageSerializer(instance=messages, many=True)
         content = {
             'command': 'messages',

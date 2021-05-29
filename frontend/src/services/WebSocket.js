@@ -52,8 +52,8 @@ class WebSocketService {
     this.sendMessage({ command: 'init_chat', token: token, to: to });
   }
 
-  fetchMessages(token, to) {
-    this.sendMessage({ command: 'fetch_messages', token: token, to: to });
+  fetchMessages(token, to, firstMessage) {
+    this.sendMessage({ command: 'fetch_messages', token: token, to: to, firstMessage: firstMessage });
   }
 
   newChatMessage(token, message, to) {

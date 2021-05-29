@@ -52,6 +52,27 @@
     overflow-y: scroll;
 }
 
+.infinite-scroll-component::-webkit-scrollbar {
+    width: 0px;
+    height: 10px;
+    background: transparent;
+}
+
+.infinite-scroll-component::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.infinite-scroll-component::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+.infinite-scroll-component::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
 .chat-container::-webkit-scrollbar {
     width: 0px;
     height: 10px;

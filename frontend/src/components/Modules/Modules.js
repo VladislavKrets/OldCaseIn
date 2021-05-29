@@ -44,7 +44,7 @@ class Modules extends React.Component {
                             <div style={{textAlign: 'center'}}>
                                 {
                                     this.state.course && <h3>
-                                        Курс "{this.state.course.name}"
+                                        Приветствуем вас на курсе "{this.state.course.name}". На правой панели вы можете увидеть все модули и уроки.
                                     </h3>
                                 }
                             </div>
