@@ -5,13 +5,16 @@ import {withRouter} from "react-router";
 import defaultProfile from "../../assets/default_profile.svg";
 import Moment from 'react-moment';
 import {EmojiSmile, Plus, PlusCircle} from "react-bootstrap-icons";
+import Picker from 'emoji-picker-react';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
         this.state = {
             messages: [],
-            to: null
+            to: null,
+            isEmojiDialogShown: false,
+            message: ''
         }
 
         this.waitForSocketConnection(() => {
@@ -19,6 +22,17 @@ class Chat extends Component {
             WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
             WebSocketInstance.fetchMessages(this.props.token, this.props.match.params.id);
         });
+        this.inputMessage = React.createRef()
+    }
+
+    showEmojiDialog = (isEmojiDialogShown) => {
+        this.setState({
+            isEmojiDialogShown: isEmojiDialogShown
+        })
+    }
+
+    closeEmojiDialog = () => {
+        this.showEmojiDialog(false)
     }
 
     waitForSocketConnection(callback) {
@@ -44,18 +58,23 @@ class Chat extends Component {
                 to: data.data
             })
             const dialogs = this.props.dialogs
-            for (let dialog of dialogs){
-                if (dialog.author.id == this.props.match.params.id){
+            for (let dialog of dialogs) {
+                if (dialog.author.id == this.props.match.params.id) {
                     console.log(dialog)
                     dialog.is_read = true
                 }
             }
             this.props.updateDialogs(dialogs)
         })
+        document.body.addEventListener('click', this.closeEmojiDialog)
     }
 
     componentDidUpdate() {
         this.scrollToBottom();
+    }
+
+    componentWillUnmount() {
+        document.body.removeEventListener('click', this.closeEmojiDialog)
     }
 
     scrollToBottom = () => {
@@ -85,6 +104,12 @@ class Chat extends Component {
             message: event.target.value
         })
     }
+
+    onEmojiClick = (event, emojiObject) => {
+        this.setState({
+            message: this.state.message + emojiObject.emoji
+        })
+    };
 
     sendMessageHandler = (e, message) => {
         const messageObject = {
@@ -147,13 +172,30 @@ class Chat extends Component {
                         <input
                             className={'input-message'}
                             type='text'
+                            ref={this.inputMessage}
                             onChange={this.messageChangeHandler}
                             value={this.state.message}
                             placeholder='Сообщение'
                             required/>
                         <input type={'submit'} style={{display: 'none'}}/>
-                        <div style={{margin: '0 4px', cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
+                        <div style={{
+                            margin: '0 4px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            position: 'relative'
+                        }} onClick={(e) => {
+                            e.stopPropagation()
+                            this.inputMessage.current.focus()
+                            this.showEmojiDialog(true)
+                        }}>
                             <EmojiSmile width={'32px'} height={'32px'} fill={'#C4C4C4'}/>
+                            {
+                                this.state.isEmojiDialogShown &&
+                                <div style={{position: 'absolute', zIndex: 3, top: '0', left: '0', transform: 'translateX(-100%) translateY(-100%)'}}>
+                                    <Picker onEmojiClick={this.onEmojiClick}/>
+                                </div>
+                            }
                         </div>
                         <div style={{margin: '0 4px', cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
                             <PlusCircle width={'32px'} height={'32px'} fill={'#C4C4C4'}/>
