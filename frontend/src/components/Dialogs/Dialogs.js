@@ -141,7 +141,7 @@ class Dialogs extends React.Component {
                 zIndex: 2,
             }}>
                 {
-                    !this.state.loading && this.props.dialogs.length > 0 ? this.props.dialogs.map((item, index) => {
+                    this.props.dialogs.map((item, index) => {
                         const user = item.recipient.id === this.props.userData.id ? item.author : item.recipient
                         return <div style={{
                             width: '100%',
@@ -198,7 +198,11 @@ class Dialogs extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    }) : <div style={{paddingTop: '30px', textAlign: 'center', width: '100%'}}>
+                    })
+                }
+                {
+                    !this.state.loading && this.props.dialogs.length === 0 &&
+                    <div style={{paddingTop: '30px', textAlign: 'center', width: '100%'}}>
                         Диалоги не найдены
                     </div>
                 }
