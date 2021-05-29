@@ -398,6 +398,7 @@ class Main extends React.Component {
                               setUserData={this.props.setUserData}
                               getUserGroupData={this.props.getUserGroupData}
                               token={this.props.token}
+                              avatarUpload={this.props.avatarUpload}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact

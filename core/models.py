@@ -1,4 +1,9 @@
+import sys
+from io import BytesIO
+
+from PIL import Image
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from gdstorage.storage import GoogleDriveStorage
 from rest_framework.exceptions import ValidationError
@@ -189,6 +194,31 @@ class FloorData(models.Model):
         return self.building.address + ' этаж ' + str(self.floor_number)
 
 
+class SavedImage(models.Model):
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    image = models.ImageField(null=True, default=None, storage=gd_storage)
+
+    def save(self, *args, **kwargs):
+        im = Image.open(self.image)
+        width, height = im.size
+        output = BytesIO()
+        if width > height:
+            coeff = width / height
+            height = 100
+            width = int(height * coeff)
+        else:
+            coeff = height / width
+            width = 100
+            height = int(width * coeff)
+        im = im.resize((width, height))
+        im.save(output, format='JPEG', quality=90)
+        output.seek(0)
+        self.image = InMemoryUploadedFile(output, 'ImageField', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg',
+                                          sys.getsizeof(output), None)
+
+        super(SavedImage, self).save()
+
+
 class UserExtension(models.Model):
     class UserTypes(models.TextChoices):
         USER = 'user', 'user'
@@ -205,6 +235,7 @@ class UserExtension(models.Model):
     group = models.ForeignKey(to=UserGroup, on_delete=models.deletion.CASCADE, related_name='users')
     floor_data = models.ForeignKey(to=FloorData, on_delete=models.deletion.SET_NULL, null=True, blank=True)
     room_number = models.PositiveIntegerField(null=True, blank=True)
+    avatar = models.ForeignKey(null=True, default=None, to=SavedImage, on_delete=models.deletion.SET_NULL)
 
     def save(self, *args, **kwargs):
         if not self.type:

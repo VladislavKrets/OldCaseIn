@@ -28,7 +28,7 @@ class MasterPreviewUser extends React.Component {
                   setUserData={this.props.setUserData}
                   getUserGroupData={this.props.getUserGroupData}
                   token={this.props.token}
-            /> : <div/>
+            /> : <div style={{zIndex: 2, position: 'relative', height: '100%', backgroundColor: 'white', boxSizing: 'border-box', marginTop: '20px'}}/>
     }
 }
 

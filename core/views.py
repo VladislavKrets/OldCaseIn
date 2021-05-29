@@ -8,6 +8,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin, \
     ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 
 from core import serializers
@@ -422,4 +423,31 @@ class EventsSearchApiView(APIView):
             .order_by('start')
         serializer = serializers.EventCalendarSerializer(instance=events, many=True)
         return response.Response(data=serializer.data)
+
+
+class ImageUploadView(CreateModelMixin, DestroyModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = serializers.ImageSerializer
+    queryset = models.SavedImage.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        is_photo = False if data['photo'] == 'false' else True
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        is_photo = False if data['photo'] == 'false' else True
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        userextension = request.user.userextension
+        userextension.avatar = instance
+        userextension.save()
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
 

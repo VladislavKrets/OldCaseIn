@@ -56,6 +56,12 @@ class RegistrationSerializer(serializers.Serializer):
         return attrs
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SavedImage
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
     total_score = serializers.IntegerField(source='userextension.total_score')
     type = serializers.CharField(source='userextension.type')
@@ -65,12 +71,13 @@ class UserSerializer(serializers.ModelSerializer):
     bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
     chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
     group = serializers.PrimaryKeyRelatedField(source='userextension.group', read_only=True)
+    avatar = ImageSerializer(source='userextension.avatar')
 
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type',
                   'days_count', 'master_mark', 'completed_tasks_count',
-                  'bot_messages_count', 'chat_messages_count', 'group')
+                  'bot_messages_count', 'chat_messages_count', 'group', 'avatar')
 
     def get_related_field(self, model_field):
         return UserSerializer()
@@ -97,10 +104,10 @@ class UserSerializer(serializers.ModelSerializer):
                         first_name=instance.first_name, last_name__lte=instance.last_name) \
                 .count()
             data['rank'] = first_rank + second_rank + third_rank
-        modules = models.Module.objects.all()
-        serializer = ModuleResultSerializer(instance=modules, many=True)
-        serializer.context['user'] = instance
-        data['modules'] = serializer.data
+        # modules = models.Module.objects.all()
+        # serializer = ModuleResultSerializer(instance=modules, many=True)
+        # serializer.context['user'] = instance
+        # data['modules'] = serializer.data
         return data
 
 
@@ -112,12 +119,13 @@ class PrivateUserSerializer(serializers.ModelSerializer):
     completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
     bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
     chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
+    avatar = ImageSerializer(source='userextension.avatar')
 
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'type', 'last_name', 'total_score', 'days_count', 'master_mark',
                   'completed_tasks_count',
-                  'bot_messages_count', 'chat_messages_count',)
+                  'bot_messages_count', 'chat_messages_count', 'avatar')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -154,12 +162,13 @@ class MasterUserSerializer(serializers.ModelSerializer):
     completed_tasks_count = serializers.IntegerField(source='userextension.completed_tasks_count')
     bot_messages_count = serializers.IntegerField(source='userextension.bot_messages_count')
     chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
+    avatar = ImageSerializer(source='userextension.avatar')
 
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'type', 'total_score', 'days_count', 'master_mark',
                   'completed_tasks_count',
-                  'bot_messages_count', 'chat_messages_count',)
+                  'bot_messages_count', 'chat_messages_count', 'avatar')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

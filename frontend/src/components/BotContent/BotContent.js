@@ -12,7 +12,7 @@ export default class BotContent extends React.Component {
             content: [
                 {
                     from: 'bot',
-                    text: 'Привет! Здесь ты можешь получить ответы на свои вопросы, а я постараюсь найти ответ. Какой у тебя вопрос?'
+                    text: 'Привет! Какой у тебя вопрос?'
                 }
             ],
             currentText: ""

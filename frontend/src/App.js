@@ -267,6 +267,30 @@ class App extends React.Component {
         })
     }
 
+    imageUpload = (image, isPhoto) => {
+        let form_data = new FormData();
+        form_data.append('image', image, image.name);
+        form_data.append('photo', (!!isPhoto).toString())
+        return axios.post('/upload_image/', form_data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                'content-type': 'multipart/form-data'
+            }
+        })
+    }
+
+    avatarUpload = (image, isPhoto) => {
+        let form_data = new FormData();
+        form_data.append('image', image, image.name);
+        form_data.append('photo', (!!isPhoto).toString())
+        return axios.put('/upload_image/', form_data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                'content-type': 'multipart/form-data'
+            }
+        })
+    }
+
     getFloors = (building) => {
         return axios.get(`buildings/${building}/floors/`, {
             headers: {
@@ -419,6 +443,8 @@ class App extends React.Component {
                           updateEvent={this.updateEvent}
                           deleteEvent={this.deleteEvent}
                           eventsSearch={this.eventsSearch}
+                          imageUpload={this.imageUpload}
+                          avatarUpload={this.avatarUpload}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

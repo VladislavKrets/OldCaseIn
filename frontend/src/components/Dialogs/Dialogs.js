@@ -107,7 +107,14 @@ class Dialogs extends React.Component {
                                         alignItems: 'center',
                                         cursor: 'pointer'
                                     }} onClick={() => this.props.history.push(`/main/messages/${item.id}/`)}>
-                                        <img src={defaultProfile}/>
+                                        <img
+                                            src={item.avatar ? item.avatar.image : defaultProfile}
+                                            style={{
+                                                width: '70px',
+                                                height: '70px',
+                                                borderRadius: '50%',
+                                                objectFit: 'cover'
+                                            }}/>
                                         <div style={{paddingLeft: '12px'}}>
                                             {item.first_name} {item.last_name}
                                         </div>
@@ -139,7 +146,14 @@ class Dialogs extends React.Component {
                         }} onClick={() => this.props.history
                             .push(`/main/messages/${user.id}/`)}>
                             <div style={{paddingRight: '12px'}}>
-                                <img src={defaultProfile}/>
+                                <img
+                                    src={user.avatar ? user.avatar.image : defaultProfile}
+                                    style={{
+                                        width: '70px',
+                                        height: '70px',
+                                        borderRadius: '50%',
+                                        objectFit: 'cover'
+                                    }}/>
                             </div>
                             <div style={{flexGrow: 1, width: 'calc(100% - 83px)', maxWidth: 'calc(100% - 83px)'}}>
                                 <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>

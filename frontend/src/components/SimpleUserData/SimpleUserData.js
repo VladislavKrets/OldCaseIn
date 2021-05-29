@@ -7,6 +7,8 @@ export default class SimpleUserData extends React.Component {
         return Math.round(x * 100) / 100
     }
 
+
+
     render() {
         return <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between'}}>
             <div className={'user-content-card'}>

@@ -129,7 +129,14 @@ class Chat extends Component {
                                                  className={'chat-message'}
                                                  style={{width: '100%', padding: '12px', display: 'flex'}}>
             <div style={{paddingRight: '12px'}}>
-                <img src={defaultProfile}/>
+                <img
+                    src={message.author.avatar ? message.author.avatar.image : defaultProfile}
+                    style={{
+                        width: '70px',
+                        height: '70px',
+                        borderRadius: '50%',
+                        objectFit: 'cover'
+                    }}/>
             </div>
             <div style={{flexGrow: 1}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
@@ -192,7 +199,13 @@ class Chat extends Component {
                             <EmojiSmile width={'32px'} height={'32px'} fill={'#C4C4C4'}/>
                             {
                                 this.state.isEmojiDialogShown &&
-                                <div style={{position: 'absolute', zIndex: 3, top: '0', left: '0', transform: 'translateX(-100%) translateY(-100%)'}}>
+                                <div style={{
+                                    position: 'absolute',
+                                    zIndex: 3,
+                                    top: '0',
+                                    left: '0',
+                                    transform: 'translateX(-100%) translateY(-100%)'
+                                }}>
                                     <Picker onEmojiClick={this.onEmojiClick}/>
                                 </div>
                             }

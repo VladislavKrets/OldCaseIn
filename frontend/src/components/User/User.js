@@ -35,6 +35,17 @@ class User extends React.Component {
         }
     }
 
+    handleImageChange = (e) => {
+        const image = e.target.files[0];
+        this.props.avatarUpload(image).then(data => {
+            const userData = this.props.userData
+            userData.avatar = data.data
+            this.props.setUserData(userData)
+        }).catch(e => {
+
+        })
+    }
+
     render() {
         return this.props.userData ? <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
@@ -42,14 +53,26 @@ class User extends React.Component {
                     <div className={'user-content'}>
                         <div className={'user-hello'}>
                             <div className={'hello-phrase'}>
-                                {!this.props.masterPreview && "Здравствуйте, " }
-                                {this.capitalizeFirstLetter(this.props.userData.first_name)}{!this.props.masterPreview && "!" }
+                                {!this.props.masterPreview && "Здравствуйте, "}
+                                {this.capitalizeFirstLetter(this.props.userData.first_name)}{!this.props.masterPreview && "!"}
                                 {this.props.masterPreview && ` ${this.capitalizeFirstLetter(this.props.userData.last_name)}`}
                             </div>
                             <div style={{display: 'flex'}}>
-                                <div style={{marginRight: '7px'}}>
-                                    <img src={defaultProfile}/>
-                                </div>
+                                <label style={{marginRight: '7px', cursor: 'pointer'}}>
+                                    <img
+                                        src={this.props.userData.avatar ? this.props.userData.avatar.image : defaultProfile}
+                                        style={{
+                                            width: '70px',
+                                            height: '70px',
+                                            borderRadius: '50%',
+                                            objectFit: 'cover'
+                                        }}/>
+                                    {!this.props.masterPreview && <input type="file"
+                                                                         style={{display: "none"}}
+                                                                         value={''}
+                                                                         accept="image/png, image/jpeg"
+                                                                         onChange={this.handleImageChange}/>}
+                                </label>
                                 <div style={{
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -87,7 +110,9 @@ class User extends React.Component {
             }
         </div> : <div className={'moduleContent-background'}>
             <div className={'moduleContent-no-overflow-parent'}>
-                <div className={'moduleContent'}/></div></div>
+                <div className={'moduleContent'}/>
+            </div>
+        </div>
     }
 }
 
