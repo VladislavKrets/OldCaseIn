@@ -75,7 +75,7 @@ class Menu extends React.Component {
                 </div>
             }
             <div className={'modules-list'}
-                 style={{overflowY: this.props.userData.is_learning_shown ? null : 'visible'}}>
+                 style={{overflowY: this.props.width < 770 || this.props.userData.is_learning_shown ? null : 'visible'}}>
                 <div style={{display: 'flex', justifyContent: 'center', padding: '30px 0'}}>
                     <img src={logo} style={{width: '60%', position: "relative", zIndex: 2}}/>
                 </div>
@@ -89,7 +89,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <Person height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.endsWith('/me') ? '900' : 'normal'
@@ -140,7 +140,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <CalendarWeek height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.endsWith('/calendar') ? '900' : 'normal'
@@ -190,7 +190,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <ChatText height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770|| this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.endsWith('/messages') ? '900' : 'normal'
@@ -240,7 +240,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <BarChartLine height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.includes('/main/courses') ? '900' : 'normal'
@@ -290,7 +290,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <FileEarmarkText height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.endsWith('/documents') ? '900' : 'normal'
@@ -337,7 +337,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <InfoCircle height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.endsWith('/bot') ? '900' : 'normal'
@@ -384,7 +384,7 @@ class Menu extends React.Component {
                      }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <Building height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{
                             paddingLeft: '20px',
                             fontWeight: window.location.pathname.includes('/main/building') ? '900' : 'normal'
@@ -427,7 +427,7 @@ class Menu extends React.Component {
                 }}>
                     <div className={'modules-card-content' + (this.state.width ? ' modules-card-content-center' : '')}>
                         <BoxArrowRight height={'26px'} width={'26px'}/>
-                        {(!this.props.width || this.props.width > 1270) &&
+                        {(this.props.width < 770 || this.props.width > 1270) &&
                         <span style={{paddingLeft: '20px', fontWeight: 'normal'}}>Выйти</span>}
                     </div>
                 </div>

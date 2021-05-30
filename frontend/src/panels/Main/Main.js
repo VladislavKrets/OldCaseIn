@@ -58,9 +58,15 @@ class Main extends React.Component {
     nextLearning = e => {
         e.preventDefault()
         e.stopPropagation()
-        this.setState({
-            currentLearningPage: this.state.currentLearningPage + 1
-        })
+        if (this.props.userData.type === 'master' && this.state.currentLearningPage === 1) {
+            this.setState({
+                currentLearningPage: this.state.currentLearningPage + 2
+            })
+        } else {
+            this.setState({
+                currentLearningPage: this.state.currentLearningPage + 1
+            })
+        }
         if (this.state.currentLearningPage === this.state.learningPages.length - 2) {
             this.props.learnUser().then(_ => {
                 const userData = this.props.userData
