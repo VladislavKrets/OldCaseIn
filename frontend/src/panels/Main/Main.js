@@ -44,11 +44,30 @@ class Main extends React.Component {
             completedModalShow: false,
             moduleLoading: false,
             isModuleListDrawerShowed: false,
-            headerName: 'Главная'
+            headerName: 'Главная',
+            learningPages: [
+                'hello', 'profile', 'group', 'tasks', 'messages', 'learning', 'documents', 'buildings', 'helper', 'end'
+            ],
+            currentLearningPage: this.props.userData.is_learning_shown ? 9 : 0
         }
         this.prevKey = null
         this.prevWidth = window.innerWidth
         this.prevHeight = window.innerHeight
+    }
+
+    nextLearning = e => {
+        e.preventDefault()
+        e.stopPropagation()
+        this.setState({
+            currentLearningPage: this.state.currentLearningPage + 1
+        })
+        if (this.state.currentLearningPage === this.state.learningPages.length - 2) {
+            this.props.learnUser().then(_ => {
+                const userData = this.props.userData
+                userData.is_learning_shown = true
+                this.props.setUserData(userData)
+            })
+        }
     }
 
     setHeaderName = (headerName) => {
@@ -197,6 +216,8 @@ class Main extends React.Component {
                     <Menu getModules={this.props.getModules}
                           history={this.props.history}
                           match={this.props.match}
+                          learningPages={this.state.learningPages}
+                          currentLearningPage={this.state.currentLearningPage}
                           currentModuleId={this.state.currentModuleId}
                           setLessonData={this.setLessonData}
                           setCurrentLesson={this.setCurrentLesson}
@@ -212,7 +233,8 @@ class Main extends React.Component {
                           setLessonKey={this.setLessonKey}
                           setModalShow={this.setModalShow}
                           setModuleLoading={this.setModuleLoading}
-
+                          width={this.state.width}
+                          nextLearning={this.nextLearning}
                     />
                 </NavigationDrawer>
             }
@@ -284,6 +306,9 @@ class Main extends React.Component {
                               setLessonKey={this.setLessonKey}
                               setModalShow={this.setModalShow}
                               setModuleLoading={this.setModuleLoading}
+                              learningPages={this.state.learningPages}
+                              currentLearningPage={this.state.currentLearningPage}
+                              nextLearning={this.nextLearning}
                         />
                     </div>
                 }
@@ -393,25 +418,33 @@ class Main extends React.Component {
                               masterPreview={false}
                               getMasterUser={this.props.getMasterUser}
                               getUser={this.props.getUser}
+                              width={this.state.width}
                               userData={this.props.userData}
                               setHeaderName={this.setHeaderName}
                               setUserData={this.props.setUserData}
                               getUserGroupData={this.props.getUserGroupData}
                               token={this.props.token}
                               avatarUpload={this.props.avatarUpload}
+                              learningPages={this.state.learningPages}
+                              currentLearningPage={this.state.currentLearningPage}
+                              nextLearning={this.nextLearning}
                         />
                     </PrivateRoute>
                     <PrivateRoute loading={false} token={this.props.token} exact
                                   path={`${this.props.match.url}/users/:user`}>
                         <MasterPreviewUser logOut={this.props.logOut}
-                              getGroups={this.props.getGroups}
-                              getMasterUser={this.props.getMasterUser}
-                              getUser={this.props.getUser}
-                              userData={this.props.userData}
-                              setHeaderName={this.setHeaderName}
-                              setUserData={this.props.setUserData}
-                              getUserGroupData={this.props.getUserGroupData}
-                              token={this.props.token}
+                                           getGroups={this.props.getGroups}
+                                           getMasterUser={this.props.getMasterUser}
+                                           getUser={this.props.getUser}
+                                           userData={this.props.userData}
+                                           setHeaderName={this.setHeaderName}
+                                           width={this.state.width}
+                                           setUserData={this.props.setUserData}
+                                           getUserGroupData={this.props.getUserGroupData}
+                                           token={this.props.token}
+                                           learningPages={this.state.learningPages}
+                                           currentLearningPage={this.state.currentLearningPage}
+                                           nextLearning={this.nextLearning}
                         />
                     </PrivateRoute>
                 </div>

@@ -76,6 +76,12 @@ class UserDataApiView(APIView):
         serializer = serializers.PrivateUserSerializer(instance=users, many=True)
         return response.Response(data=serializer.data)
 
+    def patch(self, request):
+        userextension = request.user.userextension
+        userextension.is_learning_shown = True
+        userextension.save()
+        return response.Response(status=status.HTTP_200_OK)
+
 
 class ModuleViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]

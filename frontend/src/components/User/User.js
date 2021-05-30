@@ -95,6 +95,10 @@ class User extends React.Component {
                                 : <SimpleUserData
                                     masterPreview={this.props.masterPreview}
                                     key={window.location.pathname}
+                                    width={this.props.width}
+                                    learningPages={this.props.learningPages}
+                                    currentLearningPage={this.props.currentLearningPage}
+                                    nextLearning={this.props.nextLearning}
                                     setModalShow={this.setModalShow}
                                     userData={this.props.userData}
                                 />

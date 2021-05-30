@@ -345,6 +345,15 @@ class App extends React.Component {
         })
     }
 
+    learnUser = () => {
+        return axios.patch(`user/`, {}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getCurrentBuilding = (id) => {
         return axios.get(`buildings/${id}/`, {
             headers: {
@@ -394,6 +403,7 @@ class App extends React.Component {
         document.title = 'Case in'
         this.setUserData()
     }
+
 
     render() {
         return (
@@ -445,6 +455,7 @@ class App extends React.Component {
                           eventsSearch={this.eventsSearch}
                           imageUpload={this.imageUpload}
                           avatarUpload={this.avatarUpload}
+                          learnUser={this.learnUser}
                     />
                 </PrivateRoute>
                 <Route exact path=''>

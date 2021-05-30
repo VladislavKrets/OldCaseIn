@@ -1,5 +1,6 @@
 import React from "react";
 import {ResponsiveRadar} from '@nivo/radar';
+import helloImg from "../../assets/na_privetstvie.png";
 
 export default class SimpleUserData extends React.Component {
 
@@ -102,7 +103,9 @@ export default class SimpleUserData extends React.Component {
                     </h4>
                 </div>
             </div>
-            <div className={'user-content-card'} style={{cursor: 'pointer'}}
+            <div className={'user-content-card'}
+                 style={{cursor: 'pointer', position: 'relative',
+                     zIndex: this.props.learningPages[this.props.currentLearningPage] === 'group' ? 5 : 2}}
                  onClick={() => this.props.setModalShow(true)}>
                 <div>
                     <h3 style={{
@@ -114,6 +117,36 @@ export default class SimpleUserData extends React.Component {
                         Моя группа
                     </h3>
                 </div>
+                {this.props.width >= 770
+                && !this.props.userData.is_learning_shown
+                && this.props.learningPages[this.props.currentLearningPage] === 'group' &&
+                    <div className={'about-service-container'} onClick={this.props.nextLearning}>
+
+                    </div>
+                    }
+                    {this.props.width >= 770
+                    && !this.props.userData.is_learning_shown
+                    && this.props.learningPages[this.props.currentLearningPage] === 'group'
+                    &&
+                    <div style={{
+                        display: 'flex',
+                        position: 'absolute',
+                        zIndex: 6,
+                        top: '0',
+                        left: '0',
+                        transform: 'translateX(-50%) translateY(-100%)',
+                        cursor: 'default'
+                    }} onClick={this.props.nextLearning}>
+                        <div>
+                            <img width={'100px'} src={helloImg}/>
+                        </div>
+                        <div className={'learning-service-text-container'} style={{width: '500px'}}>
+                            <div className={'learning-service-text'} style={{fontSize: '1.5em'}}>
+                                Нажав кнопку «Моя группа», ты увидишь состав своей группы и общие баллы.
+                            </div>
+                        </div>
+                    </div>
+                    }
             </div>
             <div className={'user-content-card'}>
                 <div>

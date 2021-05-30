@@ -72,12 +72,13 @@ class UserSerializer(serializers.ModelSerializer):
     chat_messages_count = serializers.IntegerField(source='userextension.chat_messages_count')
     group = serializers.PrimaryKeyRelatedField(source='userextension.group', read_only=True)
     avatar = ImageSerializer(source='userextension.avatar')
+    is_learning_shown = serializers.BooleanField(source='userextension.is_learning_shown')
 
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'total_score', 'type',
                   'days_count', 'master_mark', 'completed_tasks_count',
-                  'bot_messages_count', 'chat_messages_count', 'group', 'avatar')
+                  'bot_messages_count', 'chat_messages_count', 'group', 'avatar', 'is_learning_shown')
 
     def get_related_field(self, model_field):
         return UserSerializer()

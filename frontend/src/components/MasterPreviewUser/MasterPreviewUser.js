@@ -26,9 +26,20 @@ class MasterPreviewUser extends React.Component {
                   userData={this.state.userData}
                   setHeaderName={this.props.setHeaderName}
                   setUserData={this.props.setUserData}
+                  learningPages={this.props.learningPages}
+                  currentLearningPage={this.props.currentLearningPage}
                   getUserGroupData={this.props.getUserGroupData}
+                  nextLearning={this.props.nextLearning}
                   token={this.props.token}
-            /> : <div style={{zIndex: 2, position: 'relative', height: '100%', backgroundColor: 'white', boxSizing: 'border-box', marginTop: '20px'}}/>
+                  width={this.props.width}
+            /> : <div style={{
+                zIndex: 2,
+                position: 'relative',
+                height: '100%',
+                backgroundColor: 'white',
+                boxSizing: 'border-box',
+                marginTop: '20px'
+            }}/>
     }
 }
 

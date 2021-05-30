@@ -1,7 +1,7 @@
 import sys
 from io import BytesIO
 
-from PIL import Image
+from PIL import Image, ExifTags
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
@@ -202,6 +202,21 @@ class SavedImage(models.Model):
         im = Image.open(self.image)
         width, height = im.size
         output = BytesIO()
+        if hasattr(im, '_getexif'):
+            exif = im._getexif()
+            if exif:
+                orientation = None
+                for tag, label in ExifTags.TAGS.items():
+                    if label == 'Orientation':
+                        orientation = tag
+                        break
+                if orientation in exif:
+                    if exif[orientation] == 3:
+                        im = im.rotate(180)
+                    elif exif[orientation] == 6:
+                        im = im.rotate(270)
+                    elif exif[orientation] == 8:
+                        im = im.rotate(90)
         if width > height:
             coeff = width / height
             height = 100
@@ -236,6 +251,7 @@ class UserExtension(models.Model):
     floor_data = models.ForeignKey(to=FloorData, on_delete=models.deletion.SET_NULL, null=True, blank=True)
     room_number = models.PositiveIntegerField(null=True, blank=True)
     avatar = models.ForeignKey(null=True, default=None, to=SavedImage, on_delete=models.deletion.SET_NULL)
+    is_learning_shown = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.type:

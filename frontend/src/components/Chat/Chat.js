@@ -174,7 +174,7 @@ class Chat extends Component {
                             .fetchMessages(this.props.token,
                                 this.props.match.params.id,
                                 this.state.messages.length)}
-                        hasMore={this.state.newMessages.length !== 0}
+                        hasMore={this.state.messages.length % 25 === 0 && this.state.newMessages.length !== 0}
                         inverse={true}
                         style={{display: 'flex', flexDirection: 'column-reverse'}}
                         loader={<div style={{
