@@ -48,7 +48,7 @@ class Main extends React.Component {
             learningPages: [
                 'hello', 'profile', 'group', 'tasks', 'messages', 'learning', 'documents', 'buildings', 'helper', 'end'
             ],
-            currentLearningPage: this.props.userData.is_learning_shown ? 9 : 0
+            currentLearningPage: 9
         }
         this.prevKey = null
         this.prevWidth = window.innerWidth
@@ -181,13 +181,15 @@ class Main extends React.Component {
     componentDidMount() {
         //document.title = "Главная"
         this.props.setUserData()
+        this.getUserData()
         window.addEventListener('resize', this.updateSize);
     }
 
     getUserData = () => {
         this.props.getUser().then(data => {
             this.setState({
-                userData: data.data
+                userData: data.data,
+                currentLearningPage: data.data.is_learning_shown ? 9 : 0
             })
         })
     }
@@ -215,7 +217,7 @@ class Main extends React.Component {
     }
 
     render() {
-        return <>
+        return this.props.userData ? <>
             {
                 this.state.width < 770 && this.state.isModulesDrawerShowed &&
                 <NavigationDrawer onClose={() => this.setModulesDrawerShow(false)}>
@@ -470,7 +472,7 @@ class Main extends React.Component {
                     logOut={this.props.logOut}
                     onHide={() => this.setModalShow(false)}/>
             }
-        </>
+        </> : <></>
     }
 }
 
