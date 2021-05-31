@@ -1,7 +1,7 @@
 import React from "react";
 import {Modal, Button} from "react-bootstrap";
 
-export default function MyVerticallyCenteredModal(props) {
+export default function ModalTestCompleted(props) {
   return (
     <Modal
       {...props}

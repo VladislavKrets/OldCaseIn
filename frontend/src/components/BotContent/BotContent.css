@@ -17,3 +17,25 @@
     border-radius: 10px;
     box-shadow: inset 7px 10px 12px #f0f0f0;
 }
+
+.themes-container form {
+    width: 100%;
+    min-width: 100%;
+}
+.themes-container {
+    z-index: 2;
+    position: relative;
+}
+.bot-message {
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    max-width: 60%;
+}
+
+@media (max-width: 770px) {
+    .bot-message{
+        max-width: 85%;
+    }
+}

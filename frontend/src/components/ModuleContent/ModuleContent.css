@@ -1,47 +1,79 @@
 .moduleContent::-webkit-scrollbar {
-    width: 10px;
+    width: 0px;
     height: 10px;
+    background: transparent;
 }
 
 .moduleContent::-webkit-scrollbar-thumb {
-    background: linear-gradient(13deg, #d6c8d9 14%, #8592e6 56%);
+    background: transparent;
     border-radius: 10px;
 }
 
 .moduleContent::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(13deg, #c7ceff 14%, #f9d4ff 64%);
+    background: transparent;
 }
 
 .moduleContent::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: transparent;
     border-radius: 10px;
-    box-shadow: inset 7px 10px 12px #f0f0f0;
+    box-shadow: none;
 }
-.info {
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-    width: 100%;
-    box-sizing: border-box;
-}
+
 .moduleContent-background {
     height: 100vh;
     width: 100%;
     display: flex;
-    justify-content: center;
+    position: relative;
     align-items: center;
     box-sizing: border-box;
-    background: linear-gradient(to bottom, rgb(54, 69, 136) 0%, rgb(111, 118, 181) 40%, rgb(160, 171, 210) 60%, rgb(218, 216, 234) 80%, rgb(254, 254, 255) 100%);
+}
+
+.info {
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.module-content-button {
+    border: none;
+    outline: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 1px;
+    background-image: none;
+    height: auto;
+    padding: 9px 38px 9px 37px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: #54C0EB;
+    border-radius: 50px;
+    text-decoration: none;
+}
+
+.module-content-button:hover {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #3916fe;
+}
+
+.module-content-button:disabled {
+    background-color: #54C0EB;
+    opacity: 0.6;
+    cursor: default;
 }
 
 .moduleContent-no-overflow-parent {
     width: 100%;
-    margin: 15px;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    height: 75%;
-    border-radius: 12px;
+    height: 100%;
     background-color: white;
 }
 
@@ -52,7 +84,6 @@
     box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
-    border-radius: 12px;
     background-color: white;
 }
 
@@ -88,15 +119,43 @@
     padding: 12px;
 }
 
+.float-button-add-calendar {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: green;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.rbc-calendar {
+    position: relative;
+    z-index: 2;
+    flex-grow: 1;
+}
+
+.modules-border-radius {
+    border-radius: 40px;
+}
+
+.full-module-content-block {
+    padding: 50px;
+}
+
 @media (max-width: 770px) {
-    .moduleContent-background {
-        padding-top: 20px;
+
+    .module-content-header{
+        text-align: center;
     }
 
-    .moduleContent-no-overflow-parent {
-        width: 95%;
-        height: 85%;
-        margin: 5px;
+    .moduleContent-background {
+        padding-top: 45px;
     }
 
     .moduleContent::-webkit-scrollbar {
@@ -111,16 +170,21 @@
         padding: 5px;
     }
 
+    .course-name-header {
+        font-size: 1.3rem;
+    }
+
+    .modules-border-radius {
+        border-radius: 0;
+    }
+
+    .full-module-content-block {
+        padding: 30px 12px;
+    }
 }
 
 @media (max-width: 460px) {
     .lesson-video {
-        width: 320px;
-    }
-}
-
-@media (max-width: 340px) {
-    .lesson-video {
-        width: 260px;
+        width: 310px;
     }
 }

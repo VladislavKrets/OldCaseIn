@@ -27,7 +27,8 @@ export default class NavigationDrawer extends React.Component{
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
             zIndex: '10'
         }} onClick={this.props.onClose}>
-            <div className={'drawer'} onClick={e => e.stopPropagation()}>
+            <div className={'drawer drawer-opened' + (this.props.right ? ' drawer-right' : '')}
+                 onClick={e => e.stopPropagation()}>
                 {this.props.children}
             </div>
         </div>

@@ -1,20 +1,31 @@
+from django.contrib.auth.models import User
+from django.db.models.functions import RowNumber, Rank
+from drf_yasg import openapi
+from drf_yasg.openapi import Parameter, IN_QUERY
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import views, permissions, response, status
 from rest_framework.authtoken.models import Token
 from rest_framework.mixins import RetrieveModelMixin, \
     ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 
 from core import serializers
 from core import models
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from django.db.models import F
+from django.db.models import F, Window, Q, Max
+from core.permissions import IsStudentsAccessed, IsOwner, IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+from core import bot
+from rest_framework import viewsets
 
 
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
+    @swagger_auto_schema(request_body=serializers.LoginSerializer,
+                         operation_description="This endpoint gets credentials and returns token")
     def post(self, request):  # auth
         serializer = serializers.LoginSerializer(data=request.data)
         if not serializer.is_valid():
@@ -23,6 +34,8 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
+    @swagger_auto_schema(request_body=serializers.RegistrationSerializer,
+                         operation_description="This endpoint gets registration data and returns token")
     def put(self, request):  # registration
         serializer = serializers.RegistrationSerializer(data=request.data)
         if not serializer.is_valid():
@@ -31,6 +44,10 @@ class LoginView(views.APIView):
         token = Token.objects.get_or_create(user=user)
         return response.Response({'token': token[0].key})
 
+    @swagger_auto_schema(manual_parameters=[
+        Parameter('registration_code', IN_QUERY, type='string', required=True)
+    ],
+        operation_description="This endpoint checks registration code")
     def patch(self, request):  # check code
         is_registration_code_exists = models.RegistrationCode \
             .objects.filter(code=request.data['registration_code']).exists()
@@ -38,19 +55,46 @@ class LoginView(views.APIView):
 
 
 class UserDataApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(operation_description="This endpoint returns user data")
     def get(self, request):
         serializer = serializers.UserSerializer(instance=request.user)
         return response.Response(serializer.data)
 
+    def post(self, request):
+        search = request.data.get('search', None)
+        if not search:
+            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        search = search.split()
+        f_eq = search.pop(0)
+        equation = Q(first_name__icontains=f_eq) | Q(last_name__icontains=f_eq)
+        for eq in search:
+            equation = equation | Q(first_name__icontains=eq) | Q(last_name__icontains=eq)
+        users = User.objects.filter(equation)
+        serializer = serializers.PrivateUserSerializer(instance=users, many=True)
+        return response.Response(data=serializer.data)
 
-class ModuleMixin(ListModelMixin, GenericAPIView):
+    def patch(self, request):
+        userextension = request.user.userextension
+        userextension.is_learning_shown = True
+        userextension.save()
+        return response.Response(status=status.HTTP_200_OK)
+
+
+class ModuleViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ModuleSerializer
-    queryset = models.Module.objects.all().order_by('number')
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
+    def get_queryset(self):
+        return models.Module.objects.filter(course=self.kwargs['course']).order_by('number')
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
 
 
 class LessonMixin(RetrieveModelMixin, GenericAPIView):
@@ -59,6 +103,7 @@ class LessonMixin(RetrieveModelMixin, GenericAPIView):
     serializer_class = serializers.LessonSerializer
     queryset = models.Lesson.objects.all().order_by('number')
 
+    @swagger_auto_schema(operation_description="This endpoint returns lesson data")
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, args, kwargs)
 
@@ -78,6 +123,7 @@ class QuestionMixin(ListModelMixin, GenericAPIView):
         lesson = self.kwargs['lesson']
         return models.Question.objects.filter(lesson=lesson)
 
+    @swagger_auto_schema(operation_description="This endpoint returns questions list")
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
 
@@ -139,6 +185,7 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
         return models.SavedQuestionAnswer.objects.filter(user=self.request.user,
                                                          answer=self.kwargs['answer'])
 
+    @swagger_auto_schema(operation_description="This endpoint saves user answer")
     def post(self, request, *args, **kwargs):
         answer = self.kwargs['answer']
         answer = models.QuestionAnswer.objects.get(pk=answer)
@@ -151,13 +198,16 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
             models.SavedQuestionAnswer.objects.filter(answer__question=question,
                                                       user=self.request.user).delete()
             return self.create(request, args, kwargs)
-        if self.get_queryset().exists():
-            elem = self.get_queryset().first()
+        queryset = models.SavedQuestionAnswer.objects.filter(user=self.request.user,
+                                                             answer=answer)
+        if queryset.exists():
+            elem = queryset.first()
             kwargs['pk'] = elem.id
             self.kwargs['pk'] = kwargs['pk']
             return self.partial_update(request, args, kwargs)
         return self.create(request, args, kwargs)
 
+    @swagger_auto_schema(operation_description="This endpoint deletes user answer")
     def delete(self, request, *args, **kwargs):
         if self.get_queryset().exists():
             lesson = self.get_queryset().first().answer.question.lesson
@@ -178,12 +228,16 @@ class SavedQuestionAnswerMixin(CreateModelMixin, UpdateModelMixin, GenericAPIVie
 
 class ResultTestApiView(APIView):
 
+    @swagger_auto_schema(responses={'200': serializers.LessonResultSerializer},
+                         operation_description="This endpoint submits current lesson test")
     def get(self, request, *args, **kwargs):
         lesson_pk = kwargs['lesson']
         test_results = models.LessonResult.objects.get(user=request.user, lesson_pk=lesson_pk)
         serializer = serializers.LessonResultSerializer(instance=test_results)
         return response.Response(data=serializer.data)
 
+    @swagger_auto_schema(responses={'200': serializers.LessonResultSerializer},
+                         operation_description="This endpoint submits current lesson test")
     def post(self, request, *args, **kwargs):
         lesson_pk = kwargs['lesson']
         lesson = models.Lesson.objects.get(pk=lesson_pk)
@@ -203,6 +257,10 @@ class ResultTestApiView(APIView):
         test_results.result_score = right_check_answers + right_text_answers
         test_results.max_score = all_right_answers
         test_results.save()
+        score = round(test_results.result_score / test_results.max_score * 100, 2)
+        userextension = request.user.userextension
+        userextension.total_score += score
+        userextension.save()
         serializer = serializers.LessonResultSerializer(instance=test_results)
         return response.Response(data=serializer.data)
 
@@ -212,16 +270,18 @@ class ResultTestApiView(APIView):
         return response.Response(data=serializer.data)
 
 
-class EventsModelMixin(ListModelMixin, GenericAPIView):
+class EventsModelViewSet(ModelViewSet):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwner]
     serializer_class = serializers.EventCalendarSerializer
 
     def get_queryset(self):
         return models.EventCalendar.objects.filter(user=self.request.user)
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, args, kwargs)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
 
 
 class DocumentsModelMixin(ListModelMixin, GenericAPIView):
@@ -232,3 +292,168 @@ class DocumentsModelMixin(ListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, args, kwargs)
+
+
+class StudentsModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.UserSerializer
+
+    def get_queryset(self):
+        return models.User.objects.filter(userextension__master=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class BotApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(request_body=serializers.BotTrainerSerializer,
+                         operation_description="This endpoint requests question to bot and returns answer")
+    def post(self, request):
+        serializer = serializers.BotTrainerSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        text = serializer.validated_data['text']
+        bot_response = bot.bot(text)
+        user = request.user
+        user.userextension.bot_messages_count += 1
+        user.userextension.save()
+        return response.Response(data={'text': bot_response}, status=status.HTTP_200_OK)
+
+
+class BuildingViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.BuildingSerializer
+    queryset = models.Building.objects.all().order_by('address')
+
+
+class CourseViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.CourseSerializer
+    queryset = models.Course.objects.all()
+
+
+class FloorModelMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.FloorSerializer
+
+    def get_queryset(self):
+        return models.FloorData.objects.filter(building=self.kwargs['building']).order_by('floor_number')
+
+    @swagger_auto_schema(operation_description="This endpoint returns floors list")
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class GroupUserMixin(ListModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PrivateUserSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        group = user.userextension.group
+        if not group:
+            return models.User.objects.none()
+        queryset = models.User.objects.filter(userextension__group=group) \
+            .order_by('-userextension__total_score', 'first_name', 'last_name')
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, args, kwargs)
+
+
+class UserViewSet(ListModelMixin, RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PrivateUserSerializer
+    queryset = User.objects.exclude(is_superuser=True) \
+        .exclude(userextension=None) \
+        .order_by('first_name',
+                  'last_name')
+
+
+class LastMessagesApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        messages = models.Message.objects\
+            .filter(Q(dialog__first_user=user) | Q(dialog__second_user=user)) \
+            .order_by('dialog', '-created_at')\
+            .distinct('dialog')
+        serializer = serializers.MessageSerializer(instance=models.Message
+                                                   .objects.filter(id__in=messages)
+                                                   .order_by('-created_at'),
+                                                   many=True)
+        return response.Response(data=serializer.data)
+
+
+class GroupViewSet(ListModelMixin, CreateModelMixin,
+                   RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.UserGroupSerializer
+
+    def get_queryset(self):
+        return models.UserGroup.objects.filter(master=self.request.user)
+
+
+class MasterUserViewSet(ListModelMixin,
+                        RetrieveModelMixin, viewsets.GenericViewSet):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsStudentsAccessed]
+    serializer_class = serializers.MasterUserSerializer
+
+    def get_queryset(self):
+        return models.User.objects\
+            .filter(userextension__group__in=self.request.user.managed_groups.values_list('id', flat=True))
+
+
+class EventsSearchApiView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = serializers.RangeDatesSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        events = models.EventCalendar.objects.filter(start__gte=data['start'],
+                                                     end__lte=data['end'], user=request.user)\
+            .order_by('start')
+        serializer = serializers.EventCalendarSerializer(instance=events, many=True)
+        return response.Response(data=serializer.data)
+
+
+class ImageUploadView(CreateModelMixin, DestroyModelMixin, GenericAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = serializers.ImageSerializer
+    queryset = models.SavedImage.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        is_photo = False if data['photo'] == 'false' else True
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        is_photo = False if data['photo'] == 'false' else True
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+        userextension = request.user.userextension
+        userextension.avatar = instance
+        userextension.save()
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+

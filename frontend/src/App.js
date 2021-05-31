@@ -6,6 +6,8 @@ import axios from './api'
 import cookie from "react-cookies";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Main from "./panels/Main/Main";
+import User from "./components/User/User";
+import General from "./panels/General/General";
 
 class App extends React.Component {
 
@@ -17,7 +19,8 @@ class App extends React.Component {
         }
         this.state = {
             token: token,
-            loading: true
+            loading: true,
+            userData: null
         }
     }
 
@@ -47,8 +50,32 @@ class App extends React.Component {
         })
     }
 
-    getModules = () => {
-        return axios.get('/modules/', {
+    getCourses = () => {
+        return axios.get('/courses/', {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getModules = (id) => {
+        return axios.get(`/courses/${id}/modules/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getModule = (courseId, moduleId) => {
+        return axios.get(`/courses/${courseId}/modules/${moduleId}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getCourse = (id) => {
+        return axios.get(`/courses/${id}/`, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
             }
@@ -65,6 +92,22 @@ class App extends React.Component {
 
     getQuestions = (lessonId) => {
         return axios.get(`/lesson/${lessonId}/questions/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getAllUser = (id) => {
+        return axios.get(`/all_users/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+            }
+        })
+    }
+
+    getAllUsers = () => {
+        return axios.get(`/all_users/`, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
             }
@@ -99,6 +142,17 @@ class App extends React.Component {
 
     updateAnswer = (answerId, patchId, answerData) => {
         return axios.patch(`/answer/${answerId}/save/${patchId}/`, answerData, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    askBotQuestion = (text) => {
+        return axios.post(`/bot/`, {
+            text: text
+        }, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
                 "X-CSRFTOKEN": cookie.load("csrftoken")
@@ -159,6 +213,15 @@ class App extends React.Component {
         })
     }
 
+    searchUser = (search) => {
+        return axios.post(`user/`, {search: search}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getEvents = () => {
         return axios.get(`events/`, {
             headers: {
@@ -168,8 +231,140 @@ class App extends React.Component {
         })
     }
 
+    updateEvent = (id, data) => {
+        return axios.patch(`events/${id}/`, data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    deleteEvent = (id) => {
+        return axios.delete(`events/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
     getDocuments = () => {
         return axios.get(`documents/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getBuildings = () => {
+        return axios.get(`buildings/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    imageUpload = (image, isPhoto) => {
+        let form_data = new FormData();
+        form_data.append('image', image, image.name);
+        form_data.append('photo', (!!isPhoto).toString())
+        return axios.post('/upload_image/', form_data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                'content-type': 'multipart/form-data'
+            }
+        })
+    }
+
+    avatarUpload = (image, isPhoto) => {
+        let form_data = new FormData();
+        form_data.append('image', image, image.name);
+        form_data.append('photo', (!!isPhoto).toString())
+        return axios.put('/upload_image/', form_data, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                'content-type': 'multipart/form-data'
+            }
+        })
+    }
+
+    getFloors = (building) => {
+        return axios.get(`buildings/${building}/floors/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    addEvent = (event) => {
+        return axios.post(`events/`, event, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getUserGroupData = () => {
+        return axios.get(`group_user_data/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getDialogs = () => {
+        return axios.get(`dialogs/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getGroups = () => {
+        return axios.get(`groups/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getMasterUser = (id) => {
+        return axios.get(`master_users/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    learnUser = () => {
+        return axios.patch(`user/`, {}, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    getCurrentBuilding = (id) => {
+        return axios.get(`buildings/${id}/`, {
+            headers: {
+                Authorization: 'Token ' + this.state.token,
+                "X-CSRFTOKEN": cookie.load("csrftoken")
+            }
+        })
+    }
+
+    eventsSearch = (data) => {
+        return axios.post(`events_search/`, data, {
             headers: {
                 Authorization: 'Token ' + this.state.token,
                 "X-CSRFTOKEN": cookie.load("csrftoken")
@@ -191,18 +386,30 @@ class App extends React.Component {
         })
     }
 
-    componentDidMount() {
-        document.title = 'Case in'
-        this.setState({
-            loading: false
+    setUserData = () => {
+        this.getUser().then(data => {
+            this.setState({
+                userData: data.data,
+                loading: false
+            })
+        }).catch(e => {
+            this.setState({
+                loading: false
+            })
         })
     }
+
+    componentDidMount() {
+        document.title = 'Case in'
+        this.setUserData()
+    }
+
 
     render() {
         return (
             <Switch>
-                <Route exact path='/auth/'>
-                    {this.state.token ? <Redirect to="/main/"/> : !this.state.loading ?
+                <Route path='/auth'>
+                    {this.state.token ? <Redirect to="/main/me"/> : !this.state.loading ?
                         <Auth login={this.login}
                               token={this.state.token}
                               setToken={this.setToken}
@@ -211,9 +418,10 @@ class App extends React.Component {
                         /> : null
                     }
                 </Route>
-                <PrivateRoute loading={this.state.loading} token={this.state.token} exact path={'/main/'}>
+                <PrivateRoute loading={this.state.loading} token={this.state.token} path={'/main'}>
                     <Main logOut={this.logOut}
                           getModules={this.getModules}
+                          getCourses={this.getCourses}
                           getLesson={this.getLesson}
                           getQuestions={this.getQuestions}
                           saveAnswer={this.saveAnswer}
@@ -225,8 +433,34 @@ class App extends React.Component {
                           getDocuments={this.getDocuments}
                           getBotThemes={this.getBotThemes}
                           loadCurrentResult={this.loadCurrentResult}
+                          userData={this.state.userData}
+                          setUserData={this.setUserData}
+                          addEvent={this.addEvent}
+                          askBotQuestion={this.askBotQuestion}
+                          token={this.state.token}
+                          getCurrentBuilding={this.getCurrentBuilding}
+                          getBuildings={this.getBuildings}
+                          getFloors={this.getFloors}
+                          getUserGroupData={this.getUserGroupData}
+                          getCourse={this.getCourse}
+                          getModule={this.getModule}
+                          getAllUser={this.getAllUser}
+                          getAllUsers={this.getAllUsers}
+                          getDialogs={this.getDialogs}
+                          searchUser={this.searchUser}
+                          getGroups={this.getGroups}
+                          getMasterUser={this.getMasterUser}
+                          updateEvent={this.updateEvent}
+                          deleteEvent={this.deleteEvent}
+                          eventsSearch={this.eventsSearch}
+                          imageUpload={this.imageUpload}
+                          avatarUpload={this.avatarUpload}
+                          learnUser={this.learnUser}
                     />
                 </PrivateRoute>
+                <Route exact path=''>
+                    <General/>
+                </Route>
             </Switch>
         );
     }

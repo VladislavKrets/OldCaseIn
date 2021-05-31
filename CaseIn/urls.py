@@ -18,13 +18,33 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
-
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 from CaseIn import settings
+from CaseIn import views
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Case in api docs",
+      default_version='v1',
+      description="Api description",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += [
+    url(r'^api_docs(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    url(r'^api_docs/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    url(r'^api_redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
     url(r'^_nested_admin/', include('nested_admin.urls')),
     path('api/', include('core.urls')),
-    re_path('.*', TemplateView.as_view(template_name='index.html')) # for react
+    path('floor_view/<int:pk>/', views.floor_view),
+    re_path('.*', TemplateView.as_view(template_name='index.html'))  # for react
 ]

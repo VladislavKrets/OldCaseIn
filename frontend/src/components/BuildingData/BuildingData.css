@@ -1,0 +1,28 @@
+.floor-frame {
+    zoom: 0.15;
+    -moz-transform: scale(0.75);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.75);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.75);
+    -webkit-transform-origin: 0 0;
+}
+
+.floor-link {
+    font-weight: bold;
+    padding: 12px 20px;
+    border: 2px solid #00D4FF;
+    font-size: 1.2em;
+    border-radius: 20px;
+    cursor: pointer;
+    color: black;
+    position: relative;
+    z-index: 2;
+    text-decoration: none;
+}
+
+.floor-link:hover {
+    background-color: #00D4FF;
+    color: white;
+    text-decoration: none;
+}

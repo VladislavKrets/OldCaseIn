@@ -1,6 +1,7 @@
 import React from 'react'
 import {Form, Col, Button, Alert} from "react-bootstrap";
 import './CodeRegistration.css'
+import {withRouter} from "react-router";
 
 class CodeRegistration extends React.Component {
 
@@ -27,7 +28,7 @@ class CodeRegistration extends React.Component {
                 })
                 if (data.data.exists) {
                     this.props.setRegistrationCode(this.state.registrationCode)
-                    this.props.changePanel("registration")
+                    this.props.history.push("/auth/register")
                 }
             }).catch(e => {
             this.setState({
@@ -37,40 +38,36 @@ class CodeRegistration extends React.Component {
     }
 
     render() {
-        return <div className={'auth-login-registration-container'}>
-            <div className={'auth-login-registration-right-part'}>
-                <div className={'auth-login-registration-form'}>
-                    <Form onSubmit={this.onSubmit}>
-                        <Form.Row>
-                            <Col>
-                                <Form.Control placeholder="Код регистрации" name={'registrationCode'}
-                                              onChange={this.handleChange}
-                                              required="required"
-                                              value={this.state.registrationCode}/>
-                            </Col>
-                            <Col>
-                                <div style={{display: 'flex', flexDirection: 'row-reverse', width: '100%'}}>
-                                    <Button variant="primary" type="submit">
-                                        Регистрация
-                                    </Button>
-                                </div>
-                            </Col>
-                        </Form.Row>
-                        {
-                            !this.state.isRegistrationCodeRight && <Form.Row>
-
-                                <div className={'code-registration-wrong-alert-container'}>
-                                    <Alert variant={"danger"}>
-                                        Неверный код регистрации
-                                    </Alert>
-                                </div>
-                            </Form.Row>
-                        }
-                    </Form>
+        return <div>
+            <h2 style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>
+                Регистрация
+            </h2>
+            <form onSubmit={this.onSubmit} className={'auth-form'}>
+                <div className={'auth-form-raw'}>
+                    <input className={'auth-input'} placeholder="Код регистрации" name={'registrationCode'}
+                           onChange={this.handleChange}
+                           required="required"
+                           value={this.state.registrationCode}/>
                 </div>
-            </div>
+                <div style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
+                    <label className={'general-enter-button'}>
+                        Регистрация
+                        <input type="submit" style={{display: 'none'}}/>
+                    </label>
+                </div>
+                {
+                    !this.state.isRegistrationCodeRight && <Form.Row>
+
+                        <div className={'code-registration-wrong-alert-container'}>
+                            <Alert variant={"danger"}>
+                                Неверный код регистрации
+                            </Alert>
+                        </div>
+                    </Form.Row>
+                }
+            </form>
         </div>
     }
 }
 
-export default CodeRegistration
+export default withRouter(CodeRegistration)

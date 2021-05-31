@@ -1,7 +1,9 @@
 import React from 'react'
 import './ModuleContent.css'
-import {Button, Form, Jumbotron} from 'react-bootstrap'
+import {Button, Form, Jumbotron, Spinner} from 'react-bootstrap'
 import ModalTestCompleted from "../ModalTestCompleted/ModalTestCompleted";
+import {withRouter} from "react-router";
+import {Link} from "react-router-dom";
 
 class ModuleContent extends React.Component {
     constructor(props) {
@@ -11,219 +13,84 @@ class ModuleContent extends React.Component {
             modalShow: false,
             resultData: null,
             submitEnabled: true,
-            queryCount: 0
+            queryCount: 0,
+            lesson: null,
+            course: null,
+            module: null
         }
     }
 
-    setModalShow = (modalShow) => {
-        this.setState({
-            modalShow: modalShow
-        })
-    }
-
-
-    handleChange = (event, type) => {
-        if (type === 'radio') {
-            for (let i = 0; i < event.target.form.length; i++) {
-                this.setState({[event.target.form[i].value]: false})
-            }
+    componentDidMount() {
+        this.props.getLesson(this.props.match.params.lesson).then(data => {
             this.setState({
-                [event.target.value]: event.target.checked
+                lesson: data.data
             })
-            this.saveAnswer(event.target.value, {})
-        } else if (type === 'checkbox') {
+        })
+        this.props.getModule(this.props.match.params.course,
+            this.props.match.params.module).then(data => {
             this.setState({
-                [event.target.value]: event.target.checked
+                module: data.data
             })
-            if (event.target.checked) {
-                this.saveAnswer(event.target.value, {})
-            } else {
-                this.removeAnswer(event.target.value)
-            }
-        } else if (type === 'text') {
+        })
+        this.props.getCourse(this.props.match.params.course).then(data => {
             this.setState({
-                [event.target.name]: event.target.value
-            })
-            this.saveAnswer(event.target.name, {user_text: event.target.value})
-        }
-    }
-
-    saveAnswer(value, data) {
-        this.setState({
-            queryCount: this.state.queryCount + 1
-        })
-        this.props.saveAnswer(value, data).then(data => {
-            this.setState({
-                queryCount: this.state.queryCount - 1
+                course: data.data
             })
         })
-    }
-
-    removeAnswer(value) {
-        this.setState({
-            queryCount: this.state.queryCount + 1
-        })
-        this.props.removeAnswer(value).then(data => {
-            this.setState({
-                queryCount: this.state.queryCount - 1
-            })
-        })
-    }
-
-    saveResults = () => {
-        this.setState({
-            queryCount: this.state.queryCount + 1
-        })
-        this.props.saveTestResults(this.props.lessonData.id)
-            .then(data => {
-                this.setState({
-                    resultData: data.data,
-                    queryCount: this.state.queryCount - 1
-                })
-                this.setModalShow(true)
-                const lessonData = this.props.lessonData;
-                lessonData.result = data.data
-                this.props.setLessonData(lessonData)
-            })
     }
 
     render() {
-        const data = {}
-        if (this.props.questionData && !this.state.isDataLoaded) {
-            for (let question of this.props.questionData) {
-                question.answers.forEach(answer => {
-                    if (answer.saved_answer && question.question_type === "text") {
-                        data[`${answer.id}`] = answer.saved_answer.user_text
-                    } else if (question.question_type !== "text") data[`${answer.id}`] = !!answer.saved_answer
-                })
-            }
-            this.setState({
-                ...data,
-                isDataLoaded: true
-            })
-        }
-        return <div className={'moduleContent-background'}>
-            <div className={'moduleContent-no-overflow-parent'}>
-                <div className={'moduleContent'}>
-                    {
-                        !this.props.lessonData && <div className={'no-lessons'}>
-                            Здесь будет отображаться статистика прохождения курса
-                        </div>
-                    }
-                    {
-                        this.props.lessonData &&
-                        <div className={'moduleContent-content'}>
-                            <Jumbotron>
-                                <h3 className={'moduleContent-title'}>
-                                    Модуль {this.props.currentModule.number}
-                                </h3>
-                                <h3 className={'moduleContent-title'}>
-                                    {this.props.currentModule.name}
-                                </h3>
-                                <h3 className={'moduleContent-title'}>
-                                    Урок {this.props.lessonData.number}
-                                </h3>
-                                <p>
-                       <pre className={'info'}>
-                         {this.props.lessonData.themes}
-                       </pre>
-                                </p>
-                            </Jumbotron>
-                            <Jumbotron>
-                                <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <video className={'lesson-video'} controls="controls"
-                                           src={this.props.lessonData.video}>
-                                    </video>
-                                </div>
-                            </Jumbotron>
-                            {
-                                this.props.lessonData.result && <Jumbotron>
-                                    <div className={'moduleContent-test-completed'}>
-                                        Тест сдан
-                                    </div>
-                                    <div style={{textAlign: 'center'}}>
-                                        Ваш результат: {Math.round(this.props.lessonData.result.result_score
-                                        / this.props.lessonData.result.max_score * 100 * 100) / 100}%
-                                    </div>
-                                </Jumbotron>
-                            }
-                            {
-                                this.props.questionData && this.props.questionData.map(item => {
-
-                                    return <Jumbotron>
-                                        <Form>
-                                            <div style={{
-                                                fontWeight: 'bold',
-                                                paddingBottom: '15px'
-                                            }}>{item.question}</div>
-                                            {
-                                                item.answers.map(answer => {
-                                                    {
-                                                        return <Form.Group controlId={`${item.id}`}>
-                                                            <div>
-                                                                {
-                                                                    item.question_type === 'radio'
-                                                                        ? <Form.Check
-                                                                            type={'radio'}
-                                                                            disabled={!!this.props.lessonData.result}
-                                                                            checked={this.state[`${answer.id}`]}
-                                                                            label={answer.answer}
-                                                                            value={`${answer.id}`}
-                                                                            name={`${item.id}`}
-                                                                            onChange={(e) => this.handleChange(e, 'radio')}
-                                                                        />
-                                                                        : item.question_type === 'checkbox'
-                                                                        ? <Form.Check
-                                                                            disabled={!!this.props.lessonData.result}
-                                                                            checked={this.state[`${answer.id}`]}
-                                                                            label={answer.answer}
-                                                                            type={'checkbox'}
-                                                                            value={`${answer.id}`}
-                                                                            name={`${item.id}`}
-                                                                            onChange={(e) => this.handleChange(e, 'checkbox')}
-                                                                        />
-                                                                        : item.question_type === 'text'
-                                                                            ? <Form.Control
-                                                                                disabled={!!this.props.lessonData.result}
-                                                                                onChange={(e) => this.handleChange(e, 'text')}
-                                                                                placeholder="Введите ответ"
-                                                                                name={`${answer.id}`}
-                                                                                value={this.state[`${answer.id}`]}
-                                                                                required="required"/>
-                                                                            : null
-                                                                }
-                                                            </div>
-                                                        </Form.Group>
-                                                    }
-                                                })
-                                            }
-                                        </Form>
-                                    </Jumbotron>
-                                })
-                            }
-                            <div style={{display: 'flex', flexDirection: 'row-reverse', padding: '5px 0'}}>
-                                {this.props.questionData && this.props.questionData.length !== 0 &&
-                                <Button variant="primary"
-                                        type={'button'}
-                                        disabled={!!this.props.lessonData.result
-                                        || this.state.queryCount !== 0}
-                                        onClick={this.saveResults}>
-                                    Завершить тест
-                                </Button>}
-                            </div>
-                        </div>
-                    }
+        return this.state.course && this.state.module && this.state.lesson ?
+            <div className={'moduleContent-content'}>
+                <div className={'full-module-content-block'}>
+                    <h2 style={{fontWeight: '900'}} className={'course-name-header'}>
+                        {this.state.course.name}
+                    </h2>
                 </div>
-            </div>
-            {this.props.lessonData && this.state.resultData &&
-            <ModalTestCompleted
-                lessonData={this.props.lessonData}
-                resultData={this.state.resultData}
-                show={this.state.modalShow}
-                onHide={() => this.setModalShow(false)}
-            />}
-        </div>
+                <div className={'full-module-content-block'}>
+                    <h5 style={{fontWeight: '900'}}>
+                        Модуль {this.state.module.number}. {this.state.module.name}
+                    </h5>
+                    <h5 style={{fontWeight: '900'}}>
+                        Урок {this.state.lesson.number}.
+                    </h5>
+                </div>
+                <div className={'full-module-content-block'}>
+                                <pre className={'info'} style={{textAlign: 'center', fontSize: '1.25rem'}}>
+                                    {this.state.lesson.themes}
+                                </pre>
+                </div>
+                <div className={'full-module-content-block'}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <video className={'lesson-video'} controls="controls"
+                               src={this.state.lesson.video}>
+                        </video>
+                    </div>
+                </div>
+                {
+                    this.state.lesson.result && <div className={'full-module-content-block'}>
+                        <div className={'moduleContent-test-completed'}>
+                            Тест сдан
+                        </div>
+                        <div style={{textAlign: 'center'}}>
+                            Ваш результат: {Math.round(this.state.lesson.result.result_score
+                            / this.state.lesson.result.max_score * 100 * 100) / 100}%
+                        </div>
+                    </div>
+                }
+                {
+                    !this.state.lesson.result && this.state.lesson.has_test && <div
+                        className={'full-module-content-block'}
+                        style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                        <Link to={`${this.props.match.url}/test`}
+                              className={'module-content-button'}>
+                            Пройти тест
+                        </Link>
+                    </div>
+                }
+            </div> : <></>
+
     }
 }
 
-export default ModuleContent
+export default withRouter(ModuleContent)
